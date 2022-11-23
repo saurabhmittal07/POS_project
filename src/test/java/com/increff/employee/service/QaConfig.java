@@ -15,7 +15,7 @@ import com.increff.employee.spring.SpringConfig;
 		excludeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, value = { SpringConfig.class })//
 )
 @PropertySources({ //
-		@PropertySource(value = "classpath:./com/increff/employee/test.properties", ignoreResourceNotFound = true) //
+		@PropertySource(value = "classpath:com/increff/employee/test.properties", ignoreResourceNotFound = true) //
 })
 public class QaConfig {
 
