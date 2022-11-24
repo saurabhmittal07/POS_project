@@ -1,6 +1,7 @@
 package com.increff.employee.controller;
 
 import com.increff.employee.model.BrandCategory;
+import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Api
 @RestController
@@ -26,6 +29,11 @@ public class BrandCategoryController {
         brandCategoryService.add(brandCategory);
     }
 
+    @ApiOperation(value = "Shows Brands")
+    @RequestMapping(path = "/api/brandCategory" , method = RequestMethod.GET)
+    public List<BrandCategoryPojo> getAllBrands(){
+        return brandCategoryService.getAllBrands();
+    }
 
 
 }

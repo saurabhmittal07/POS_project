@@ -54,13 +54,15 @@ function updateEmployee(event){
 }
 
 
-function getEmployeeList(){
+function getBrandList(){
+
+    console.log("Getting Brand List");
 	var url = getEmployeeUrl();
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		displayEmployeeList(data);  
+	   		displayBrandList(data);
 	   },
 	   error: handleAjaxError
 	});
@@ -139,20 +141,30 @@ function downloadErrors(){
 
 //UI DISPLAY METHODS
 
-function displayEmployeeList(data){
-	var $tbody = $('#employee-table').find('tbody');
+function displayBrandList(data){
+
+	var $tbody = $('#brand-table').find('tbody');
+
+    console.log(data);
+
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteEmployee(' + e.id + ')">delete</button>'
 		buttonHtml += ' <button onclick="displayEditEmployee(' + e.id + ')">edit</button>'
+
+
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.name + '</td>'
-		+ '<td>'  + e.age + '</td>'
+		+ '<td>' + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
+
+		console.log(e.category);
+
         $tbody.append(row);
+
 	}
 }
 
@@ -210,7 +222,7 @@ function displayEmployee(data){
 function init(){
 	$('#add-employee').click(addEmployee);
 	$('#update-employee').click(updateEmployee);
-	$('#refresh-data').click(getEmployeeList);
+	$('#refresh-data').click(getBrandList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
@@ -218,5 +230,5 @@ function init(){
 }
 
 $(document).ready(init);
-$(document).ready(getEmployeeList);
+$(document).ready(getBrandList);
 

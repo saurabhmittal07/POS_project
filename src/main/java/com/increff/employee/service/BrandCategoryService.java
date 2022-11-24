@@ -7,6 +7,8 @@ import com.increff.employee.pojo.BrandCategoryPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BrandCategoryService {
 
@@ -14,7 +16,15 @@ public class BrandCategoryService {
     private BrandCategoryDao brandCategoryDao;
 
     public void add(BrandCategory brandCategory){
+
+        // Check if Brand-Category already exist
+
+
         brandCategoryDao.add(brandCategory);
+    }
+
+    public List<BrandCategoryPojo> getAllBrands(){
+        return brandCategoryDao.getAllBrands();
     }
 
 }
