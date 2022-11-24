@@ -18,13 +18,24 @@ public class BrandCategoryService {
     public void add(BrandCategory brandCategory){
 
         // Check if Brand-Category already exist
-
-
+        if(brandCategoryAlreadyExist(brandCategory)) {
+            return;
+        }
         brandCategoryDao.add(brandCategory);
     }
 
     public List<BrandCategoryPojo> getAllBrands(){
         return brandCategoryDao.getAllBrands();
+    }
+
+    public boolean brandCategoryAlreadyExist(BrandCategory brandCategory){
+        List<BrandCategoryPojo> list = getAllBrands();
+        for(BrandCategoryPojo item : list){
+            if(item.getCategory() == brandCategory.getCategory() && item.getBrand() == brandCategory.getBrand()){
+                return true;
+            }
+        }
+        return true;
     }
 
 }

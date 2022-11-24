@@ -19,7 +19,7 @@ function addEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		getEmployeeList();  
+	   		getBrandList();
 	   },
 	   error: handleAjaxError
 	});
