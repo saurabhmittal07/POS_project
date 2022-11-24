@@ -22,7 +22,9 @@ public class BrandCategoryDao {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand(p.getBrand());
         brandCategoryPojo.setCategory(p.getCategory());
+        System.out.println (brandCategoryPojo);
         em.persist(brandCategoryPojo);
     }
+
 
 }

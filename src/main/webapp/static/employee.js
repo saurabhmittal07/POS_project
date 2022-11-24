@@ -1,7 +1,7 @@
 
 function getEmployeeUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/employee";
+	return baseUrl + "/api/brandCategory";
 }
 
 //BUTTON ACTIONS
@@ -109,6 +109,9 @@ function uploadRows(){
 	
 	var json = JSON.stringify(row);
 	var url = getEmployeeUrl();
+
+
+    console.log(json);
 
 	//Make ajax call
 	$.ajax({
