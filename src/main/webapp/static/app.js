@@ -1,6 +1,6 @@
 
 //HELPER METHOD
-function toJson($form){
+function toJson($form) {
     var serialized = $form.serializeArray();
     console.log(serialized);
     var s = '';
@@ -11,6 +11,8 @@ function toJson($form){
     var json = JSON.stringify(data);
     return json;
 }
+
+
 
 
 function handleAjaxError(response){
