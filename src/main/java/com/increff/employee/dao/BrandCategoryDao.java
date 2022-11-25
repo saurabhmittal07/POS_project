@@ -6,7 +6,6 @@ import com.increff.employee.pojo.BrandCategoryPojo;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import com.increff.employee.pojo.EmployeePojo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,9 +17,14 @@ import java.util.List;
 @Repository
 public class BrandCategoryDao extends AbstractDao{
 
+
     private static String delete_id = "delete from BrandCategoryPojo p where id=:id";
     private static String select_all = "select p from BrandCategoryPojo p";
     private static String select_id = "select p from BrandCategoryPojo p where id=:id";
+    private static String update_id = "update BrandCategoryPojo set brand=:brand, category=:category where id=:id";
+
+
+
 
     @PersistenceContext
     private EntityManager em;
@@ -42,6 +46,13 @@ public class BrandCategoryDao extends AbstractDao{
     }
 
     @Transactional
+    public BrandCategoryPojo getBrand(int id){
+        TypedQuery<BrandCategoryPojo> query = getQuery(select_id, BrandCategoryPojo.class);
+        query.setParameter("id", id);
+        return getSingle(query);
+    }
+
+    @Transactional
     public int deleteBrand(int id){
         Query query = em.createQuery(delete_id);
         query.setParameter("id", id);
@@ -50,11 +61,11 @@ public class BrandCategoryDao extends AbstractDao{
 
     @Transactional
     public void updateBrand(int id, BrandCategory brandCategory){
-
-
+        Query query = em.createQuery(update_id);
+        query.setParameter("id", id);
+        query.setParameter("brand", brandCategory.getBrand());
+        query.setParameter("category", brandCategory.getCategory());
+        query.executeUpdate();
     }
-
-
-
 
 }

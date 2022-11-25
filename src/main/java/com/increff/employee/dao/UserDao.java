@@ -6,6 +6,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import com.increff.employee.service.ApiException;
 import org.springframework.stereotype.Repository;
 
 import com.increff.employee.pojo.UserPojo;
@@ -20,7 +21,7 @@ public class UserDao extends AbstractDao {
 
 	
 	@Transactional
-	public void insert(UserPojo p) {
+	public void insert(UserPojo p) throws ApiException {
 		em().persist(p);
 	}
 

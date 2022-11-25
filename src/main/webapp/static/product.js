@@ -10,7 +10,7 @@ function addProduct(event){
 	var $form = $("#product-form");
 	var json = toJson($form);
 	var url = getProductUrl();
-    console.log(url);
+
 
 	$.ajax({
 	   url: url,
@@ -21,7 +21,6 @@ function addProduct(event){
        },
 	   success: function(response) {
 	   		getList();
-
 	   },
 	   error: handleAjaxError
 	});
@@ -73,7 +72,7 @@ function getList(){
 
 function deleteProduct(id){
 	var url = getProductUrl() + "/" + id;
-	alert(url);
+
 
 	$.ajax({
 	   url: url,

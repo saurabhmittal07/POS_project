@@ -21,13 +21,17 @@ function addBrand(event){
 	   success: function(response) {
 	   		getList();
 	   },
-	   error: handleAjaxError
+	   error: function(error){
+	        alert("Brand-Category pair already exist ");
+	   }
 	});
 
 	return false;
 }
 
 function updateBrand(event){
+
+   console.log("UpdateBrandCalled");
 	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
@@ -36,6 +40,7 @@ function updateBrand(event){
 	//Set the values to update
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
+
 
 	$.ajax({
 	   url: url,
@@ -70,7 +75,7 @@ function getList(){
 
 function deleteBrand(id){
 	var url = getBrandUrl() + "/" + id;
-	alert(url);
+
 
 	$.ajax({
 	   url: url,
@@ -128,7 +133,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-	   		row.error=response.responseText
+	   		row.error="Brand-Category Page already exist";
 	   		errorData.push(row);
 	   		uploadRows();
 	   }
@@ -171,6 +176,7 @@ function displayList(data){
 
 function displayEditBrand(id){
 	var url = getBrandUrl() + "/" + id;
+
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -212,8 +218,8 @@ function displayUploadData(){
 }
 
 function displayBrand(data){
-	$("#brand-edit-form input[name=name]").val(data.name);
-	$("#brand-edit-form input[name=age]").val(data.age);
+	$("#brand-edit-form input[name=brand]").val(data.brand);
+	$("#brand-edit-form input[name=category]").val(data.category);
 	$("#brand-edit-form input[name=id]").val(data.id);
 	$('#edit-brand-modal').modal('toggle');
 }

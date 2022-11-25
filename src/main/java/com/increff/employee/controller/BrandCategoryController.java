@@ -1,9 +1,6 @@
 package com.increff.employee.controller;
-
 import com.increff.employee.model.BrandCategory;
-import com.increff.employee.model.EmployeeForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
-import com.increff.employee.pojo.EmployeePojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
 import io.swagger.annotations.Api;
@@ -43,10 +40,13 @@ public class BrandCategoryController {
     @ApiOperation(value = "Delete Brand Category")
     @RequestMapping(path = "/api/brandCategory/{id}" , method = RequestMethod.DELETE)
     public void deleteBrandCategory(@PathVariable int id){
-
-
-        System.out.println(id);
          brandCategoryService.deleteBrand(id);
+    }
+
+    @ApiOperation(value = "Gets an Brand by ID")
+    @RequestMapping(path = "/api/brandCategory/{id}", method = RequestMethod.GET)
+    public BrandCategoryPojo getBrand(@PathVariable int id) throws ApiException {
+       return brandCategoryService.getBrand(id);
     }
 
 

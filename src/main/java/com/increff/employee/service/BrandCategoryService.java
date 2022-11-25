@@ -19,36 +19,21 @@ public class BrandCategoryService {
 
         // Trim & lowerCase
         brandCategory = trimLower(brandCategory);
-
-        // Check if Brand-Category already exist
-        if(brandCategoryAlreadyExist(brandCategory) == true) {
-            return;
-        }
-
         brandCategoryDao.add(brandCategory);
     }
 
-    public void updateBrand(int id, BrandCategory brandCategory){
+
+    public void updateBrand(int id, BrandCategory brandCategory) {
+        brandCategory = trimLower(brandCategory);
         brandCategoryDao.updateBrand(id, brandCategory);
     }
 
+    public BrandCategoryPojo getBrand(int id){
+        BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(id);
+        return brandCategoryPojo;
+    }
     public void deleteBrand(int id){
             brandCategoryDao.deleteBrand(id);
-    }
-
-
-
-    public boolean brandCategoryAlreadyExist(BrandCategory brandCategory){
-        List<BrandCategoryPojo> list = getAllBrands();
-
-        for(BrandCategoryPojo item : list){
-            if(item.getCategory().equals(brandCategory.getCategory()) && item.getBrand().equals(brandCategory.getBrand())  ){
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     //Trim & lowercase
@@ -57,6 +42,8 @@ public class BrandCategoryService {
         brandCategory.setCategory(brandCategory.getCategory().trim().toLowerCase());
         return brandCategory;
     }
+
+
 
     public List<BrandCategoryPojo> getAllBrands(){
         return brandCategoryDao.getAllBrands();

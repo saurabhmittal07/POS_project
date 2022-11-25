@@ -1,9 +1,7 @@
 package com.increff.employee.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 
 @Entity
 public class ProductPojo {
@@ -12,6 +10,8 @@ public class ProductPojo {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String name;
+
+    @Column(name = "barcode" , unique = true)
     private String barcode;
     private int brandCategory;
     private double mrp;
