@@ -17,9 +17,9 @@ function addEmployee(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		getBrandList();
+	   		getList();
 	   },
 	   error: handleAjaxError
 	});
@@ -30,7 +30,7 @@ function addEmployee(event){
 function updateEmployee(event){
 	$('#edit-employee-modal').modal('toggle');
 	//Get the ID
-	var id = $("#employee-edit-form input[name=id]").val();	
+	var id = $("#employee-edit-form input[name=id]").val();
 	var url = getEmployeeUrl() + "/" + id;
 
 	//Set the values to update
@@ -43,9 +43,9 @@ function updateEmployee(event){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		getEmployeeList();   
+	   		getList();
 	   },
 	   error: handleAjaxError
 	});
@@ -54,15 +54,15 @@ function updateEmployee(event){
 }
 
 
-function getBrandList(){
+function getList(){
 
-    console.log("Getting Brand List");
+    console.log("Getting  List");
 	var url = getEmployeeUrl();
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		displayBrandList(data);
+	   		displayList(data);
 	   },
 	   error: handleAjaxError
 	});
@@ -70,12 +70,13 @@ function getBrandList(){
 
 function deleteEmployee(id){
 	var url = getEmployeeUrl() + "/" + id;
+	alert(url);
 
 	$.ajax({
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data) {
-	   		getEmployeeList();  
+	   		getList();
 	   },
 	   error: handleAjaxError
 	});
@@ -104,11 +105,11 @@ function uploadRows(){
 	if(processCount==fileData.length){
 		return;
 	}
-	
+
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-	
+
 	var json = JSON.stringify(row);
 	var url = getEmployeeUrl();
 
@@ -122,9 +123,9 @@ function uploadRows(){
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
-       },	   
+       },
 	   success: function(response) {
-	   		uploadRows();  
+	   		uploadRows();
 	   },
 	   error: function(response){
 	   		row.error=response.responseText
@@ -141,7 +142,7 @@ function downloadErrors(){
 
 //UI DISPLAY METHODS
 
-function displayBrandList(data){
+function displayList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
 
@@ -220,15 +221,15 @@ function displayEmployee(data){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-employee').click(addEmployee);
-	$('#update-employee').click(updateEmployee);
-	$('#refresh-data').click(getBrandList);
-	$('#upload-data').click(displayUploadData);
-	$('#process-data').click(processData);
-	$('#download-errors').click(downloadErrors);
+    $('#add-employee').click(addEmployee);
+    $('#update-employee').click(updateEmployee);
+    $('#refresh-data').click(getList);
+    $('#upload-data').click(displayUploadData);
+    $('#process-data').click(processData);
+    $('#download-errors').click(downloadErrors);
     $('#employeeFile').on('change', updateFileName)
 }
 
 $(document).ready(init);
-$(document).ready(getBrandList);
+$(document).ready(getList);
 

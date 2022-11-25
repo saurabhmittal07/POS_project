@@ -18,8 +18,9 @@ import java.util.List;
 @Repository
 public class BrandCategoryDao extends AbstractDao{
 
-
+    private static String delete_id = "delete from BrandCategoryPojo p where id=:id";
     private static String select_all = "select p from BrandCategoryPojo p";
+    private static String select_id = "select p from BrandCategoryPojo p where id=:id";
 
     @PersistenceContext
     private EntityManager em;
@@ -40,6 +41,18 @@ public class BrandCategoryDao extends AbstractDao{
         return query.getResultList();
     }
 
+    @Transactional
+    public int deleteBrand(int id){
+        Query query = em.createQuery(delete_id);
+        query.setParameter("id", id);
+        return query.executeUpdate();
+    }
+
+    @Transactional
+    public void updateBrand(int id, BrandCategory brandCategory){
+
+
+    }
 
 
 

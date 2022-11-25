@@ -1,17 +1,16 @@
 package com.increff.employee.controller;
 
 import com.increff.employee.model.BrandCategory;
+import com.increff.employee.model.EmployeeForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
+import com.increff.employee.pojo.EmployeePojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +32,21 @@ public class BrandCategoryController {
     @RequestMapping(path = "/api/brandCategory" , method = RequestMethod.GET)
     public List<BrandCategoryPojo> getAllBrands(){
         return brandCategoryService.getAllBrands();
+    }
+
+    @ApiOperation(value = "Updates a brand detail")
+    @RequestMapping(path = "/api/brandCategory/{id}", method = RequestMethod.PUT)
+    public void update(@PathVariable int id, @RequestBody BrandCategory brandCategory) throws ApiException {
+        brandCategoryService.updateBrand(id, brandCategory);
+    }
+
+    @ApiOperation(value = "Delete Brand Category")
+    @RequestMapping(path = "/api/brandCategory/{id}" , method = RequestMethod.DELETE)
+    public void deleteBrandCategory(@PathVariable int id){
+
+
+        System.out.println(id);
+         brandCategoryService.deleteBrand(id);
     }
 
 
