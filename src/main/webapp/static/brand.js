@@ -4,7 +4,7 @@ function getBrandUrl(){
 	return baseUrl + "/api/brandCategory";
 }
 
-//BUTTON ACTIONS
+//BUTTON ACTION
 function addBrand(event){
 	//Set the values to update
 	var $form = $("#brand-form");
@@ -108,6 +108,7 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    getList();
 		return;
 	}
 
@@ -131,6 +132,7 @@ function uploadRows(){
        },
 	   success: function(response) {
 	   		uploadRows();
+
 	   },
 	   error: function(response){
 	   		row.error="Brand-Category Page already exist";
@@ -232,8 +234,10 @@ function init(){
     $('#refresh-data').click(getList);
     $('#upload-data').click(displayUploadData);
     $('#process-data').click(processData);
+    $('#cross').click(getList);
     $('#download-errors').click(downloadErrors);
-    $('#brandFile').on('change', updateFileName)
+    $('#brandFile').on('change', updateFileName);
+
 }
 
 $(document).ready(init);

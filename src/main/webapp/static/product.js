@@ -105,6 +105,7 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    getList();
 		return;
 	}
 
@@ -228,10 +229,12 @@ function init(){
     $('#add-Product').click(addProduct);
     $('#update-Product').click(updateProduct);
     $('#refresh-data').click(getList);
+    $('#cross').click(getList);
     $('#upload-data').click(displayUploadData);
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
-    $('#productFile').on('change', updateFileName)
+    $('#productFile').on('change', updateFileName);
+
 }
 
 $(document).ready(init);
