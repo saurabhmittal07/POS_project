@@ -2,6 +2,7 @@ package com.increff.employee.service;
 
 import com.increff.employee.dao.BrandCategoryDao;
 import com.increff.employee.dao.ProductDao;
+import com.increff.employee.model.BrandCategory;
 import com.increff.employee.model.Product;
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.BrandCategoryPojo;
@@ -46,7 +47,30 @@ public class ProductService {
         productDao.deleteProduct(id);
     }
 
+    public void updateProduct(int id, Product product) throws ApiException{
+        product = trimLower(product);
 
+        // check if barcode already exist
+        if(barCodeExist(product.getBarcode())){
+            throw new ApiException("Barcode already exist");
+        }
+
+        // Check if Brand-Category Already exist or not
+        if(!brandCategoryExist(product.getBrandCategory())){
+            throw new ApiException("Brand Category does not exist");
+        }
+
+        productDao.updateProduct(id, product);
+    }
+
+    public ProductPojo getProduct(int id){
+        ProductPojo productPojo = productDao.getProduct(id);
+        return productPojo;
+    }
+
+
+
+    // Validation functions
     public Product trimLower(Product product){
         product.setName(product.getName().trim().toLowerCase());
         product.setBarcode(product.getBarcode().trim().toLowerCase());

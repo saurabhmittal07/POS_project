@@ -17,7 +17,7 @@
         <div class="col-12">
             <form class="form-inline" id="product-form">
                 <div class="form-group">
-                    <label for="inputName" class="col-sm-4 col-form-label">Product</label>
+                    <label for="inputName" class="col-sm-4 col-form-label">Name</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Product Name">
                     </div>
@@ -112,29 +112,30 @@
                 <div class="modal-body">
                     <form class="form-inline" id="product-edit-form">
                         <div class="form-group">
-                            <label for="inputName" class="col-sm-4 col-form-label">Product</label>
+                            <label for="inputName" class="col-sm-4 col-form-label">Name</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Product Name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputBrandCategory" class="col-sm-4 col-form-label">Category</label>
+                            <label for="inputBrandCategory" class="col-sm-4 col-form-label">BrandCategory ID</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="brandCategory" id="inputBrandCategory" placeholder="Enter BrandCategory id">
+                                <input type='number' class="form-control" name="brandCategory" id="inputBrandCategory" placeholder="Enter Brand id">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputBarcode" class="col-sm-4 col-form-label">Category</label>
+                            <label for="inputBarcode" class="col-sm-4 col-form-label">Barcode</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="barcode" id="inputBarCode" placeholder="Enter Barcode id">
+                                <input type="text"  class="form-control" name="barcode" id="inputBarCode" placeholder="Enter Barcode id">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mrp" class="col-sm-4 col-form-label">Category</label>
+                            <label for="mrp" class="col-sm-4 col-form-label">MRP</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="barcode" id="mrp" placeholder="Enter MRP">
+                                <input  type='number' class="form-control" name="mrp" id="mrp" placeholder="Enter MRP">
                             </div>
                         </div>
+
                         <input type="hidden" name="id" >
                     </form>
                 </div>

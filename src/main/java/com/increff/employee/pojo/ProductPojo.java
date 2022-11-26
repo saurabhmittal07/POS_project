@@ -11,7 +11,7 @@ public class ProductPojo {
     private int id;
     private String name;
 
-    @Column(name = "barcode" , unique = true)
+
     private String barcode;
     private int brandCategory;
     private double mrp;

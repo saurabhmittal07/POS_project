@@ -32,9 +32,15 @@ public class BrandCategoryService {
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(id);
         return brandCategoryPojo;
     }
+
+    public List<BrandCategoryPojo> getAllBrands(){
+        return brandCategoryDao.getAllBrands();
+    }
     public void deleteBrand(int id){
             brandCategoryDao.deleteBrand(id);
     }
+
+
 
     //Trim & lowercase
     public BrandCategory trimLower(BrandCategory brandCategory){
@@ -45,8 +51,6 @@ public class BrandCategoryService {
 
 
 
-    public List<BrandCategoryPojo> getAllBrands(){
-        return brandCategoryDao.getAllBrands();
-    }
+
 
 }

@@ -33,4 +33,9 @@ public class SiteUiController extends AbstractUiController {
 		return mav("brand.html");
 	}
 
+	@RequestMapping(value = "/site/inventory")
+	public ModelAndView inventory() {
+		return mav("inventory.html");
+	}
+
 }

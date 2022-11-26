@@ -1,5 +1,4 @@
 package com.increff.employee.controller;
-
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
@@ -8,7 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
+
 
 import java.util.List;
 
@@ -37,5 +36,16 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
+    @ApiOperation(value = "Updates a product detail")
+    @RequestMapping(path = "/api/product/{id}", method = RequestMethod.PUT)
+    public void update(@PathVariable int id, @RequestBody Product product) throws ApiException {
+        productService.updateProduct(id, product);
+    }
+
+    @ApiOperation(value = "Gets an Product by ID")
+    @RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
+    public ProductPojo getProduct(@PathVariable int id) throws ApiException {
+        return productService.getProduct(id);
+    }
 
 }

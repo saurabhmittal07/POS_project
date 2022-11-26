@@ -1,5 +1,6 @@
 package com.increff.employee.dao;
 
+import com.increff.employee.model.BrandCategory;
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
@@ -20,6 +21,14 @@ public class ProductDao extends AbstractDao{
     private static String delete_id = "delete from ProductPojo p where id=:id";
     private static String select_all = "select p from ProductPojo p";
     private static String select_id = "select p from ProductPojo p where id=:id";
+
+    private static String update_id = "update ProductPojo set barcode=:barcode, " +
+            "mrp=:mrp, name=:name, " +
+            "brandCategory=:brandCategory " +
+            "where id=:id";
+
+
+
     @PersistenceContext
     private EntityManager em;
 
@@ -44,6 +53,24 @@ public class ProductDao extends AbstractDao{
     public void deleteProduct(int id){
         Query query = em.createQuery(delete_id);
         query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Transactional
+    public ProductPojo getProduct(int id){
+        TypedQuery<ProductPojo > query = getQuery(select_id, ProductPojo .class);
+        query.setParameter("id", id);
+        return getSingle(query);
+    }
+
+    @Transactional
+    public void updateProduct(int id, Product product){
+        Query query = em.createQuery(update_id);
+        query.setParameter("id", id);
+        query.setParameter("brandCategory", product.getBrandCategory());
+        query.setParameter("barcode", product.getBarcode());
+        query.setParameter("mrp", product.getMrp());
+        query.setParameter("name", product.getName());
         query.executeUpdate();
     }
 }
