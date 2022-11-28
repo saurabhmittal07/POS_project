@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
-import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,9 +61,10 @@ public class OrderService {
         for(OrderPojo orderPojo : orderPojos){
             Order order = new Order();
             order.setId(orderPojo.getId());
-            Instant instant = orderPojo.getDateTime().toInstant();
-            Date date = Date.from(instant);
-            order.setDate(date);
+
+            ZonedDateTime zonedDateTime = orderPojo.getDateTime();
+            String formattedZdt = zonedDateTime.format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
+            order.setDate(formattedZdt.substring(0,10) + " " + formattedZdt.substring(11,19));
 
             orders.add(order);
         }

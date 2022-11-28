@@ -8,7 +8,7 @@ import java.util.Date;
 public class Order {
 
     private int id;
-    private Date date;
+    private String date;
 
 
     public int getId() {
@@ -19,12 +19,13 @@ public class Order {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+
 
 }
