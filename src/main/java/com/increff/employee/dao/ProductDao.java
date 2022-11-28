@@ -1,12 +1,8 @@
 package com.increff.employee.dao;
-
-import com.increff.employee.model.BrandCategory;
 import com.increff.employee.model.Product;
-import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,7 +13,6 @@ import java.util.List;
 @Repository
 public class ProductDao extends AbstractDao{
 
-
     private static String delete_id = "delete from ProductPojo p where id=:id";
     private static String select_all = "select p from ProductPojo p";
     private static String select_id = "select p from ProductPojo p where id=:id";
@@ -26,7 +21,6 @@ public class ProductDao extends AbstractDao{
             "mrp=:mrp, name=:name, " +
             "brandCategory=:brandCategory " +
             "where id=:id";
-
 
 
     @PersistenceContext

@@ -1,20 +1,21 @@
 package com.increff.employee.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.ZonedDateTime;
+
 
 @Entity
-public class InventoryPojo {
-
+public class OrderPojo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
-    private int productId;
-    private int count;
+    private ZonedDateTime dateTime;
 
     public int getId() {
         return id;
@@ -24,19 +25,11 @@ public class InventoryPojo {
         this.id = id;
     }
 
-    public int getProductId() {
-        return productId;
+    public ZonedDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+    public void setDateTime(ZonedDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

@@ -219,9 +219,11 @@ function displayUploadData(){
 }
 
 function displayProduct(data){
+    console.log(data);
 	$("#product-edit-form input[name=name]").val(data.name);
-	$("#product-edit-form input[name=age]").val(data.age);
-	$("#product-edit-form input[name=id]").val(data.id);
+	$("#product-edit-form input[name=brandCategory]").val(data.brandCategory);
+	$("#product-edit-form input[name=barcode]").val(data.barcode);
+	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$('#edit-product-modal').modal('toggle');
 }
 

@@ -154,8 +154,7 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteInventory(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>'
+		var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
@@ -215,8 +214,8 @@ function displayUploadData(){
 }
 
 function displayInventory(data){
-	$("#inventory-edit-form input[name=name]").val(data.name);
-	$("#inventory-edit-form input[name=age]").val(data.age);
+	$("#inventory-edit-form input[name=productId]").val(data.productId);
+	$("#inventory-edit-form input[name=count]").val(data.count);
 	$("#inventory-edit-form input[name=id]").val(data.id);
 	$('#edit-inventory-modal').modal('toggle');
 }

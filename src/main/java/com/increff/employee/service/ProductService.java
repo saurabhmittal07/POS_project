@@ -1,21 +1,16 @@
 package com.increff.employee.service;
-
 import com.increff.employee.dao.BrandCategoryDao;
 import com.increff.employee.dao.ProductDao;
-import com.increff.employee.model.BrandCategory;
-import com.increff.employee.model.Product;
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.security.AlgorithmConstraints;
 import java.util.List;
 
 @Service
 public class ProductService {
+
 
     @Autowired
     private ProductDao productDao;
