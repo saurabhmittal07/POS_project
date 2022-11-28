@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_site_navbar"></nav>
+
+<div class="container">
+    <br><br>
+    <button type="button" class="btn btn-primary" id="create-order">Create a new order</button>
+    <br><br>
+    <h3>Orders</h3>
+
+    <!-- Top row with form-->
+
+
+
+
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+
+        <!-- Table -->
+        <div class="col-12">
+            <table class="table table-striped" id="order-table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr>
+                    <td>1</td>
+                    <td>4:40</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>4:40</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>4:40</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- Order View Modal -->
+
+
+
+
+
+
+    <footer th:replace="snippets.html :: name_footer"></footer>
+
+    <script th:src="@{/static/order.js}"/></script>
+
+</body>
+
+</html>

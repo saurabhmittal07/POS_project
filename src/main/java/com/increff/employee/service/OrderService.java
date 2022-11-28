@@ -2,12 +2,22 @@ package com.increff.employee.service;
 
 
 import com.increff.employee.dao.OrderDao;
+import com.increff.employee.dao.OrderItemDao;
+import com.increff.employee.dao.ProductDao;
+import com.increff.employee.model.Order;
+import com.increff.employee.model.OrderItem;
+import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
+import com.increff.employee.pojo.ProductPojo;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,12 +26,72 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    public void createOrder(ZonedDateTime zonedDateTime){
-         orderDao.createOrder(zonedDateTime);
+    @Autowired
+    private ProductDao productDao;
+
+    @Autowired
+    private OrderItemDao orderItemDao;
+
+    public void createOrder(ZonedDateTime zonedDateTime, List<OrderItem> orderItems){
+        orderDao.createOrder(zonedDateTime);
+
+         // Get Order Id;
+        int orderId = getOrderId();
+
+        for(OrderItem orderItem : orderItems){
+            // Get Product Id
+           ProductPojo product = getProduct(orderItem.getBarcode());
+
+            OrderItemPojo orderItemPojo = new OrderItemPojo();
+            orderItemPojo.setOrderId(orderId);
+            orderItemPojo.setQuantity(orderItem.getQuantity());
+            orderItemPojo.setProductId(product.getId());
+            orderItemPojo.setPrice(product.getMrp());
+
+            orderItemDao.addOrderItem(orderItemPojo);
+        }
+
     }
 
-    public List<OrderPojo> showorders(){
-        return orderDao.showOrders();
+    public List<Order> showOrders(){
+        List<OrderPojo> orderPojos =  orderDao.showOrders();
+
+        List<Order> orders =  new ArrayList();
+
+        for(OrderPojo orderPojo : orderPojos){
+            Order order = new Order();
+            order.setId(orderPojo.getId());
+            Instant instant = orderPojo.getDateTime().toInstant();
+            Date date = Date.from(instant);
+            order.setDate(date);
+
+            orders.add(order);
+        }
+        return orders;
     }
+
+    // Return Order Id of current order
+    public int getOrderId(){
+        List<Order> orders = showOrders();
+        int maxId = 1;
+        for(Order order : orders){
+            if(order.getId() > maxId){
+                maxId = order.getId();
+            }
+        }
+        return maxId;
+    }
+
+    // Return ProductId by barcode
+    public ProductPojo getProduct(String barcode){
+        List<ProductPojo> products = productDao.getAllProducts();
+        for(ProductPojo product : products) {
+            if (product.getBarcode().equals(barcode)) {
+                return product;
+            }
+        }
+        return new ProductPojo();
+    }
+
 
 }

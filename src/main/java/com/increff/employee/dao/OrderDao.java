@@ -18,6 +18,7 @@ public class OrderDao extends  AbstractDao{
     private static String select_all = "select p from OrderPojo p";
     private static String select_id = "select p from InventoryPojo p where id=:id";
 
+
     @PersistenceContext
     private EntityManager em;
 

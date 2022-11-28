@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class OrderItem {
+public class OrderItemPojo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -14,7 +14,7 @@ public class OrderItem {
     private int orderId;
     private int productId;
     private int quantity;
-    private int price;
+    private double price;
 
     public int getId() {
         return id;
@@ -48,11 +48,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }
