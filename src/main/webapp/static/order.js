@@ -40,7 +40,7 @@ function displayList(data){
 		+ '</tr>';
 
         $tbody.append(row);
-
+        
 	}
 }
 

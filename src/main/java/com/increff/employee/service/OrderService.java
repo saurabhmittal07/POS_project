@@ -11,9 +11,6 @@ import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductPojo;
-import com.sun.org.apache.xpath.internal.operations.Or;
-import io.swagger.models.auth.In;
-import org.hibernate.dialect.identity.Oracle12cGetGeneratedKeysDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,20 +49,14 @@ public class OrderService {
             // Get Product
            ProductPojo product = productDao.getProductByBarcode(orderItem.getBarcode());
 
-           // Reduce inventory
-            InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(product.getId());
-            inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
-
             OrderItemPojo orderItemPojo = new OrderItemPojo();
             orderItemPojo.setOrderId(orderId);
             orderItemPojo.setQuantity(orderItem.getQuantity());
             orderItemPojo.setProductId(product.getId());
             orderItemPojo.setPrice(product.getMrp());
             orderItemDao.addOrderItem(orderItemPojo);
-
-
         }
-
+        System.out.println("Order Created");
     }
 
     public List<Order> showOrders(){

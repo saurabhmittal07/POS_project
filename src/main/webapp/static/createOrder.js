@@ -5,13 +5,14 @@ function getOrderUrl(){
 }
 
 var count = 0;
+var list = [];
 //BUTTON ACTIONS
 function checkInventory(event){
 	//Set the values to update
 	var $form = $("#order-form");
 	var json = toJson($form);
 	var url = getOrderUrl() + "/inventoryExist";
-
+    console.log(json);
 
 	$.ajax({
 	   url: url,
@@ -21,6 +22,7 @@ function checkInventory(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        list[count] = json;
 	        count++;
 	   		displayList(json,response);
 	   },
@@ -31,6 +33,26 @@ function checkInventory(event){
 }
 
 function createOrder(event){
+    //list = JSON.parse(JSON.stringify(list));
+    console.log(list);
+    newarr=[]
+    for(var i in list){
+        newarr.push(JSON.parse(list[i]))
+    }
+    newarr = JSON.stringify(newarr);
+    var url = getOrderUrl() ;
+    $.ajax({
+    	   url: url,
+    	   type: 'POST',
+    	   data: newarr,
+    	   headers: {
+           	'Content-Type': 'application/json'
+           },
+    	   success: function(response) {
+                console.log("Order placed");
+    	   },
+    	   error: handleAjaxError
+    	});
 }
 
 function updateProduct(event){
@@ -217,12 +239,10 @@ function init(){
     $('#check-inventory').click(checkInventory);
     $('#create-order').click(createOrder);
     $('#update-Product').click(updateProduct);
-    $('#refresh-data').click(getList);
-    $('#cross').click(getList);
-    $('#upload-data').click(displayUploadData);
+    //$('#cross').click(getList);
+
     $('#process-data').click(processData);
-    $('#download-errors').click(downloadErrors);
-    $('#productFile').on('change', updateFileName);
+
 
 }
 

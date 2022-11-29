@@ -26,6 +26,7 @@ public class OrderController {
     @ApiOperation(value = "Creates an order")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public void createOrder(@RequestBody List<OrderItem> items) throws ApiException {
+        System.out.println(items);
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         orderService.createOrder(zonedDateTime, items);
     }
