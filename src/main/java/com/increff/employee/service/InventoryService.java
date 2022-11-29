@@ -58,6 +58,8 @@ public class InventoryService {
 
     }
 
+
+
     public InventoryPojo getInventory(int id){
         InventoryPojo inventoryPojo = inventoryDao.getInventory(id);
         return inventoryPojo;

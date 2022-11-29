@@ -3,7 +3,7 @@ package com.increff.employee.model;
 public class OrderItem {
 
     private String barcode;
-    private int quantity;
+    private Integer quantity;
 
     public String getBarcode() {
         return barcode;

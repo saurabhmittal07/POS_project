@@ -1,15 +1,17 @@
 
-function getProductUrl(){
+function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
-	return baseUrl + "/api/product";
+	return baseUrl + "/api/order";
 }
 
+var count = 0;
 //BUTTON ACTIONS
-function addProduct(event){
+function checkInventory(event){
 	//Set the values to update
-	var $form = $("#product-form");
+	var $form = $("#order-form");
 	var json = toJson($form);
-	var url = getProductUrl();
+	var url = getOrderUrl() + "/inventoryExist";
+
 
 	$.ajax({
 	   url: url,
@@ -19,7 +21,8 @@ function addProduct(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		getList();
+	        count++;
+	   		displayList(json,response);
 	   },
 	   error: handleAjaxError
 	});
@@ -27,11 +30,14 @@ function addProduct(event){
 	return false;
 }
 
+function createOrder(event){
+}
+
 function updateProduct(event){
 	$('#edit-product-modal').modal('toggle');
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();
-	var url = getProductUrl() + "/" + id;
+	var url = getOrderUrl() + "/" + id;
 
 	//Set the values to update
 	var $form = $("#product-edit-form");
@@ -56,23 +62,8 @@ function updateProduct(event){
 }
 
 
-function getList(){
-
-    console.log("Getting  List");
-	var url = getProductUrl();
-
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayList(data);
-	   },
-	   error: handleAjaxError
-	});
-}
-
 function deleteProduct(id){
-	var url = getProductUrl() + "/" + id;
+	var url = getOrderUrl() + "/" + id;
 
 
 	$.ajax({
@@ -115,7 +106,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getProductUrl();
+	var url = getOrderUrl();
 
 
     console.log(json);
@@ -146,37 +137,31 @@ function downloadErrors(){
 
 //UI DISPLAY METHODS
 
-function displayList(data){
+function displayList(data, response){
 
-	var $tbody = $('#product-table').find('tbody');
+	var $tbody = $('#order-table').find('tbody');
 
-    console.log(data);
+    const e = JSON.parse(data);
 
-	$tbody.empty();
-	for(var i in data){
-		var e = data[i];
-		var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
+    var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
+    buttonHtml += ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
 
+    console.log(e["quantity"]);
+    var row = '<tr>'
+    + '<td>' + count + '</td>'
+    + '<td>' + e["barcode"]+ '</td>'
+    + '<td>' + e["quantity"] + '</td>'
+    + '<td>' + response + '</td>'
+    + '<td>' + e["quantity"]*response + '</td>'
+    + '<td>' + buttonHtml + '</td>'
+    + '</tr>';
 
-		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.name + '</td>'
-		+ '<td>' + e.brandCategory + '</td>'
-		+ '<td>'  + e.barcode + '</td>'
-		+ '<td>' + e.mrp + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
+    $tbody.append(row);
 
-
-
-        $tbody.append(row);
-
-	}
 }
 
 function displayEditProduct(id){
-	var url = getProductUrl() + "/" + id;
+	var url = getOrderUrl() + "/" + id;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -184,7 +169,7 @@ function displayEditProduct(id){
 	   		displayProduct(data);
 	   },
 	   error: handleAjaxError
-	});	
+	});
 }
 
 function resetUploadDialog(){
@@ -196,7 +181,7 @@ function resetUploadDialog(){
 	processCount = 0;
 	fileData = [];
 	errorData = [];
-	//Update counts	
+	//Update counts
 	updateUploadDialog();
 }
 
@@ -213,7 +198,7 @@ function updateFileName(){
 }
 
 function displayUploadData(){
- 	resetUploadDialog(); 	
+ 	resetUploadDialog();
 	$('#upload-product-modal').modal('toggle');
 }
 
@@ -229,7 +214,8 @@ function displayProduct(data){
 
 //INITIALIZATION CODE
 function init(){
-    $('#add-Product').click(addProduct);
+    $('#check-inventory').click(checkInventory);
+    $('#create-order').click(createOrder);
     $('#update-Product').click(updateProduct);
     $('#refresh-data').click(getList);
     $('#cross').click(getList);
@@ -241,5 +227,5 @@ function init(){
 }
 
 $(document).ready(init);
-$(document).ready(getList);
+
 

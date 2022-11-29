@@ -36,6 +36,13 @@ public class OrderController {
         return orderService.showOrders();
     }
 
+    @ApiOperation(value = "Check if invenotry exist or not")
+    @RequestMapping(path = "/api/order/inventoryExist", method = RequestMethod.POST)
+    public double inventoryExist(@RequestBody OrderItem orderItem) throws ApiException{
+        System.out.println("debug");
+        return orderService.inventoryExist(orderItem);
+    }
+
 
 
 

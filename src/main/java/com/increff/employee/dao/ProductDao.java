@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class ProductDao extends AbstractDao{
@@ -16,6 +17,10 @@ public class ProductDao extends AbstractDao{
     private static String delete_id = "delete from ProductPojo p where id=:id";
     private static String select_all = "select p from ProductPojo p";
     private static String select_id = "select p from ProductPojo p where id=:id";
+
+    private static String select_barcode = "select p from ProductPojo p where barcode=:barcode";
+
+
 
     private static String update_id = "update ProductPojo set barcode=:barcode, " +
             "mrp=:mrp, name=:name, " +
@@ -56,6 +61,16 @@ public class ProductDao extends AbstractDao{
         query.setParameter("id", id);
         return getSingle(query);
     }
+
+
+    @Transactional
+    public ProductPojo getProductByBarcode(String barcode){
+        TypedQuery<ProductPojo > query = getQuery(select_barcode, ProductPojo .class);
+        query.setParameter("barcode", barcode);
+        return query.getResultList().stream().findFirst().orElse(null);
+
+    }
+
 
     @Transactional
     public void updateProduct(int id, Product product){
