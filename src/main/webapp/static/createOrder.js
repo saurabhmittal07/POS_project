@@ -23,19 +23,35 @@ function checkInventory(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-            json1 = JSON.parse(json);
-            json1["price"] = JSON.stringify(response);
-            json1 = JSON.stringify(json1);
-
-	        list[count] = json1;
-	        count++;
-	        console.log(list);
-	   		displayList();
+            appendList(json,response);
 	   },
 	   error: handleAjaxError
 	});
 
 	return false;
+}
+function appendList(json,data){
+
+    json1 = JSON.parse(json);
+    json1["price"] = JSON.stringify(data);
+    json1 = JSON.stringify(json1);
+
+    //Check if barcode already added
+    json2 = JSON.parse(json1);
+    for(let i =0;i<list.length;i++){
+        json3 = JSON.parse(list[i]);
+        if(json2["barcode"] == json3["barcode"]){
+            json3["quantity"]  = +json3["quantity"] + +json2["quantity"];
+            list[i] = JSON.stringify(json3);
+            displayList();
+            return false;
+        }
+    }
+
+    list[count] = json1;
+    count++;
+    console.log(list);
+    displayList();
 }
 
 function createOrder(event){
@@ -169,10 +185,6 @@ function init(){
     $('#check-inventory').click(checkInventory);
     $('#create-order').click(createOrder);
     $('#update-order-item').click(updateOrder);
-    //$('#cross').click(getList);
-
-    $('#process-data').click(processData);
-
 
 }
 

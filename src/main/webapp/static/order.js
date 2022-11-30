@@ -47,13 +47,13 @@ function getOrderDetails(id){
 	   type: 'GET',
 	   success: function(data) {
 
-	   		displayOrderDetails(data);
+	   		displayOrderDetails(data,id);
 	   },
 	   error: handleAjaxError
 	});
 }
 
-function displayOrderDetails(data){
+function displayOrderDetails(data, id){
 	var $tbody = $('#order-detail-table').find('tbody');
 
         console.log(data);
@@ -73,8 +73,10 @@ function displayOrderDetails(data){
             $tbody.append(row);
     	}
 
-        var second = document.getElementById("total-amount");
-        second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+        var orderId = document.getElementById("order-id");
+        orderId.innerHTML = "Order Id: " + id;
+        var price = document.getElementById("total-amount");
+        price.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
 	$('#view-orderDetails-modal').modal('toggle');
 }
 
