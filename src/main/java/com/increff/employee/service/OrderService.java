@@ -77,6 +77,10 @@ public class OrderService {
         return orders;
     }
 
+    public List<OrderItemPojo> orderReciept(int id){
+        return orderDao.orderReciept(id);
+    }
+
     @Transactional
     public double inventoryExist(OrderItem orderItem) throws ApiException{
 

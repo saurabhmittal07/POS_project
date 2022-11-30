@@ -59,49 +59,36 @@
                 <tbody >
                 </tbody>
             </table>
-            <h3 id="total-amount"> Total Amount : </h3>
+            <p id="total-amount"> Total Amount : 0 Ruppee </p>
             <button type="button" class="btn btn-primary" id="create-order">Create Order</button>
         </div>
     </div>
 
 
     <!-- Employee Edit Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="edit-product-modal">
+    <div class="modal" tabindex="-1" role="dialog" id="edit-order-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Product</h5>
+                    <h5 class="modal-title">Edit Quantity</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" id = "cross">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-inline" id="product-edit-form">
+                    <form class="form-inline" id="order-edit-form">
                         <div class="form-group">
-                            <label for="inputName" class="col-sm-4 col-form-label">Name</label>
+                            <label "barcode" class="col-sm-2 col-form-label">Barcode</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Product Name">
+                                <input type="text" class="form-control" name="barcode" placeholder="Barcode" readonly>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputBrandCategory" class="col-sm-4 col-form-label">Brand ID</label>
+                            <label "quantity" class="col-sm-2 col-form-label">Count</label>
                             <div class="col-sm-10">
-                                <input type='number' class="form-control" name="brandCategory" id="inputBrandCategory" placeholder="Enter Brand id">
+                                <input type="text" class="form-control" name="quantity" placeholder="Enter Quantity">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="inputBarcode" class="col-sm-4 col-form-label">Barcode</label>
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode id">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="mrp" class="col-sm-4 col-form-label">MRP</label>
-                            <div class="col-sm-10">
-                                <input  type='number' class="form-control" name="mrp" id="mrp" placeholder="Enter MRP">
-                            </div>
-                        </div>
-
                         <input type="hidden" name="id" >
                     </form>
                 </div>

@@ -28,10 +28,7 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
-
-
+		var buttonHtml = '<button onclick="getOrderDetails(' + e.id + ')">View Details</button>';
 
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
@@ -40,8 +37,45 @@ function displayList(data){
 		+ '</tr>';
 
         $tbody.append(row);
-        
 	}
+}
+
+function getOrderDetails(id){
+	var url = getProductUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+
+	   		displayOrderDetails(data);
+	   },
+	   error: handleAjaxError
+	});
+}
+
+function displayOrderDetails(data){
+	var $tbody = $('#order-detail-table').find('tbody');
+
+        console.log(data);
+         var totalPrice = 0;
+    	$tbody.empty();
+    	for(var i in data){
+    		var e = data[i];
+    		var sno = ++i;
+    		var row = '<tr>'
+    		+ '<td>' + sno+ '</td>'
+    		+ '<td>' + e.productId + '</td>'
+    		+ '<td>' + e.quantity + '</td>'
+    		+ '<td>' + e.price + '</td>'
+    		+ '<td>' + e.price*e.quantity + '</td>'
+    		+ '</tr>';
+            totalPrice += e.price*e.quantity;
+            $tbody.append(row);
+    	}
+
+        var second = document.getElementById("total-amount");
+        second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+	$('#view-orderDetails-modal').modal('toggle');
 }
 
 function init(){

@@ -1,7 +1,8 @@
 package com.increff.employee.dao;
 
+import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,7 +18,7 @@ public class OrderDao extends  AbstractDao{
     private static String delete_id = "delete from InventoryPojo p where id=:id";
     private static String select_all = "select p from OrderPojo p";
     private static String select_id = "select p from InventoryPojo p where id=:id";
-
+    private static String select_order_id = "select p from OrderItemPojo p where orderId=:orderId";
 
     @PersistenceContext
     private EntityManager em;
@@ -33,6 +34,13 @@ public class OrderDao extends  AbstractDao{
     @Transactional
     public List<OrderPojo> showOrders(){
         TypedQuery<OrderPojo> query = getQuery(select_all, OrderPojo.class);
+        return query.getResultList();
+    }
+
+    @Transactional
+    public List<OrderItemPojo> orderReciept(int id){
+        TypedQuery<OrderItemPojo> query = getQuery(select_order_id, OrderItemPojo.class);
+        query.setParameter("orderId", id);
         return query.getResultList();
     }
 }

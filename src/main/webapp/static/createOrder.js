@@ -6,6 +6,7 @@ function getOrderUrl(){
 
 var count = 0;
 var list = [];
+var totalPrice = 0;
 //BUTTON ACTIONS
 function checkInventory(event){
 	//Set the values to update
@@ -49,7 +50,7 @@ function createOrder(event){
            	'Content-Type': 'application/json'
            },
     	   success: function(response) {
-                console.log("Order placed");
+                location.replace($("meta[name=baseUrl]").attr("content")+"/site/order");
     	   },
     	   error: handleAjaxError
     	});
@@ -109,53 +110,6 @@ function processData(){
 	readFileData(file, readFileDataCallback);
 }
 
-function readFileDataCallback(results){
-	fileData = results.data;
-	uploadRows();
-}
-
-function uploadRows(){
-	//Update progress
-	updateUploadDialog();
-	//If everything processed then return
-	if(processCount==fileData.length){
-	    getList();
-		return;
-	}
-
-	//Process next row
-	var row = fileData[processCount];
-	processCount++;
-
-	var json = JSON.stringify(row);
-	var url = getOrderUrl();
-
-
-    console.log(json);
-
-	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		uploadRows();
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
-
-}
-
-function downloadErrors(){
-	writeFileData(errorData);
-}
 
 //UI DISPLAY METHODS
 
@@ -163,12 +117,18 @@ function displayList(data, response){
 
 	var $tbody = $('#order-table').find('tbody');
 
+
     const e = JSON.parse(data);
 
     var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
-    buttonHtml += ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
+    buttonHtml += ' <button onclick="displayEditProduct(' + count + ')">edit</button>'
 
-    console.log(e["quantity"]);
+    totalPrice += e["quantity"]*response;
+
+     var second = document.getElementById("total-amount");
+     second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+
+
     var row = '<tr>'
     + '<td>' + count + '</td>'
     + '<td>' + e["barcode"]+ '</td>'
@@ -183,56 +143,20 @@ function displayList(data, response){
 }
 
 function displayEditProduct(id){
-	var url = getOrderUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayProduct(data);
-	   },
-	   error: handleAjaxError
-	});
+
+    data = list[id-1];
+	displayProduct(data);
 }
 
-function resetUploadDialog(){
-	//Reset file name
-	var $file = $('#productFile');
-	$file.val('');
-	$('#productFileName').html("Choose File");
-	//Reset various counts
-	processCount = 0;
-	fileData = [];
-	errorData = [];
-	//Update counts
-	updateUploadDialog();
-}
 
-function updateUploadDialog(){
-	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + processCount);
-	$('#errorCount').html("" + errorData.length);
-}
-
-function updateFileName(){
-	var $file = $('#productFile');
-	var fileName = $file.val();
-	$('#productFileName').html(fileName);
-}
-
-function displayUploadData(){
- 	resetUploadDialog();
-	$('#upload-product-modal').modal('toggle');
-}
 
 function displayProduct(data){
     console.log(data);
-	$("#product-edit-form input[name=name]").val(data.name);
-	$("#product-edit-form input[name=brandCategory]").val(data.brandCategory);
-	$("#product-edit-form input[name=barcode]").val(data.barcode);
-	$("#product-edit-form input[name=mrp]").val(data.mrp);
-	$('#edit-product-modal').modal('toggle');
+	$("#order-edit-form input[name=barcode]").val(data.barcode);
+	$("#order-edit-form input[name=quantity]").val(data.quantity);
+	$("#inventory-edit-form input[name=id]").val(data.id);
+	$('#edit-order-modal').modal('toggle');
 }
-
 
 //INITIALIZATION CODE
 function init(){
