@@ -13,7 +13,7 @@ function checkInventory(event){
 	var $form = $("#order-form");
 	var json = toJson($form);
 	var url = getOrderUrl() + "/inventoryExist";
-    console.log(json);
+
 
 	$.ajax({
 	   url: url,
@@ -23,9 +23,14 @@ function checkInventory(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	        list[count] = json;
+            json1 = JSON.parse(json);
+            json1["price"] = JSON.stringify(response);
+            json1 = JSON.stringify(json1);
+
+	        list[count] = json1;
 	        count++;
-	   		displayList(json,response);
+	        console.log(list);
+	   		displayList();
 	   },
 	   error: handleAjaxError
 	});
@@ -34,7 +39,7 @@ function checkInventory(event){
 }
 
 function createOrder(event){
-    //list = JSON.parse(JSON.stringify(list));
+
     console.log(list);
     newarr=[]
     for(var i in list){
@@ -56,15 +61,15 @@ function createOrder(event){
     	});
 }
 
-function updateProduct(event){
-	$('#edit-product-modal').modal('toggle');
-	//Get the ID
-	var id = $("#product-edit-form input[name=id]").val();
-	var url = getOrderUrl() + "/" + id;
+function updateOrder(event){
+	$('#edit-order-modal').modal('toggle');
+
+	var $form = $("#order-edit-form");
+    var json = toJson($form);
+	var url = getOrderUrl() + "/updateInventory";
 
 	//Set the values to update
-	var $form = $("#product-edit-form");
-	var json = toJson($form);
+
 
 	console.log(json);
 
@@ -76,18 +81,24 @@ function updateProduct(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		getList();
+	        updateList(json);
+
 	   },
 	   error: handleAjaxError
 	});
 
 	return false;
 }
-
+function updateList(data){
+    index = JSON.parse(data).id;
+    newRow = JSON.parse(list[index]);
+    newRow.quantity = JSON.parse(data).quantity;
+    list[index] = JSON.stringify(newRow);
+    displayList();
+}
 
 function deleteProduct(id){
 	var url = getOrderUrl() + "/" + id;
-
 
 	$.ajax({
 	   url: url,
@@ -99,62 +110,57 @@ function deleteProduct(id){
 	});
 }
 
-// FILE UPLOAD METHODS
-var fileData = [];
-var errorData = [];
-var processCount = 0;
-
-
-function processData(){
-	var file = $('#productFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
-}
 
 
 //UI DISPLAY METHODS
-
-function displayList(data, response){
-
-	var $tbody = $('#order-table').find('tbody');
-
-
-    const e = JSON.parse(data);
-
-    var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
-    buttonHtml += ' <button onclick="displayEditProduct(' + count + ')">edit</button>'
-
-    totalPrice += e["quantity"]*response;
-
-     var second = document.getElementById("total-amount");
-     second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+function displayList(){
+    var $tbody = $('#order-table').find('tbody');
+    $tbody.empty();
+    totalPrice = 0;
 
 
-    var row = '<tr>'
-    + '<td>' + count + '</td>'
-    + '<td>' + e["barcode"]+ '</td>'
-    + '<td>' + e["quantity"] + '</td>'
-    + '<td>' + response + '</td>'
-    + '<td>' + e["quantity"]*response + '</td>'
-    + '<td>' + buttonHtml + '</td>'
-    + '</tr>';
 
-    $tbody.append(row);
+    for(var i in list){
+        console.log(list[i]);
+        const e = JSON.parse(list[i]);
+        j = i;
+        j++;
+          var buttonHtml = '<button onclick="deleteProduct(' + j+ ')">delete</button>';
+          buttonHtml += ' <button onclick="displayEditProduct(' + j + ')">Edit</button>';
 
+
+         var row = '<tr>'
+            + '<td>' + count + '</td>'
+            + '<td>' + e["barcode"]+ '</td>'
+            + '<td>' + e["quantity"] + '</td>'
+            + '<td>' + e["price"] + '</td>'
+            + '<td>' + e["quantity"]*e["price"] + '</td>'
+            + '<td>' + buttonHtml + '</td>'
+            + '</tr>';
+
+        $tbody.append(row);
+
+        totalPrice += e["quantity"]*e["price"];
+         var second = document.getElementById("total-amount");
+        second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+    }
 }
+
 
 function displayEditProduct(id){
-
+    console.log(id);
     data = list[id-1];
-	displayProduct(data);
+	displayProduct(data,id-1);
 }
 
 
 
-function displayProduct(data){
-    console.log(data);
-	$("#order-edit-form input[name=barcode]").val(data.barcode);
-	$("#order-edit-form input[name=quantity]").val(data.quantity);
-	$("#inventory-edit-form input[name=id]").val(data.id);
+function displayProduct(data,id){
+     console.log(data);
+	$("#order-edit-form input[name=barcode]").val(JSON.parse(data).barcode);
+	$("#order-edit-form input[name=quantity]").val(JSON.parse(data).quantity);
+	$("#order-edit-form input[name=id]").val(id);
+	$("#order-edit-form input[name=preQuantity]").val(JSON.parse(data).quantity);
 	$('#edit-order-modal').modal('toggle');
 }
 
@@ -162,7 +168,7 @@ function displayProduct(data){
 function init(){
     $('#check-inventory').click(checkInventory);
     $('#create-order').click(createOrder);
-    $('#update-Product').click(updateProduct);
+    $('#update-order-item').click(updateOrder);
     //$('#cross').click(getList);
 
     $('#process-data').click(processData);

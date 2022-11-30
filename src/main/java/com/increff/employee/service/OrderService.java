@@ -7,6 +7,7 @@ import com.increff.employee.dao.OrderItemDao;
 import com.increff.employee.dao.ProductDao;
 import com.increff.employee.model.Order;
 import com.increff.employee.model.OrderItem;
+import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
@@ -118,6 +119,16 @@ public class OrderService {
         return maxId;
     }
 
+    @Transactional
+    public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException{
+        ProductPojo productPojo = productDao.getProductByBarcode(updateOrderForm.getBarcode());
+        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
+        if(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() < updateOrderForm.getQuantity()){
+            throw new ApiException(inventoryPojo.getCount()+ updateOrderForm.getPreQuantity() + " Unit/units available in inventory");
+        }
 
+        inventoryPojo.setCount(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() - updateOrderForm.getQuantity());
+
+    }
 
 }

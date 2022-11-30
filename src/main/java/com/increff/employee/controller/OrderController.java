@@ -2,6 +2,7 @@ package com.increff.employee.controller;
 
 import com.increff.employee.model.Order;
 import com.increff.employee.model.OrderItem;
+import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.service.ApiException;
@@ -24,7 +25,6 @@ public class OrderController {
     @ApiOperation(value = "Creates an order")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public void createOrder(@RequestBody List<OrderItem> items) throws ApiException {
-        System.out.println(items);
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         orderService.createOrder(zonedDateTime, items);
     }
@@ -47,4 +47,9 @@ public class OrderController {
         return orderService.orderReciept(id);
     }
 
+    @ApiOperation(value = "updates quantity of a product")
+    @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
+    public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{
+            orderService.updateInventory(updateOrderForm);
+    }
 }
