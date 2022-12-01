@@ -48,4 +48,9 @@ public class SiteUiController extends AbstractUiController {
 		return mav("createOrder.html");
 	}
 
+	@RequestMapping(value = "/site/report")
+	public ModelAndView report() {
+		return mav("report.html");
+	}
+
 }

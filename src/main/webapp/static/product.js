@@ -37,7 +37,6 @@ function updateProduct(event){
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
 
-	console.log(json);
 
 	$.ajax({
 	   url: url,
@@ -58,7 +57,7 @@ function updateProduct(event){
 
 function getList(){
 
-    console.log("Getting  List");
+
 	var url = getProductUrl();
 
 	$.ajax({
@@ -71,19 +70,7 @@ function getList(){
 	});
 }
 
-function deleteProduct(id){
-	var url = getProductUrl() + "/" + id;
 
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		getList();
-	   },
-	   error: handleAjaxError
-	});
-}
 
 // FILE UPLOAD METHODS
 var fileData = [];
@@ -118,7 +105,7 @@ function uploadRows(){
 	var url = getProductUrl();
 
 
-    console.log(json);
+
 
 	//Make ajax call
 	$.ajax({
@@ -150,13 +137,13 @@ function displayList(data){
 
 	var $tbody = $('#product-table').find('tbody');
 
-    console.log(data);
+
 
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteProduct(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
+
+		var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
@@ -167,7 +154,6 @@ function displayList(data){
 		+ '<td>' + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
-
 
 
         $tbody.append(row);
@@ -218,11 +204,12 @@ function displayUploadData(){
 }
 
 function displayProduct(data){
-    console.log(data);
+
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=brandCategory]").val(data.brandCategory);
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
+	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
 }
 

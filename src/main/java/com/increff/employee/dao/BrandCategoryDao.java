@@ -35,7 +35,7 @@ public class BrandCategoryDao extends AbstractDao{
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand(p.getBrand());
         brandCategoryPojo.setCategory(p.getCategory());
-        System.out.println (brandCategoryPojo);
+
         em.persist(brandCategoryPojo);
     }
 

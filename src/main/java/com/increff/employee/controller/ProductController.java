@@ -30,11 +30,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @ApiOperation(value = "Delete a brand")
-    @RequestMapping(path = "/api/product/{id}", method = RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable int id){
-        productService.deleteProduct(id);
-    }
+
 
     @ApiOperation(value = "Updates a product detail")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.PUT)

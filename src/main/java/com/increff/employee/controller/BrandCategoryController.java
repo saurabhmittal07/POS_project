@@ -37,11 +37,6 @@ public class BrandCategoryController {
         brandCategoryService.updateBrand(id, brandCategory);
     }
 
-    @ApiOperation(value = "Delete Brand Category")
-    @RequestMapping(path = "/api/brandCategory/{id}" , method = RequestMethod.DELETE)
-    public void deleteBrandCategory(@PathVariable int id){
-         brandCategoryService.deleteBrand(id);
-    }
 
     @ApiOperation(value = "Gets an Brand by ID")
     @RequestMapping(path = "/api/brandCategory/{id}", method = RequestMethod.GET)

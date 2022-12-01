@@ -57,7 +57,7 @@ public class OrderService {
             orderItemPojo.setPrice(product.getMrp());
             orderItemDao.addOrderItem(orderItemPojo);
         }
-        System.out.println("Order Created");
+
     }
 
     public List<Order> showOrders(){
@@ -86,7 +86,6 @@ public class OrderService {
     public double inventoryExist(OrderItem orderItem) throws ApiException{
 
         // Check if barcode exist
-
         ProductPojo productPojo = productDao.getProductByBarcode(orderItem.getBarcode());
 
         if(productPojo == null){
@@ -108,7 +107,7 @@ public class OrderService {
     }
 
     // Return Order Id of current order
-    public int getOrderId(){
+    private int getOrderId(){
         List<Order> orders = showOrders();
         int maxId = 1;
         for(Order order : orders){

@@ -3,12 +3,10 @@ package com.increff.employee.service;
 import com.increff.employee.dao.InventoryDao;
 import com.increff.employee.dao.ProductDao;
 import com.increff.employee.model.Inventory;
-import com.increff.employee.model.Product;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,7 +18,6 @@ public class InventoryService {
 
     @Autowired
     private InventoryDao inventoryDao;
-
     @Autowired
     private ProductDao productDao;
 
@@ -50,7 +47,6 @@ public class InventoryService {
     }
 
 
-
     @Transactional
     public void updateInventory(int id, Inventory inventory) throws ApiException{
         InventoryPojo inventoryPojo = getInventory(id);
@@ -66,7 +62,7 @@ public class InventoryService {
     }
 
 
-   public boolean productExist(int id){
+   private boolean productExist(int id){
         List<ProductPojo> products = productDao.getAllProducts();
         for(ProductPojo product : products){
             if(product.getId() == id){
@@ -76,7 +72,7 @@ public class InventoryService {
         return false;
    }
 
-   public Pair  inventoryExist(int id){
+   private Pair  inventoryExist(int id){
         List<InventoryPojo> inventories = inventoryDao.showInventory();
         for(InventoryPojo inventoryPojo : inventories){
             if(inventoryPojo.getProductId() == id){

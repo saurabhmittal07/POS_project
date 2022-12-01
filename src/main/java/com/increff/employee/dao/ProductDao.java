@@ -38,7 +38,6 @@ public class ProductDao extends AbstractDao{
         productPojo.setBarcode(product.getBarcode());
         productPojo.setBrandCategory(product.getBrandCategory());
         productPojo.setMrp(product.getMrp());
-
         em.persist(productPojo);
     }
 

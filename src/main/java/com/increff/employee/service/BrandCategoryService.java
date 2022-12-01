@@ -22,7 +22,6 @@ public class BrandCategoryService {
         brandCategoryDao.add(brandCategory);
     }
 
-
     public void updateBrand(int id, BrandCategory brandCategory) {
         brandCategory = trimLower(brandCategory);
         brandCategoryDao.updateBrand(id, brandCategory);
@@ -36,10 +35,6 @@ public class BrandCategoryService {
     public List<BrandCategoryPojo> getAllBrands(){
         return brandCategoryDao.getAllBrands();
     }
-    public void deleteBrand(int id){
-            brandCategoryDao.deleteBrand(id);
-    }
-
 
 
     //Trim & lowercase

@@ -5,14 +5,14 @@ function getProductUrl(){
 
 function getList(){
 
-    console.log("Getting  List");
+
 	var url = getProductUrl();
 
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	        console.log(data);
+
 	   		displayList(data);
 	   },
 	   error: handleAjaxError
@@ -23,7 +23,6 @@ function displayList(data){
 
 	var $tbody = $('#order-table').find('tbody');
 
-    console.log(data);
 
 	$tbody.empty();
 	for(var i in data){
@@ -56,7 +55,7 @@ function getOrderDetails(id){
 function displayOrderDetails(data, id){
 	var $tbody = $('#order-detail-table').find('tbody');
 
-        console.log(data);
+
          var totalPrice = 0;
     	$tbody.empty();
     	for(var i in data){

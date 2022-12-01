@@ -56,7 +56,6 @@ function updateEmployee(event){
 
 function getList(){
 
-    console.log("Getting  List");
 	var url = getEmployeeUrl();
 	$.ajax({
 	   url: url,
@@ -114,7 +113,7 @@ function uploadRows(){
 	var url = getEmployeeUrl();
 
 
-    console.log(json);
+
 
 	//Make ajax call
 	$.ajax({
@@ -146,7 +145,7 @@ function displayList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
 
-    console.log(data);
+
 
 	$tbody.empty();
 	for(var i in data){
@@ -162,7 +161,7 @@ function displayList(data){
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
-		console.log(e.category);
+
 
         $tbody.append(row);
 

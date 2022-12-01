@@ -57,7 +57,7 @@ function updateInventory(event){
 
 function getList(){
 
-    console.log("Getting  List");
+
 	var url = getInventoryUrl();
 
 	$.ajax({
@@ -70,19 +70,7 @@ function getList(){
 	});
 }
 
-function deleteInventory(id){
-	var url = getInventoryUrl() + "/" + id;
 
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		getList();
-	   },
-	   error: handleAjaxError
-	});
-}
 
 // FILE UPLOAD METHODS
 var fileData = [];
@@ -117,7 +105,7 @@ function uploadRows(){
 	var url = getInventoryUrl();
 
 
-    console.log(json);
+
 
 	//Make ajax call
 	$.ajax({
@@ -149,7 +137,7 @@ function displayList(data){
 
 	var $tbody = $('#inventory-table').find('tbody');
 
-    console.log(data);
+
 
 	$tbody.empty();
 	for(var i in data){
@@ -163,7 +151,6 @@ function displayList(data){
 		+ '<td>' + e.count + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
-
 
 
         $tbody.append(row);

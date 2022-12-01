@@ -10,7 +10,7 @@ function addBrand(event){
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl();
-    console.log(url);
+
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -31,7 +31,7 @@ function addBrand(event){
 
 function updateBrand(event){
 
-   console.log("UpdateBrandCalled");
+
 	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
@@ -61,7 +61,7 @@ function updateBrand(event){
 
 function getList(){
 
-    console.log("Getting  List");
+
 	var url = getBrandUrl();
 	$.ajax({
 	   url: url,
@@ -73,19 +73,6 @@ function getList(){
 	});
 }
 
-function deleteBrand(id){
-	var url = getBrandUrl() + "/" + id;
-
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		getList();
-	   },
-	   error: handleAjaxError
-	});
-}
 
 // FILE UPLOAD METHODS
 var fileData = [];
@@ -120,7 +107,7 @@ function uploadRows(){
 	var url = getBrandUrl();
 
 
-    console.log(json);
+
 
 	//Make ajax call
 	$.ajax({
@@ -153,13 +140,12 @@ function displayList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
 
-    console.log(data);
+
 
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteBrand(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>'
+		var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
@@ -169,7 +155,7 @@ function displayList(data){
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
-		console.log(e.category);
+
 
         $tbody.append(row);
 

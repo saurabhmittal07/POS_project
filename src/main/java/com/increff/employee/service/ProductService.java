@@ -35,12 +35,11 @@ public class ProductService {
     }
 
     public List<ProductPojo> getAllProducts(){
+
         return productDao.getAllProducts();
     }
 
-    public void deleteProduct(int id){
-        productDao.deleteProduct(id);
-    }
+
 
     public void updateProduct(int id, Product product) throws ApiException{
         product = trimLower(product);

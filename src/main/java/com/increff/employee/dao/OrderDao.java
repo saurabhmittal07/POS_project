@@ -10,7 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 @Repository
 public class OrderDao extends  AbstractDao{
@@ -19,6 +22,7 @@ public class OrderDao extends  AbstractDao{
     private static String select_all = "select p from OrderPojo p";
     private static String select_id = "select p from InventoryPojo p where id=:id";
     private static String select_order_id = "select p from OrderItemPojo p where orderId=:orderId";
+    private static String select_by_date = "select p from OrderPojo p where dateTime >=:startDate AND dateTime <=:endDate";
 
     @PersistenceContext
     private EntityManager em;
@@ -41,6 +45,19 @@ public class OrderDao extends  AbstractDao{
     public List<OrderItemPojo> orderReciept(int id){
         TypedQuery<OrderItemPojo> query = getQuery(select_order_id, OrderItemPojo.class);
         query.setParameter("orderId", id);
+        return query.getResultList();
+    }
+
+    @Transactional
+    public List<OrderPojo> ordersByDate(String startDate, String endDate){
+        TypedQuery<OrderPojo> query = getQuery(select_by_date, OrderPojo.class);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+        ZonedDateTime start = ZonedDateTime.parse(startDate + "T00:00:00.000+05:30[Asia/Calcutta]", formatter);
+        ZonedDateTime end = ZonedDateTime.parse(endDate + "T00:00:00.000+05:30[Asia/Calcutta]", formatter);
+        query.setParameter("startDate", start);
+        query.setParameter("endDate", end);
+
+
         return query.getResultList();
     }
 }

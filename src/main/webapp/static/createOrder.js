@@ -14,6 +14,10 @@ function checkInventory(event){
 	var json = toJson($form);
 	var url = getOrderUrl() + "/inventoryExist";
 
+    // toLowerCase
+    json = JSON.parse(json);
+    json["barcode"] = json["barcode"].trim().toLowerCase();
+    json = JSON.stringify(json);
 
 	$.ajax({
 	   url: url,
@@ -24,6 +28,7 @@ function checkInventory(event){
        },
 	   success: function(response) {
             appendList(json,response);
+
 	   },
 	   error: handleAjaxError
 	});
@@ -33,6 +38,7 @@ function checkInventory(event){
 function appendList(json,data){
 
     json1 = JSON.parse(json);
+
     json1["price"] = JSON.stringify(data);
     json1 = JSON.stringify(json1);
 
@@ -43,6 +49,7 @@ function appendList(json,data){
         if(json2["barcode"] == json3["barcode"]){
             json3["quantity"]  = +json3["quantity"] + +json2["quantity"];
             list[i] = JSON.stringify(json3);
+            localStorage.setItem("mylist" , list);
             displayList();
             return false;
         }
@@ -50,13 +57,14 @@ function appendList(json,data){
 
     list[count] = json1;
     count++;
-    console.log(list);
+
+    localStorage.setItem("mylist" , list);
     displayList();
 }
 
 function createOrder(event){
 
-    console.log(list);
+
     newarr=[]
     for(var i in list){
         newarr.push(JSON.parse(list[i]))
@@ -84,10 +92,6 @@ function updateOrder(event){
     var json = toJson($form);
 	var url = getOrderUrl() + "/updateInventory";
 
-	//Set the values to update
-
-
-	console.log(json);
 
 	$.ajax({
 	   url: url,
@@ -135,9 +139,10 @@ function displayList(){
     totalPrice = 0;
 
 
+    mylist    = localStorage.getItem("mylist");
 
     for(var i in list){
-        console.log(list[i]);
+
         const e = JSON.parse(list[i]);
         j = i;
         j++;
@@ -164,7 +169,7 @@ function displayList(){
 
 
 function displayEditProduct(id){
-    console.log(id);
+
     data = list[id-1];
 	displayProduct(data,id-1);
 }
@@ -172,7 +177,6 @@ function displayEditProduct(id){
 
 
 function displayProduct(data,id){
-     console.log(data);
 	$("#order-edit-form input[name=barcode]").val(JSON.parse(data).barcode);
 	$("#order-edit-form input[name=quantity]").val(JSON.parse(data).quantity);
 	$("#order-edit-form input[name=id]").val(id);
@@ -189,5 +193,5 @@ function init(){
 }
 
 $(document).ready(init);
-
+$(document).ready(displayList);
 
