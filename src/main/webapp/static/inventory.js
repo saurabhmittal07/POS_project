@@ -142,15 +142,18 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		j = +i + 1;
 		var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.productId + '</td>'
-		+ '<td>' + e.count + '</td>'
+		+ '<td>' + j + '</td>'
+		+ '<td>' + e.name + '</td>'
+		+ '<td>' + e.barcode + '</td>'
+		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
+
 
 
         $tbody.append(row);
@@ -167,7 +170,7 @@ function displayEditInventory(id){
 	   		displayInventory(data);
 	   },
 	   error: handleAjaxError
-	});	
+	});
 }
 
 function resetUploadDialog(){
@@ -179,7 +182,7 @@ function resetUploadDialog(){
 	processCount = 0;
 	fileData = [];
 	errorData = [];
-	//Update counts	
+	//Update counts
 	updateUploadDialog();
 }
 
@@ -196,7 +199,7 @@ function updateFileName(){
 }
 
 function displayUploadData(){
- 	resetUploadDialog(); 	
+ 	resetUploadDialog();
 	$('#upload-inventory-modal').modal('toggle');
 }
 

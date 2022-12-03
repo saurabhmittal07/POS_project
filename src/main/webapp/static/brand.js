@@ -21,9 +21,7 @@ function addBrand(event){
 	   success: function(response) {
 	   		getList();
 	   },
-	   error: function(error){
-	        alert("Brand-Category pair already exist ");
-	   }
+	   error: handleAjaxError
 	});
 
 	return false;
@@ -121,11 +119,7 @@ function uploadRows(){
 	   		uploadRows();
 
 	   },
-	   error: function(response){
-	   		row.error="Brand-Category Page already exist";
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
+	   error: handleAjaxError
 	});
 
 }
@@ -145,11 +139,12 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		var j = +i +1;
 		var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + j + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'

@@ -1,6 +1,5 @@
 package com.increff.employee.service;
 
-
 import com.increff.employee.dao.InventoryDao;
 import com.increff.employee.dao.OrderDao;
 import com.increff.employee.dao.OrderItemDao;
@@ -83,8 +82,18 @@ public class OrderService {
     }
 
     @Transactional
+    public void deleteOrderItem(String barcode, String x) throws  ApiException{
+        int quantity = Integer.parseInt(x);
+        System.out.println(quantity);
+        ProductPojo productPojo = productDao.getProductByBarcode(barcode);
+        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
+        inventoryPojo.setCount(inventoryPojo.getCount()+quantity);
+    }
+
+    @Transactional
     public double inventoryExist(OrderItem orderItem) throws ApiException{
 
+        validate(orderItem);
         // Check if barcode exist
         ProductPojo productPojo = productDao.getProductByBarcode(orderItem.getBarcode());
 
@@ -120,14 +129,21 @@ public class OrderService {
 
     @Transactional
     public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException{
+
         ProductPojo productPojo = productDao.getProductByBarcode(updateOrderForm.getBarcode());
         InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
         if(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() < updateOrderForm.getQuantity()){
             throw new ApiException(inventoryPojo.getCount()+ updateOrderForm.getPreQuantity() + " Unit/units available in inventory");
         }
-
         inventoryPojo.setCount(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() - updateOrderForm.getQuantity());
-
+    }
+    private void validate(OrderItem orderItem) throws ApiException{
+        if( orderItem.getBarcode().equals("")){
+            throw new ApiException("Please enter barcode");
+        }
+        if(orderItem.getQuantity() <= 0){
+            throw new ApiException("Quantity should be more than 0");
+        }
     }
 
 }

@@ -49,7 +49,7 @@ function appendList(json,data){
         if(json2["barcode"] == json3["barcode"]){
             json3["quantity"]  = +json3["quantity"] + +json2["quantity"];
             list[i] = JSON.stringify(json3);
-            localStorage.setItem("mylist" , list);
+            localStorage.setItem('mylist', JSON.stringify(list));
             displayList();
             return false;
         }
@@ -58,13 +58,16 @@ function appendList(json,data){
     list[count] = json1;
     count++;
 
-    localStorage.setItem("mylist" , list);
+    localStorage.setItem('mylist', JSON.stringify(list));
     displayList();
 }
 
 function createOrder(event){
 
-
+    if(list.length == 0){
+        alert("There are no items in cart");
+        return false;
+    }
     newarr=[]
     for(var i in list){
         newarr.push(JSON.parse(list[i]))
@@ -79,6 +82,7 @@ function createOrder(event){
            	'Content-Type': 'application/json'
            },
     	   success: function(response) {
+    	        alrert("Order placed!!. You can view details on Order History page");
                 location.replace($("meta[name=baseUrl]").attr("content")+"/site/order");
     	   },
     	   error: handleAjaxError
@@ -92,6 +96,7 @@ function updateOrder(event){
     var json = toJson($form);
 	var url = getOrderUrl() + "/updateInventory";
 
+    console.log("update : " + json)
 
 	$.ajax({
 	   url: url,
@@ -117,19 +122,24 @@ function updateList(data){
     displayList();
 }
 
-function deleteProduct(id){
-	var url = getOrderUrl() + "/" + id;
+function deleteProduct(index){
 
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		getList();
-	   },
-	   error: handleAjaxError
-	});
+    data = JSON.parse(list[index]);
+    var url = getOrderUrl() + "/" + data.barcode + "/" + data.quantity;
+    console.log(url);
+
+    $.ajax({
+    	   url: url,
+    	   type: 'DELETE',
+    	   success: function(data) {
+    	   },
+    	   error: handleAjaxError
+    	});
+
+
+    list.splice(index, 1);
+    displayList();
 }
-
 
 
 //UI DISPLAY METHODS
@@ -141,37 +151,40 @@ function displayList(){
 
     mylist    = localStorage.getItem("mylist");
 
+    var serial = 1
+
     for(var i in list){
 
         const e = JSON.parse(list[i]);
         j = i;
+
+          var buttonHtml = ' <button onclick="displayEditProduct(' + j + ')">Edit</button>' ;
+           buttonHtml += ' <button onclick="deleteProduct(' + j + ')">Delete</button>';
+
         j++;
-          var buttonHtml = '<button onclick="deleteProduct(' + j+ ')">delete</button>';
-          buttonHtml += ' <button onclick="displayEditProduct(' + j + ')">Edit</button>';
-
-
          var row = '<tr>'
-            + '<td>' + count + '</td>'
+            + '<td>' + serial + '</td>'
             + '<td>' + e["barcode"]+ '</td>'
             + '<td>' + e["quantity"] + '</td>'
-            + '<td>' + e["price"] + '</td>'
-            + '<td>' + e["quantity"]*e["price"] + '</td>'
+            + '<td>' + e["price"] + ' Rs</td>'
+            + '<td>' + e["quantity"]*e["price"] + ' Rs</td>'
             + '<td>' + buttonHtml + '</td>'
             + '</tr>';
 
         $tbody.append(row);
-
+        serial = +serial + 1;
         totalPrice += e["quantity"]*e["price"];
-         var second = document.getElementById("total-amount");
-        second.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+
     }
+     var second = document.getElementById("total-amount");
+     second.innerHTML = "Total Amount : " + totalPrice  +" Rs";
 }
 
 
 function displayEditProduct(id){
 
-    data = list[id-1];
-	displayProduct(data,id-1);
+    data = list[id];
+	displayProduct(data,id);
 }
 
 
@@ -186,6 +199,7 @@ function displayProduct(data,id){
 
 //INITIALIZATION CODE
 function init(){
+    localStorage.setItem("mylist" ,"");
     $('#check-inventory').click(checkInventory);
     $('#create-order').click(createOrder);
     $('#update-order-item').click(updateOrder);

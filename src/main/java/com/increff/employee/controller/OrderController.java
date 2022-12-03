@@ -52,4 +52,10 @@ public class OrderController {
     public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{
             orderService.updateInventory(updateOrderForm);
     }
+    @ApiOperation(value = "Delete order item from current order")
+    @RequestMapping(path = "/api/order/{barcode}/{quantity}", method = RequestMethod.DELETE)
+    public void deleteOrderItem(@PathVariable String barcode,@PathVariable String quantity) throws ApiException{
+        orderService.deleteOrderItem(barcode, quantity);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.increff.employee.controller;
 import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryUI;
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
@@ -28,7 +29,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Show Inventory" )
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
-    public List<InventoryPojo> getAllProducts(){
+    public List<InventoryUI> getAllProducts(){
         return inventoryService.showInventory();
     }
 

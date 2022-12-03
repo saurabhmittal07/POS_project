@@ -1,5 +1,6 @@
 package com.increff.employee.controller;
 import com.increff.employee.model.Product;
+import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.ProductService;
@@ -20,13 +21,13 @@ public class ProductController {
 
     @ApiOperation(value = "Adds Product")
     @RequestMapping(path = "/api/product", method = RequestMethod.POST)
-    public void addProduct(@RequestBody Product product) throws ApiException {
+    public void addProduct(@RequestBody ProductForm product) throws ApiException {
         productService.add(product);
     }
 
     @ApiOperation(value = "Show All Product")
     @RequestMapping(path = "/api/product", method = RequestMethod.GET)
-    public List<ProductPojo> getAllProducts(){
+    public List<ProductForm> getAllProducts(){
         return productService.getAllProducts();
     }
 
@@ -34,13 +35,13 @@ public class ProductController {
 
     @ApiOperation(value = "Updates a product detail")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody Product product) throws ApiException {
+    public void update(@PathVariable int id, @RequestBody ProductForm product) throws ApiException {
         productService.updateProduct(id, product);
     }
 
     @ApiOperation(value = "Gets an Product by ID")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
-    public ProductPojo getProduct(@PathVariable int id) throws ApiException {
+    public ProductForm getProduct(@PathVariable int id) throws ApiException {
         return productService.getProduct(id);
     }
 

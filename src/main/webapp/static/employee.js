@@ -68,7 +68,7 @@ function getList(){
 }
 
 function deleteEmployee(id){
-	var url = getEmployeeUrl() + "/" + id;
+	var url = getEmployeeUrl() + "/" + ;
 	alert(url);
 
 	$.ajax({

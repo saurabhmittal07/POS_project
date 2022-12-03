@@ -51,7 +51,6 @@ public class ReportService {
                 inventoryReports.set(index, temp);
                 continue;
             }
-
             map.put(brandCategoryPojo.getId(), i);
             InventoryReport inventoryReport = new InventoryReport();
             inventoryReport.setBrand(brandCategoryPojo.getBrand());

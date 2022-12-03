@@ -23,15 +23,21 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputBrandCategory" class="col-sm-4 col-form-label">BrandCategory ID</label>
+                    <label for="inputBrand" class="col-sm-4 col-form-label">Brand</label>
                     <div class="col-sm-10">
-                        <input type='number' class="form-control" name="brandCategory" id="inputBrandCategory" placeholder="Enter Brand id">
+                        <input type='text' class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCategory" class="col-sm-4 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                        <input type='text' class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputBarcode" class="col-sm-4 col-form-label">Barcode</label>
                     <div class="col-sm-10">
-                        <input type="text"  class="form-control" name="barcode" id="inputBarCode" placeholder="Enter Barcode id">
+                        <input type="text"  class="form-control" name="barcode" id="inputBarCode" placeholder="Enter Barcode">
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,9 +66,10 @@
             <table class="table table-striped" id="product-table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">S.No</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Brand-Category</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Barcode</th>
                     <th scope="col">MRP</th>
                     <th scope="col">Actions</th>
@@ -99,7 +106,7 @@
         </div>
     </div>
 
-    <!-- Employee Edit Modal -->
+    <!-- Product Edit Modal -->
     <div class="modal" tabindex="-1" role="dialog" id="edit-product-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -114,13 +121,19 @@
                         <div class="form-group">
                             <label for="inputName" class="col-sm-4 col-form-label">Name</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Product Name">
+                                <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter  Name">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputBrandCategory" class="col-sm-4 col-form-label">Brand ID</label>
+                            <label for="inputBrand" class="col-sm-4 col-form-label">Brand</label>
                             <div class="col-sm-10">
-                                <input type='number' class="form-control" name="brandCategory" id="inputBrandCategory" placeholder="Enter Brand id">
+                                <input type='text' class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCategory" class="col-sm-4 col-form-label">Category</label>
+                            <div class="col-sm-10">
+                                <input type='text' class="form-control" name="category" id="inputBrandCategory" placeholder="Enter Category">
                             </div>
                         </div>
                         <div class="form-group">

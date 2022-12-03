@@ -11,6 +11,7 @@ function addProduct(event){
 	var json = toJson($form);
 	var url = getProductUrl();
 
+    console.log(json);
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -37,7 +38,7 @@ function updateProduct(event){
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
 
-
+    console.log(json);
 	$.ajax({
 	   url: url,
 	   type: 'PUT',
@@ -65,6 +66,7 @@ function getList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		displayList(data);
+	   		console.log(data);
 	   },
 	   error: handleAjaxError
 	});
@@ -142,16 +144,17 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-
+        var j = +i +1;
 		var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>';
 
 
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + j + '</td>'
 		+ '<td>' + e.name + '</td>'
-		+ '<td>' + e.brandCategory + '</td>'
+		+ '<td>' + e.brand + '</td>'
+		+ '<td>' + e.category + '</td>'
 		+ '<td>'  + e.barcode + '</td>'
-		+ '<td>' + e.mrp + '</td>'
+		+ '<td> ' + e.mrp + ' Rs</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 
@@ -206,7 +209,8 @@ function displayUploadData(){
 function displayProduct(data){
 
 	$("#product-edit-form input[name=name]").val(data.name);
-	$("#product-edit-form input[name=brandCategory]").val(data.brandCategory);
+	$("#product-edit-form input[name=brand]").val(data.brand);
+	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$("#product-edit-form input[name=id]").val(data.id);

@@ -3,12 +3,15 @@ package com.increff.employee.service;
 import com.increff.employee.dao.InventoryDao;
 import com.increff.employee.dao.ProductDao;
 import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryUI;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
+import io.swagger.models.auth.In;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.util.*;
 
@@ -26,6 +29,10 @@ public class InventoryService {
     public void add(Inventory inventory) throws ApiException{
 
         // Check if productId exist
+
+        if(inventory.getCount() <=0 ){
+            throw new ApiException("Quantity should be a positive number");
+        }
         if(!productExist(inventory.getProductId())){
             throw new ApiException("Product with id : " + inventory.getProductId() + " does not exist");
         }
@@ -42,13 +49,28 @@ public class InventoryService {
 
     }
 
-    public List<InventoryPojo> showInventory(){
-        return inventoryDao.showInventory();
+    public List<InventoryUI> showInventory(){
+        List<InventoryPojo> inventoryPojos =  inventoryDao.showInventory();
+        List<InventoryUI> inventories = new ArrayList<>();
+        for(InventoryPojo inventoryPojo : inventoryPojos){
+            InventoryUI inventoryUI = new InventoryUI();
+            inventoryUI.setQuantity(inventoryPojo.getCount());
+            ProductPojo productPojo = productDao.getProduct(inventoryPojo.getProductId());
+            inventoryUI.setName(productPojo.getName());
+            inventoryUI.setBarcode(productPojo.getBarcode());
+            inventoryUI.setId(inventoryPojo.getId());
+
+            inventories.add(inventoryUI);
+        }
+        return inventories;
     }
 
 
     @Transactional
     public void updateInventory(int id, Inventory inventory) throws ApiException{
+        if(inventory.getCount() <=0 ){
+            throw new ApiException("Quantity should be a positive number");
+        }
         InventoryPojo inventoryPojo = getInventory(id);
         inventoryPojo.setCount(inventory.getCount());
 

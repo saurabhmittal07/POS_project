@@ -80,6 +80,7 @@ function displayOrderDetails(data, id){
 }
 
 function init(){
+
     $('#add-Product').click(addProduct);
     $('#update-Product').click(updateProduct);
     $('#refresh-data').click(getList);
