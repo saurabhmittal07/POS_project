@@ -9,30 +9,43 @@ var list = [];
 var totalPrice = 0;
 //BUTTON ACTIONS
 function checkInventory(event){
+
+
 	//Set the values to update
 	var $form = $("#order-form");
 	var json = toJson($form);
-	var url = getOrderUrl() + "/inventoryExist";
 
     // toLowerCase
     json = JSON.parse(json);
     json["barcode"] = json["barcode"].trim().toLowerCase();
+
+    // check already present inventory
+
+    var curCount = 0;
+    for(var i =0;i<list.length;i++){
+        a = JSON.parse(list[i]);
+
+        if(a["barcode"] === json["barcode"]){
+            curCount = +curCount + +a["quantity"];
+        }
+    }
+    console.log("curCount : " + curCount);
+
+    var totalReq = +curCount+ +json["quantity"];
+
+    var url = getOrderUrl() + "/inventoryExist" + "/"+ json["barcode"] + "/" + totalReq;
     json = JSON.stringify(json);
 
+    console.log(url);
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   		appendList(json,data);
+    	   },
+    	   error: handleAjaxError
+    	});
 
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-            appendList(json,response);
-
-	   },
-	   error: handleAjaxError
-	});
 
 	return false;
 }
@@ -82,7 +95,7 @@ function createOrder(event){
            	'Content-Type': 'application/json'
            },
     	   success: function(response) {
-    	        alrert("Order placed!!. You can view details on Order History page");
+    	        alert("Order placed!!. You can view details on Order History page");
                 location.replace($("meta[name=baseUrl]").attr("content")+"/site/order");
     	   },
     	   error: handleAjaxError
@@ -107,7 +120,6 @@ function updateOrder(event){
        },
 	   success: function(response) {
 	        updateList(json);
-
 	   },
 	   error: handleAjaxError
 	});
@@ -123,20 +135,6 @@ function updateList(data){
 }
 
 function deleteProduct(index){
-
-    data = JSON.parse(list[index]);
-    var url = getOrderUrl() + "/" + data.barcode + "/" + data.quantity;
-    console.log(url);
-
-    $.ajax({
-    	   url: url,
-    	   type: 'DELETE',
-    	   success: function(data) {
-    	   },
-    	   error: handleAjaxError
-    	});
-
-
     list.splice(index, 1);
     displayList();
 }

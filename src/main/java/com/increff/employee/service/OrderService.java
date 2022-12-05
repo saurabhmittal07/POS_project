@@ -47,13 +47,16 @@ public class OrderService {
 
         for(OrderItem orderItem : orderItems){
             // Get Product
-           ProductPojo product = productDao.getProductByBarcode(orderItem.getBarcode());
+            ProductPojo product = productDao.getProductByBarcode(orderItem.getBarcode());
 
             OrderItemPojo orderItemPojo = new OrderItemPojo();
             orderItemPojo.setOrderId(orderId);
             orderItemPojo.setQuantity(orderItem.getQuantity());
             orderItemPojo.setProductId(product.getId());
             orderItemPojo.setPrice(product.getMrp());
+
+            InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(product.getId());
+            inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
             orderItemDao.addOrderItem(orderItemPojo);
         }
 
@@ -81,36 +84,28 @@ public class OrderService {
         return orderDao.orderReciept(id);
     }
 
-    @Transactional
-    public void deleteOrderItem(String barcode, String x) throws  ApiException{
-        int quantity = Integer.parseInt(x);
-        System.out.println(quantity);
-        ProductPojo productPojo = productDao.getProductByBarcode(barcode);
-        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
-        inventoryPojo.setCount(inventoryPojo.getCount()+quantity);
-    }
 
-    @Transactional
-    public double inventoryExist(OrderItem orderItem) throws ApiException{
 
-        validate(orderItem);
+    public double inventoryExist(String barcode , String req) throws ApiException{
+
+        int cur = Integer.parseInt(req);
+        validate(barcode, cur);
         // Check if barcode exist
-        ProductPojo productPojo = productDao.getProductByBarcode(orderItem.getBarcode());
+        ProductPojo productPojo = productDao.getProductByBarcode(barcode);
 
         if(productPojo == null){
-            throw new ApiException("Product with barcode:" + orderItem.getBarcode() +" does not exist");
+            throw new ApiException("Product with barcode:" + barcode +" does not exist");
         }
         // Check if required quantity available
         InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
 
         if(inventoryPojo == null){
             throw new ApiException(0 + " Unit/units available in inventory");
-        } else if(inventoryPojo.getCount() < orderItem.getQuantity()){
+        } else if(inventoryPojo.getCount() < cur){
             throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
         }
 
         // Reduce invenotory
-        inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
 
         return  productPojo.getMrp();
     }
@@ -128,22 +123,22 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException{
+    public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException {
 
         ProductPojo productPojo = productDao.getProductByBarcode(updateOrderForm.getBarcode());
         InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
-        if(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() < updateOrderForm.getQuantity()){
-            throw new ApiException(inventoryPojo.getCount()+ updateOrderForm.getPreQuantity() + " Unit/units available in inventory");
+        if (inventoryPojo.getCount() < updateOrderForm.getQuantity()) {
+            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
         }
-        inventoryPojo.setCount(inventoryPojo.getCount() + updateOrderForm.getPreQuantity() - updateOrderForm.getQuantity());
+
     }
-    private void validate(OrderItem orderItem) throws ApiException{
-        if( orderItem.getBarcode().equals("")){
+
+    private void validate(String barcode , int quantity) throws ApiException{
+        if( barcode.equals("")){
             throw new ApiException("Please enter barcode");
         }
-        if(orderItem.getQuantity() <= 0){
+        if(quantity <= 0){
             throw new ApiException("Quantity should be more than 0");
         }
     }
-
 }

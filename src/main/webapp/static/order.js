@@ -12,7 +12,6 @@ function getList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-
 	   		displayList(data);
 	   },
 	   error: handleAjaxError
@@ -45,7 +44,6 @@ function getOrderDetails(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-
 	   		displayOrderDetails(data,id);
 	   },
 	   error: handleAjaxError
@@ -76,6 +74,8 @@ function displayOrderDetails(data, id){
         orderId.innerHTML = "Order Id: " + id;
         var price = document.getElementById("total-amount");
         price.innerHTML = "Total Amount : " + totalPrice  +" Ruppees";
+
+
 	$('#view-orderDetails-modal').modal('toggle');
 }
 

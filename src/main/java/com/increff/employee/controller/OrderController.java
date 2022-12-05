@@ -35,11 +35,7 @@ public class OrderController {
         return orderService.showOrders();
     }
 
-    @ApiOperation(value = "Check if invenotry exist or not")
-    @RequestMapping(path = "/api/order/inventoryExist", method = RequestMethod.POST)
-    public double inventoryExist(@RequestBody OrderItem orderItem) throws ApiException{
-        return orderService.inventoryExist(orderItem);
-    }
+
 
     @ApiOperation(value = "Receipt of order of given  id")
     @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
@@ -52,10 +48,13 @@ public class OrderController {
     public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{
             orderService.updateInventory(updateOrderForm);
     }
-    @ApiOperation(value = "Delete order item from current order")
-    @RequestMapping(path = "/api/order/{barcode}/{quantity}", method = RequestMethod.DELETE)
-    public void deleteOrderItem(@PathVariable String barcode,@PathVariable String quantity) throws ApiException{
-        orderService.deleteOrderItem(barcode, quantity);
+
+
+    @ApiOperation(value = "Check if required invenotry available or not")
+    @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{cur}", method = RequestMethod.GET)
+    public double inventoryExist(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
+        return orderService.inventoryExist(barcode , cur);
     }
+
 
 }

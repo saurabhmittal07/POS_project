@@ -1,5 +1,6 @@
 package com.increff.employee.dao;
 
+
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 
@@ -18,9 +19,9 @@ import java.util.Stack;
 @Repository
 public class OrderDao extends  AbstractDao{
 
-    private static String delete_id = "delete from InventoryPojo p where id=:id";
+    private static String delete_id = "delete from OrderPojo p where id=:id";
     private static String select_all = "select p from OrderPojo p";
-    private static String select_id = "select p from InventoryPojo p where id=:id";
+    private static String select_id = "select p from OrderPojo p where id=:id";
     private static String select_order_id = "select p from OrderItemPojo p where orderId=:orderId";
     private static String select_by_date = "select p from OrderPojo p where dateTime >=:startDate AND dateTime <=:endDate";
 
@@ -34,6 +35,12 @@ public class OrderDao extends  AbstractDao{
          em.persist(orderPojo);
     }
 
+    @Transactional
+    public OrderPojo getOrder(int id){
+        TypedQuery<OrderPojo > query = getQuery(select_id, OrderPojo .class);
+        query.setParameter("id", id);
+        return getSingle(query);
+    }
 
     @Transactional
     public List<OrderPojo> showOrders(){
