@@ -19,6 +19,7 @@ function checkInventory(event){
     json["barcode"] = json["barcode"].trim().toLowerCase();
     json = JSON.stringify(json);
 
+
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -49,7 +50,6 @@ function appendList(json,data){
         if(json2["barcode"] == json3["barcode"]){
             json3["quantity"]  = +json3["quantity"] + +json2["quantity"];
             list[i] = JSON.stringify(json3);
-            localStorage.setItem('mylist', JSON.stringify(list));
             displayList();
             return false;
         }

@@ -2,15 +2,15 @@ package com.increff.employee.model;
 
 public class Inventory {
 
-    private int productId;
+    private String barcode;
     private int count;
 
-    public int getProductId() {
-        return productId;
+    public String getBarcode() {
+        return barcode;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public int getCount() {

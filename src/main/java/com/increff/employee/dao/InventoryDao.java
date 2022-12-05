@@ -25,10 +25,11 @@ public class InventoryDao extends AbstractDao {
     private EntityManager em;
 
     @Transactional
-    public void add(Inventory inventory) throws ApiException {
+    public void add(int productId, int count) throws ApiException {
         InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setCount(inventory.getCount());
-        inventoryPojo.setProductId(inventory.getProductId());
+        inventoryPojo.setCount(count);
+        inventoryPojo.setProductId(productId);
+        System.out.println(count);
         em.persist(inventoryPojo);
     }
 

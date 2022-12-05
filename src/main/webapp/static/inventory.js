@@ -11,7 +11,7 @@ function addInventory(event){
 	var json = toJson($form);
 	var url = getInventoryUrl();
 
-
+    console.log(json);
 	$.ajax({
 	   url: url,
 	   type: 'POST',

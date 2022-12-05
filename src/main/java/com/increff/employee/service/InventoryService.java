@@ -29,18 +29,19 @@ public class InventoryService {
     public void add(Inventory inventory) throws ApiException{
 
         // Check if productId exist
-
         if(inventory.getCount() <=0 ){
             throw new ApiException("Quantity should be a positive number");
         }
-        if(!productExist(inventory.getProductId())){
-            throw new ApiException("Product with id : " + inventory.getProductId() + " does not exist");
+
+        ProductPojo productPojo = productDao.getProductByBarcode(inventory.getBarcode());
+        if(productPojo == null){
+            throw new ApiException("Product with barcode : " + inventory.getBarcode() + " does not exist");
         }
 
         // Check count of that product in inventory
-        Pair<Integer, Integer> previousCount = inventoryExist(inventory.getProductId());
+        Pair<Integer, Integer> previousCount = inventoryExist(productPojo.getId());
         if(previousCount.getKey() == 0 ){
-            inventoryDao.add(inventory);
+            inventoryDao.add(productPojo.getId(), inventory.getCount());
             return ;
         }
 
@@ -84,15 +85,7 @@ public class InventoryService {
     }
 
 
-   private boolean productExist(int id){
-        List<ProductPojo> products = productDao.getAllProducts();
-        for(ProductPojo product : products){
-            if(product.getId() == id){
-                return true;
-            }
-        }
-        return false;
-   }
+
 
    private Pair  inventoryExist(int id){
         List<InventoryPojo> inventories = inventoryDao.showInventory();
