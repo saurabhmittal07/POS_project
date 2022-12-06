@@ -117,9 +117,12 @@ function uploadRows(){
        },
 	   success: function(response) {
 	   		uploadRows();
-
 	   },
-	   error: handleAjaxError
+	   error: function(response){
+	        row.error=response.responseText;
+	        errorData.push(row);
+	        uploadRows();
+	   }
 	});
 
 }

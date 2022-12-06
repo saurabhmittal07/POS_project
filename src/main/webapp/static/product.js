@@ -108,7 +108,7 @@ function uploadRows(){
 
 
 
-
+    console.log(json);
 	//Make ajax call
 	$.ajax({
 	   url: url,

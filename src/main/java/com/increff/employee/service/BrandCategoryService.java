@@ -7,6 +7,7 @@ import com.increff.employee.pojo.BrandCategoryPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -15,18 +16,15 @@ public class BrandCategoryService {
     @Autowired
     private BrandCategoryDao brandCategoryDao;
 
-    public void add(BrandCategory brandCategory) throws ApiException{
+    public BrandCategoryPojo add(BrandCategory brandCategory) throws ApiException{
 
         // Trim & lowerCase
         brandCategory = trimLower(brandCategory);
-        if(validate(brandCategory)){
-
-        }
-        
-        
-        brandCategoryDao.add(brandCategory);
+        validate(brandCategory);
+        return brandCategoryDao.add(brandCategory);
     }
 
+    @Transactional
     public void updateBrand(int id, BrandCategory brandCategory) throws ApiException{
         brandCategory = trimLower(brandCategory);
 
@@ -36,7 +34,8 @@ public class BrandCategoryService {
             return;
         }
         validate(brandCategory);
-        brandCategoryDao.updateBrand(id, brandCategory);
+        brandCategoryPojo.setCategory(brandCategory.getCategory());
+        brandCategoryPojo.setBrand(brandCategory.getBrand());
     }
 
     public BrandCategoryPojo getBrand(int id){
@@ -57,7 +56,7 @@ public class BrandCategoryService {
     }
 
 
-    boolean validate(BrandCategory brandCategory) throws ApiException{
+    void validate(BrandCategory brandCategory) throws ApiException{
         if(brandCategory.getBrand().equals("") || brandCategory.getCategory().equals("")){
             throw new ApiException("Brand or Category can not be empty");
         }
@@ -66,8 +65,6 @@ public class BrandCategoryService {
         if(brandCategoryPojo != null){
             throw new ApiException("Brand - Category pair already exists");
         }
-        
-        return true;
     }
 
 

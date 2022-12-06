@@ -40,6 +40,7 @@ public class OrderService {
 
     @Transactional
     public void createOrder(ZonedDateTime zonedDateTime, List<OrderItem> orderItems){
+//        OrderPojo orderPojo = new OrderPojo()
         orderDao.createOrder(zonedDateTime);
 
          // Get Order Id;
@@ -104,8 +105,6 @@ public class OrderService {
         } else if(inventoryPojo.getCount() < cur){
             throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
         }
-
-        // Reduce invenotory
 
         return  productPojo.getMrp();
     }

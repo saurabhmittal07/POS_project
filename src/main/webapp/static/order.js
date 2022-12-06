@@ -26,7 +26,8 @@ function displayList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="getOrderDetails(' + e.id + ')">View Details</button>';
+//		var buttonHtml = '<button onclick="getOrderDetails(' + e.id + ')">View Details</button>';
+        var buttonHtml = '<button onclick="downloadReceipt(' + e.id + ')">Download Receipt</button>';
 
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
@@ -37,6 +38,20 @@ function displayList(data){
         $tbody.append(row);
 	}
 }
+
+function downloadReceipt(id){
+    var url = getProductUrl() + "/" + "downloadInvoice/" +  id;
+    console.log(url);
+        $.ajax({
+           url: url,
+           type: 'GET',
+           success: function(data) {
+
+           },
+           error: handleAjaxError
+        });
+}
+
 
 function getOrderDetails(id){
 	var url = getProductUrl() + "/" + id;

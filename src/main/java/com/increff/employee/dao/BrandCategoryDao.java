@@ -18,11 +18,9 @@ import java.util.List;
 public class BrandCategoryDao extends AbstractDao{
 
 
-    private static String delete_id = "delete from BrandCategoryPojo p where id=:id";
+
     private static String select_all = "select p from BrandCategoryPojo p";
     private static String select_id = "select p from BrandCategoryPojo p where id=:id";
-    private static String update_id = "update BrandCategoryPojo set brand=:brand, category=:category where id=:id";
-
     private static String select_by_name = "select p from BrandCategoryPojo p where brand=:brand AND category=:category";
 
 
@@ -30,12 +28,13 @@ public class BrandCategoryDao extends AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public void add(BrandCategory p)  {
+    public BrandCategoryPojo add(BrandCategory p)  {
 
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand(p.getBrand());
         brandCategoryPojo.setCategory(p.getCategory());
-        em.persist(brandCategoryPojo);
+        em().persist(brandCategoryPojo);
+        return brandCategoryPojo;
     }
 
     @Transactional
@@ -51,15 +50,6 @@ public class BrandCategoryDao extends AbstractDao{
         return getSingle(query);
     }
 
-
-    @Transactional
-    public void updateBrand(int id, BrandCategory brandCategory){
-        Query query = em.createQuery(update_id);
-        query.setParameter("id", id);
-        query.setParameter("brand", brandCategory.getBrand());
-        query.setParameter("category", brandCategory.getCategory());
-        query.executeUpdate();
-    }
 
     @Transactional
     public BrandCategoryPojo getBrandByName(String brand, String category){

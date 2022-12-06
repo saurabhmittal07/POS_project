@@ -54,9 +54,9 @@ public class InvoiceService {
         File pdfFile = new File("src", invoice);
         convertToPDF(oItem, xsltFile, pdfFile, xml);
         HttpServletResponse response = null;
-        File file=new File("src/main/resources/Invoices/invoice"+orderId+".pdf");
+        File file=new File("src/main/resources/Invoices/invoice/"+orderId+".pdf");
         if (file.exists()) {
-            response.setContentType("application/pdf");
+            //response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
             response.setContentLength((int) file.length());
             InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()));
