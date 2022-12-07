@@ -2,6 +2,7 @@ package com.increff.employee.controller;
 
 import com.increff.employee.dto.ProductDto;
 import com.increff.employee.model.Product;
+import com.increff.employee.model.ProductData;
 import com.increff.employee.model.ProductForm;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.ProductService;
@@ -24,17 +25,16 @@ public class ProductController {
     @ApiOperation(value = "Adds Product")
     @RequestMapping(path = "/api/product", method = RequestMethod.POST)
     public void addProduct(@RequestBody ProductForm product) throws ApiException {
-        productDto.add(product);
+        productDto.addProduct(product);
     }
 
     @ApiOperation(value = "Show All Product")
     @RequestMapping(path = "/api/product", method = RequestMethod.GET)
-    public List<ProductForm> getAllProducts(){
+    public List<ProductData> getAllProducts(){
         return productDto.getAllProducts();
     }
 
-
-
+    
     @ApiOperation(value = "Updates a product detail")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody ProductForm product) throws ApiException {

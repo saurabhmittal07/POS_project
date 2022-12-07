@@ -163,11 +163,13 @@ function displayList(data){
 
 function displayEditInventory(id){
 	var url = getInventoryUrl() + "/" + id;
+
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
 	   		displayInventory(data);
+	   		
 	   },
 	   error: handleAjaxError
 	});
@@ -204,7 +206,7 @@ function displayUploadData(){
 }
 
 function displayInventory(data){
-	$("#inventory-edit-form input[name=productId]").val(data.productId);
+	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
 	$("#inventory-edit-form input[name=count]").val(data.count);
 	$("#inventory-edit-form input[name=id]").val(data.id);
 	$('#edit-inventory-modal').modal('toggle');

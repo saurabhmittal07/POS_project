@@ -2,6 +2,7 @@ package com.increff.employee.dto;
 
 import com.increff.employee.dao.ProductDao;
 import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryData;
 import com.increff.employee.model.InventoryUI;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
@@ -21,12 +22,10 @@ public class InventoryDto {
     @Autowired
     private InventoryService inventoryService;
     @Autowired
-    private ProductDao productDao;
-    @Autowired
     private ProductService productService;
 
 
-    public void add(Inventory inventory) throws ApiException {
+    public void addInventory(Inventory inventory) throws ApiException {
         TrimLower.trimLower(inventory);
         ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
 
@@ -38,7 +37,7 @@ public class InventoryDto {
         inventoryPojo.setProductId(productPojo.getId());
         inventoryPojo.setCount(inventory.getCount());
 
-        inventoryService.addProduct(inventoryPojo);
+        inventoryService.addInventory(inventoryPojo);
     }
 
     public List<InventoryUI> showInventory(){
@@ -47,7 +46,7 @@ public class InventoryDto {
         for(InventoryPojo inventoryPojo : inventoryPojos){
             InventoryUI inventoryUI = new InventoryUI();
             inventoryUI.setQuantity(inventoryPojo.getCount());
-            ProductPojo productPojo = productDao.getProduct(inventoryPojo.getProductId());
+            ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
             inventoryUI.setName(productPojo.getName());
             inventoryUI.setBarcode(productPojo.getBarcode());
             inventoryUI.setId(inventoryPojo.getId());
@@ -59,12 +58,24 @@ public class InventoryDto {
 
 
     public void updateInventory(int id,  Inventory inventory) throws ApiException {
-        inventoryService.updateInventory(id, inventory);
+        TrimLower.trimLower(inventory);
+        ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
+
+        InventoryPojo inventoryPojo = new InventoryPojo();
+        inventoryPojo.setCount(inventory.getCount());
+        inventoryPojo.setProductId(productPojo.getId());
+
+        inventoryService.updateInventory(id, inventoryPojo);
     }
 
-    public InventoryPojo getInventory(int id) throws ApiException {
-        return inventoryService.getInventory(id);
+    public InventoryData getInventory(int id) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryService.getInventory(id);
+        InventoryData inventoryData = new InventoryData();
+        inventoryData.setId(inventoryPojo.getId());
+        inventoryData.setCount(inventoryPojo.getCount());
+        ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
+        inventoryData.setBarcode(productPojo.getBarcode());
+        return inventoryData;
     }
-
 
 }

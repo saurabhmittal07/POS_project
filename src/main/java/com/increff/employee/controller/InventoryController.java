@@ -1,12 +1,9 @@
 package com.increff.employee.controller;
 import com.increff.employee.dto.InventoryDto;
 import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryData;
 import com.increff.employee.model.InventoryUI;
-import com.increff.employee.model.Product;
-import com.increff.employee.pojo.InventoryPojo;
-import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
-import com.increff.employee.service.InventoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +21,8 @@ public class InventoryController {
 
     @ApiOperation(value = "Adds a product to Inventory")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
-    public void addProduct(@RequestBody Inventory inventory) throws ApiException {
-        inventoryDto.add(inventory);
+    public void addInventory(@RequestBody Inventory inventory) throws ApiException {
+        inventoryDto.addInventory(inventory);
     }
 
     @ApiOperation(value = "Show Inventory" )
@@ -43,8 +40,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
-    public InventoryPojo getProduct(@PathVariable int id) throws ApiException {
+    public InventoryData getProduct(@PathVariable int id) throws ApiException {
         return inventoryDto.getInventory(id);
     }
-
 }

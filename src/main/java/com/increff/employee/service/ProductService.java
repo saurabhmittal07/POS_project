@@ -20,8 +20,8 @@ public class ProductService {
     private BrandCategoryDao brandCategoryDao;
 
 
-    public ProductPojo add(ProductPojo product) throws ApiException{
-        return productDao.add(product);
+    public ProductPojo addProduct(ProductPojo product) throws ApiException{
+        return productDao.addProduct(product);
     }
 
     public List<ProductPojo> getAllProducts(){

@@ -1,5 +1,6 @@
 package com.increff.employee.dto;
 
+import com.increff.employee.model.ProductData;
 import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
@@ -22,7 +23,7 @@ public class ProductDto {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
-    public void add( ProductForm product) throws ApiException {
+    public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
         valid(product);
         ProductPojo productPojo = new ProductPojo();
@@ -35,26 +36,26 @@ public class ProductDto {
         productPojo.setBrandCategory(brandCategoryPojo.getId());
         productPojo.setName(product.getName());
         productPojo.setMrp(product.getMrp());
-        productService.add(productPojo);
+        productService.addProduct(productPojo);
     }
 
-    public List<ProductForm> getAllProducts(){
+    public List<ProductData> getAllProducts(){
         List<ProductPojo>  productPojos = productService.getAllProducts();
-        List<ProductForm> productForms = new ArrayList<>();
+        List<ProductData> productDatas = new ArrayList<>();
         for(ProductPojo productPojo : productPojos){
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
-            ProductForm productForm = new ProductForm();
-            productForm.setName(productPojo.getName());
-            productForm.setBrand(brandCategoryPojo.getBrand());
-            productForm.setBarcode(productPojo.getBarcode());
-            productForm.setCategory(brandCategoryPojo.getCategory());
-            productForm.setMrp(productPojo.getMrp());
-            productForm.setId(productPojo.getId());
+            ProductData productData = new ProductData();
+            productData.setName(productPojo.getName());
+            productData.setBrand(brandCategoryPojo.getBrand());
+            productData.setBarcode(productPojo.getBarcode());
+            productData.setCategory(brandCategoryPojo.getCategory());
+            productData.setMrp(productPojo.getMrp());
+            productData.setId(productPojo.getId());
 
-            productForms.add(productForm);
+            productDatas.add(productData);
         }
 
-        return productForms;
+        return productDatas;
     }
 
     

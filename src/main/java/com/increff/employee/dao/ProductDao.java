@@ -32,7 +32,7 @@ public class ProductDao extends AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public ProductPojo add(ProductPojo productPojo) throws ApiException {
+    public ProductPojo addProduct(ProductPojo productPojo) throws ApiException {
         em.persist(productPojo);
         return productPojo;
     }
