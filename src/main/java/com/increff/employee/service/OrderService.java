@@ -11,6 +11,7 @@ import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductPojo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,14 +41,19 @@ public class OrderService {
 
     @Transactional
     public void createOrder(ZonedDateTime zonedDateTime, List<OrderItem> orderItems){
-//        OrderPojo orderPojo = new OrderPojo()
-        orderDao.createOrder(zonedDateTime);
+
+        //Create Order
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setDateTime(zonedDateTime);
+        orderDao.createOrder(orderPojo);
 
          // Get Order Id;
-        int orderId = getOrderId();
-
+        int orderId = orderPojo.getId();
+        System.out.println(orderId);
         for(OrderItem orderItem : orderItems){
             // Get Product
+
+            trimLower(orderItem);
             ProductPojo product = productDao.getProductByBarcode(orderItem.getBarcode());
 
             OrderItemPojo orderItemPojo = new OrderItemPojo();
@@ -87,7 +93,7 @@ public class OrderService {
 
 
 
-    public double inventoryExist(String barcode , String req) throws ApiException{
+    public double getMrp(String barcode , String req) throws ApiException{
 
         int cur = Integer.parseInt(req);
         validate(barcode, cur);
@@ -109,17 +115,6 @@ public class OrderService {
         return  productPojo.getMrp();
     }
 
-    // Return Order Id of current order
-    private int getOrderId(){
-        List<Order> orders = showOrders();
-        int maxId = 1;
-        for(Order order : orders){
-            if(order.getId() > maxId){
-                maxId = order.getId();
-            }
-        }
-        return maxId;
-    }
 
     @Transactional
     public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException {
@@ -140,4 +135,10 @@ public class OrderService {
             throw new ApiException("Quantity should be more than 0");
         }
     }
+    public void trimLower(OrderItem orderItem){
+        orderItem.setBarcode(orderItem.getBarcode().trim().toLowerCase());
+    }
+
+
+
 }

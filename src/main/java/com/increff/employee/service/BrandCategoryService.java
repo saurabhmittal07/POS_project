@@ -19,14 +19,14 @@ public class BrandCategoryService {
     public BrandCategoryPojo add(BrandCategory brandCategory) throws ApiException{
 
         // Trim & lowerCase
-        brandCategory = trimLower(brandCategory);
+        trimLower(brandCategory);
         validate(brandCategory);
         return brandCategoryDao.add(brandCategory);
     }
 
     @Transactional
     public void updateBrand(int id, BrandCategory brandCategory) throws ApiException{
-        brandCategory = trimLower(brandCategory);
+        trimLower(brandCategory);
 
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(id);
         if(brandCategoryPojo.getBrand().equals(brandCategory.getBrand())
@@ -49,14 +49,14 @@ public class BrandCategoryService {
 
 
     //Trim & lowercase
-    public BrandCategory trimLower(BrandCategory brandCategory){
+    private void trimLower(BrandCategory brandCategory){
         brandCategory.setBrand(brandCategory.getBrand().trim().toLowerCase());
         brandCategory.setCategory(brandCategory.getCategory().trim().toLowerCase());
-        return brandCategory;
+
     }
 
 
-    void validate(BrandCategory brandCategory) throws ApiException{
+    private void validate(BrandCategory brandCategory) throws ApiException{
         if(brandCategory.getBrand().equals("") || brandCategory.getCategory().equals("")){
             throw new ApiException("Brand or Category can not be empty");
         }

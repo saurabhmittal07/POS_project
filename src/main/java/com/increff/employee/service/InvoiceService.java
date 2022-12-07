@@ -37,8 +37,7 @@ public class InvoiceService {
     @Autowired
     private OrderDao orderDao;
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-    @Transactional
-            (rollbackOn = ApiException.class)
+    @Transactional(rollbackOn = ApiException.class)
     public HttpServletResponse getOrderInvoice(int orderId) throws ApiException, IOException, TransformerException {
         List<OrderItemPojo> orderItemPojoList = oService.orderReciept(orderId);
         ZonedDateTime time = orderDao.getOrder(orderId).getDateTime();

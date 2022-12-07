@@ -13,8 +13,8 @@ function inventoryReport(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		displayInventoryReport(data);
 	   		inventoryReportList = data;
+	   		downloadInventoryReport();
 	   },
 	   error: handleAjaxError
 	});
@@ -27,8 +27,8 @@ function brandReport(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		displayBrandReport(data);
 	   		brandReportList = data;
+	   		downloadBrandReport();
 	   },
 	   error: handleAjaxError
 	});
@@ -58,38 +58,7 @@ function getReport(event){
 }
 
 
-function displayInventoryReport(data){
-    var $tbody = $('#inventory-report-table').find('tbody');
-    $tbody.empty();
 
-    for(var i in data){
-        var e = data[i];
-        var row = '<tr>'
-            + '<td>' + e.serialNo+ '</td>'
-            + '<td>' + e.brand + '</td>'
-            + '<td>' + e.category + '</td>'
-            + '<td>' + e.quantity + '</td>'
-            + '</tr>';
-        $tbody.append(row);
-    }
-    $('#view-inventory-report-modal').modal('toggle');
-}
-
-function displayBrandReport(data){
-    var $tbody = $('#brand-report-table').find('tbody');
-    $tbody.empty();
-
-    for(var i in data){
-        var e = data[i];
-        var row = '<tr>'
-            + '<td>' + e.id+ '</td>'
-            + '<td>' + e.brand + '</td>'
-            + '<td>' + e.category + '</td>'
-            + '</tr>';
-        $tbody.append(row);
-    }
-    $('#view-brand-report-modal').modal('toggle');
-}
 
 function downloadReport(){
     writeFileData(reportList);
@@ -102,6 +71,14 @@ function downloadInventoryReport(){
 function downloadBrandReport(){
     writeFileData(brandReportList);
 }
+function myFunction() {
+  var x = document.getElementById("filters");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 //INITIALIZATION CODE
 function init(){
     $('#inventory-report').click(inventoryReport);
@@ -109,6 +86,7 @@ function init(){
     $('#download-inventory-report').click(downloadInventoryReport);
     $('#download-brand-report').click(downloadBrandReport);
     $('#download-report').click(getReport);
+    $('#revenue-report').click(myFunction);
 
 }
 

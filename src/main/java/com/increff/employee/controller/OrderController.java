@@ -4,7 +4,6 @@ import com.increff.employee.model.Order;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.OrderItemPojo;
-import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.OrderService;
 import io.swagger.annotations.Api;
@@ -50,10 +49,10 @@ public class OrderController {
     }
 
 
-    @ApiOperation(value = "Check if required invenotry available or not")
+    @ApiOperation(value = "Check if required inventory available or not")
     @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{cur}", method = RequestMethod.GET)
-    public double inventoryExist(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
-        return orderService.inventoryExist(barcode , cur);
+    public double getMrp(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
+        return orderService.getMrp(barcode , cur);
     }
 
 

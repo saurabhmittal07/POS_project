@@ -6,6 +6,8 @@ import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryUI;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
+
+
 import io.swagger.models.auth.In;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,13 @@ public class InventoryService {
     private ProductDao productDao;
 
 
+
     @Transactional
     public void add(Inventory inventory) throws ApiException{
 
+      trimLower(inventory);
         // Check if productId exist
+
         if(inventory.getCount() <=0 ){
             throw new ApiException("Quantity should be a positive number");
         }
@@ -99,5 +104,11 @@ public class InventoryService {
        Pair<Integer, Integer> p = new Pair(0,0);
        return p;
    }
+    public void trimLower(Inventory inventory){
+        inventory.setBarcode(inventory.getBarcode().trim().toLowerCase());
+    }
+
+
+
 
 }

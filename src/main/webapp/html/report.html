@@ -17,119 +17,52 @@
         &nbsp;
     </div>
 
-    <button type="button" class="btn btn-primary" id="inventory-report">Inventory Report</button>
-
-
-    <button type="button" class="btn btn-primary" id="brand-report">Brand Report</button>
+    <button type="button" class="btn btn-primary" id="inventory-report">Download Inventory Report</button>
+    <button type="button" class="btn btn-primary" id="brand-report">Download Brand Report</button>
+    <button type="button" class="btn btn-primary" id="revenue-report">Revenue Report</button>
     <br><br>
 
-    <h5>Download Report by date, brand & category filter</h5>
-    <br><br>
-    <div class="row">
-        <div class="col-12">
-            <form class="form-inline" id="filter-form">
-                <div class="form-group">
-                    <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
-                    <div class="col-sm-2">
-                        <input type="date" class="form-control" name="startDate" id="inputStartDate" placeholder="Start Date" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
-                    <div class="col-sm-2">
-                        <input type='date' class="form-control" name="endDate" id="inputEndDate" placeholder="End Date" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-                    <div class="col-sm-2">
-                        <input type='text' class="form-control" name="brand" id="inputBrand" placeholder="Brand">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-                    <div class="col-sm-2">
-                        <input type='text' class="form-control" name="category" id="inputCategory" placeholder="Category">
-                    </div>
-                </div>
 
-                <button type="button" class="btn btn-primary" id="download-report">Download Report</button>
-                &nbsp;
-            </form>
-        </div>
-    </div>
-
-
-    <!-- Inventory Report Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="view-inventory-report-modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Inventory Report</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" id = "cross">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-12">
-                        <table class="table table-striped" id="inventory-report-table">
-                            <thead>
-                            <tr>
-                                <th scope="col">S.No</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Quantity</th>
-                            </tr>
-                            </thead>
-                            <tbody >
-                            </tbody>
-                        </table>
-
+    <br>
+    <div id="filters" display="none">
+        <h5>Download Revenue Report by Date, Brand & Category filter</h5>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <form class="form-inline" id="filter-form">
+                    <div class="form-group">
+                        <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
+                        <div class="col-sm-2">
+                            <input type="date" class="form-control" name="startDate" id="inputStartDate" placeholder="Start Date" required>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="form-group">
+                        <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
+                        <div class="col-sm-2">
+                            <input type='date' class="form-control" name="endDate" id="inputEndDate" placeholder="End Date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+                        <div class="col-sm-2">
+                            <input type='text' class="form-control" name="brand" id="inputBrand" placeholder="Brand">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+                        <div class="col-sm-2">
+                            <input type='text' class="form-control" name="category" id="inputCategory" placeholder="Category">
+                        </div>
+                    </div>
 
-                    <button type="button" class="btn btn-primary" id="download-inventory-report">Download Report</button>
-                </div>
+                    <button type="button" class="btn btn-primary" id="download-report">Download Report</button>
+                    &nbsp;
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Brand Report Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="view-brand-report-modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Brand Report</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" id = "cross">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-12">
-                        <table class="table table-striped" id="brand-report-table">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Brand</th>
-                                <th scope="col">Category</th>
-                            </tr>
-                            </thead>
-                            <tbody >
-                            </tbody>
-                        </table>
 
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-primary" id="download-brand-report">Download Report</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 
     <footer th:replace="snippets.html :: name_footer"></footer>

@@ -5,10 +5,11 @@ import com.increff.employee.pojo.BrandCategoryPojo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class BrandCategoryServiceTest extends AbstractUnitTest {
-
     @Autowired
     private BrandCategoryService brandCategoryService;
 
@@ -39,15 +40,27 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
         assertEquals("shoes",brandCategory.getCategory());
     }
 
-//    @Test
-//    public void testUpdate() throws ApiException {
-//        BrandCategoryPojo brandCategory=createBrand();
-//        BrandCategory newBrand = new BrandCategory();
-//        newBrand.setCategory("footwear");
-//        newBrand.setBrand("nike");
-//        brandCategory =  brandCategoryService.updateBrand(brandCategory.getId(),newBrand );
-//
-//        assertEquals("nike",brandCategory.getBrand());
-//        assertEquals("footwear",brandCategory.getCategory());
-//    }
+    @Test
+    public void testUpdate() throws ApiException {
+        BrandCategoryPojo brandCategory=createBrand();
+        BrandCategory newBrand = new BrandCategory();
+        newBrand.setCategory("footwear");
+        newBrand.setBrand("nike");
+        brandCategoryService.updateBrand(brandCategory.getId(),newBrand );
+        assertEquals("nike",brandCategory.getBrand());
+        assertEquals("footwear",brandCategory.getCategory());
+    }
+
+    @Test
+    public void testGetAllBrands() throws ApiException{
+        BrandCategoryPojo brandCategoryPojo = createBrand();
+        List<BrandCategoryPojo> brandPojoList =  brandCategoryService.getAllBrands();
+
+        assertEquals(1,brandPojoList.size());
+        assertEquals("nike",brandPojoList.get(0).getBrand());
+        assertEquals("shoes",brandPojoList.get(0).getCategory());
+
+    }
+
+
 }

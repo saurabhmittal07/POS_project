@@ -1,4 +1,5 @@
 package com.increff.employee.controller;
+import com.increff.employee.dto.BrandCategoryDto;
 import com.increff.employee.model.BrandCategory;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.service.ApiException;
@@ -18,6 +19,9 @@ public class BrandCategoryController {
 
     @Autowired
     private BrandCategoryService brandCategoryService;
+
+    @Autowired
+    private BrandCategoryDto brandCategoryDto;
 
     @ApiOperation(value = "Adds Brand-Category Pair")
     @RequestMapping(path = "/api/brandCategory", method = RequestMethod.POST)

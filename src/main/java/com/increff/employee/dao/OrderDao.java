@@ -29,9 +29,7 @@ public class OrderDao extends  AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public void createOrder(ZonedDateTime zonedDateTime){
-        OrderPojo orderPojo = new OrderPojo();
-         orderPojo.setDateTime(zonedDateTime);
+    public void createOrder(OrderPojo orderPojo){
          em.persist(orderPojo);
     }
 

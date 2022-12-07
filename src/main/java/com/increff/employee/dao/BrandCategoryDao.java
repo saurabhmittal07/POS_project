@@ -47,7 +47,7 @@ public class BrandCategoryDao extends AbstractDao{
     public BrandCategoryPojo getBrand(int id){
         TypedQuery<BrandCategoryPojo> query = getQuery(select_id, BrandCategoryPojo.class);
         query.setParameter("id", id);
-        return getSingle(query);
+        return query.getResultList().stream().findFirst().orElse(null);
     }
 
 

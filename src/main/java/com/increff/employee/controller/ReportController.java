@@ -1,9 +1,6 @@
 package com.increff.employee.controller;
 
-import com.increff.employee.model.FilterForm;
-import com.increff.employee.model.InventoryReport;
-import com.increff.employee.model.Product;
-import com.increff.employee.model.ReportItem;
+import com.increff.employee.model.*;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.ReportService;
@@ -33,7 +30,7 @@ public class ReportController {
 
     @ApiOperation(value = "Shows Brand Report")
     @RequestMapping(path = "/api/report/brand", method = RequestMethod.GET)
-    public List<BrandCategoryPojo> showBrandReport() {
+    public List<BrandCategory> showBrandReport() {
         return reportService.showBrandReport();
     }
 
