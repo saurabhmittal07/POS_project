@@ -1,13 +1,6 @@
-package com.increff.employee.pojo;
+package com.increff.employee.model;
 
-import javax.persistence.*;
-
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "brand", "category" }) })
-@Entity
-public class BrandCategoryPojo {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+public class BrandCategoryData {
     private int id;
     private String brand;
     private String category;
@@ -36,10 +29,5 @@ public class BrandCategoryPojo {
         this.category = category;
     }
 
-    public BrandCategoryPojo() {
-    }
-    public  BrandCategoryPojo(String brand, String category) {
-        this.brand = brand;
-        this.category = category;
-    }
+
 }

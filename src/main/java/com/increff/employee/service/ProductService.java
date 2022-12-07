@@ -6,6 +6,7 @@ import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 
+import com.increff.employee.util.TrimLower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -23,11 +24,10 @@ public class ProductService {
 
     public ProductPojo add(ProductForm product) throws ApiException{
 
-        trimLower(product);
+        TrimLower.trimLower(product);
 
         //Validate
         valid(product);
-
         // Get Brand I'd by brand - cateogry names
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrandByName(product.getBrand(), product.getCategory());
         Product newProduct = new Product();
@@ -59,10 +59,12 @@ public class ProductService {
 
 
     public void updateProduct(int id, ProductForm product) throws ApiException{
-       trimLower(product);
+        TrimLower.trimLower(product);
         valid(product);
         ProductPojo productPojo = productDao.getProduct(id);
         // check if barcode already exist
+
+        System.out.println(productPojo.getBarcode() + "  " + product.getBarcode());
         if( !(productPojo.getBarcode().equals(product.getBarcode())) &&  barCodeExist(product.getBarcode())){
             throw new ApiException("Barcode already exist");
         }
@@ -113,21 +115,14 @@ public class ProductService {
         if(product.getMrp() <=0 ){
             throw new ApiException("MRP should be greater than 0");
         }
-        if(barCodeExist(product.getBarcode())){
-            throw new ApiException("Bracode already exists");
-        }
+
+
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrandByName(product.getBrand(), product.getCategory());
         if(brandCategoryPojo == null){
             throw new ApiException("Brand Cateogry pair does not exist");
         }
 
     }
-    public ProductForm trimLower(ProductForm product){
-        product.setName(product.getName().trim().toLowerCase());
-        product.setBarcode(product.getBarcode().trim().toLowerCase());
-        product.setBrand(product.getBrand().trim().toLowerCase());
-        product.setCategory(product.getCategory().trim().toLowerCase());
-        return product;
-    }
+
 
 }

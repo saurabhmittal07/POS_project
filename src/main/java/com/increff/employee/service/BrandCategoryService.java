@@ -4,6 +4,7 @@ import com.increff.employee.dao.BrandCategoryDao;
 import com.increff.employee.model.BrandCategory;
 import com.increff.employee.pojo.BrandCategoryPojo;
 
+import com.increff.employee.util.TrimLower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +17,17 @@ public class BrandCategoryService {
     @Autowired
     private BrandCategoryDao brandCategoryDao;
 
-    public BrandCategoryPojo add(BrandCategory brandCategory) throws ApiException{
+    public BrandCategoryPojo add(BrandCategoryPojo brandCategory) throws ApiException{
 
         // Trim & lowerCase
-        trimLower(brandCategory);
+        TrimLower.trimLower(brandCategory);
         validate(brandCategory);
         return brandCategoryDao.add(brandCategory);
     }
 
     @Transactional
-    public void updateBrand(int id, BrandCategory brandCategory) throws ApiException{
-        trimLower(brandCategory);
+    public void updateBrand(int id, BrandCategoryPojo brandCategory) throws ApiException{
+        TrimLower.trimLower(brandCategory);
 
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(id);
         if(brandCategoryPojo.getBrand().equals(brandCategory.getBrand())
@@ -48,19 +49,11 @@ public class BrandCategoryService {
     }
 
 
-    //Trim & lowercase
-    private void trimLower(BrandCategory brandCategory){
-        brandCategory.setBrand(brandCategory.getBrand().trim().toLowerCase());
-        brandCategory.setCategory(brandCategory.getCategory().trim().toLowerCase());
-
-    }
-
-
-    private void validate(BrandCategory brandCategory) throws ApiException{
+    private void validate(BrandCategoryPojo brandCategory) throws ApiException{
         if(brandCategory.getBrand().equals("") || brandCategory.getCategory().equals("")){
             throw new ApiException("Brand or Category can not be empty");
         }
-        
+
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrandByName(brandCategory.getBrand(), brandCategory.getCategory());
         if(brandCategoryPojo != null){
             throw new ApiException("Brand - Category pair already exists");

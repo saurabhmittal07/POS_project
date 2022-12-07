@@ -19,4 +19,13 @@ public class BrandCategory {
     public void setCategory(String category) {
         Category = category;
     }
+
+    public BrandCategory() {
+
+    }
+
+    public BrandCategory(String brand, String category) {
+        Brand = brand;
+        Category = category;
+    }
 }

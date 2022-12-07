@@ -2,6 +2,7 @@ package com.increff.employee.service;
 
 import com.increff.employee.model.BrandCategory;
 import com.increff.employee.model.ProductForm;
+import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class ProductServiceTest extends AbstractUnitTest{
     }
 
     private void createBrand() throws ApiException{
-        BrandCategory brandCategory = new BrandCategory();
+        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
         brandCategory.setBrand("kissan");
         brandCategory.setCategory("food");
         brandCategoryService.add(brandCategory);

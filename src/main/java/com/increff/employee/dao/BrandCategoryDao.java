@@ -28,11 +28,7 @@ public class BrandCategoryDao extends AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public BrandCategoryPojo add(BrandCategory p)  {
-
-        BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
-        brandCategoryPojo.setBrand(p.getBrand());
-        brandCategoryPojo.setCategory(p.getCategory());
+    public BrandCategoryPojo add(BrandCategoryPojo brandCategoryPojo)  {
         em().persist(brandCategoryPojo);
         return brandCategoryPojo;
     }
