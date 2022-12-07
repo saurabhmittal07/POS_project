@@ -5,6 +5,7 @@ import com.increff.employee.model.Inventory;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
+import com.increff.employee.pojo.ProductPojo;
 
 
 public class TrimLower {
@@ -17,6 +18,7 @@ public class TrimLower {
     public static void trimLower(Inventory inventory){
         inventory.setBarcode(inventory.getBarcode().trim().toLowerCase());
     }
+
 
     public static void trimLower(OrderItem orderItem){
         orderItem.setBarcode(orderItem.getBarcode().trim().toLowerCase());

@@ -61,4 +61,9 @@ public class BrandCategoryService {
     }
 
 
+    public BrandCategoryPojo getBrandByName(String brand, String category){
+        return brandCategoryDao.getBrandByName(brand, category);
+    }
+
+
 }

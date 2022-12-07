@@ -32,12 +32,7 @@ public class ProductDao extends AbstractDao{
     private EntityManager em;
 
     @Transactional
-    public ProductPojo add(Product product) throws ApiException {
-        ProductPojo productPojo = new ProductPojo();
-        productPojo.setName(product.getName());
-        productPojo.setBarcode(product.getBarcode());
-        productPojo.setBrandCategory(product.getBrandCategory());
-        productPojo.setMrp(product.getMrp());
+    public ProductPojo add(ProductPojo productPojo) throws ApiException {
         em.persist(productPojo);
         return productPojo;
     }
@@ -73,7 +68,7 @@ public class ProductDao extends AbstractDao{
 
 
     @Transactional
-    public void updateProduct(int id, Product product){
+    public void updateProduct(int id, ProductPojo product){
         Query query = em.createQuery(update_id);
         query.setParameter("id", id);
         query.setParameter("brandCategory", product.getBrandCategory());

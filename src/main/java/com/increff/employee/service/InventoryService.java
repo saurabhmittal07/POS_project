@@ -8,7 +8,6 @@ import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 
 
-import io.swagger.models.auth.In;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,30 +22,20 @@ public class InventoryService {
 
     @Autowired
     private InventoryDao inventoryDao;
-    @Autowired
-    private ProductDao productDao;
+
 
 
 
     @Transactional
-    public void add(Inventory inventory) throws ApiException{
-
-      trimLower(inventory);
-        // Check if productId exist
-
+    public void addProduct(InventoryPojo inventory) throws ApiException{
         if(inventory.getCount() <=0 ){
             throw new ApiException("Quantity should be a positive number");
         }
 
-        ProductPojo productPojo = productDao.getProductByBarcode(inventory.getBarcode());
-        if(productPojo == null){
-            throw new ApiException("Product with barcode : " + inventory.getBarcode() + " does not exist");
-        }
-
         // Check count of that product in inventory
-        Pair<Integer, Integer> previousCount = inventoryExist(productPojo.getId());
+        Pair<Integer, Integer> previousCount = inventoryExist(inventory.getProductId());
         if(previousCount.getKey() == 0 ){
-            inventoryDao.add(productPojo.getId(), inventory.getCount());
+            inventoryDao.add(inventory.getProductId(), inventory.getCount());
             return ;
         }
 
@@ -55,20 +44,9 @@ public class InventoryService {
 
     }
 
-    public List<InventoryUI> showInventory(){
+    public List<InventoryPojo> showInventory(){
         List<InventoryPojo> inventoryPojos =  inventoryDao.showInventory();
-        List<InventoryUI> inventories = new ArrayList<>();
-        for(InventoryPojo inventoryPojo : inventoryPojos){
-            InventoryUI inventoryUI = new InventoryUI();
-            inventoryUI.setQuantity(inventoryPojo.getCount());
-            ProductPojo productPojo = productDao.getProduct(inventoryPojo.getProductId());
-            inventoryUI.setName(productPojo.getName());
-            inventoryUI.setBarcode(productPojo.getBarcode());
-            inventoryUI.setId(inventoryPojo.getId());
-
-            inventories.add(inventoryUI);
-        }
-        return inventories;
+        return inventoryPojos;
     }
 
 
@@ -104,9 +82,6 @@ public class InventoryService {
        Pair<Integer, Integer> p = new Pair(0,0);
        return p;
    }
-    public void trimLower(Inventory inventory){
-        inventory.setBarcode(inventory.getBarcode().trim().toLowerCase());
-    }
 
 
 

@@ -1,4 +1,5 @@
 package com.increff.employee.controller;
+import com.increff.employee.dto.InventoryDto;
 import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryUI;
 import com.increff.employee.model.Product;
@@ -19,31 +20,31 @@ import java.util.List;
 public class InventoryController {
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryDto inventoryDto;
 
     @ApiOperation(value = "Adds a product to Inventory")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
     public void addProduct(@RequestBody Inventory inventory) throws ApiException {
-        inventoryService.add(inventory);
+        inventoryDto.add(inventory);
     }
 
     @ApiOperation(value = "Show Inventory" )
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
     public List<InventoryUI> getAllProducts(){
-        return inventoryService.showInventory();
+        return inventoryDto.showInventory();
     }
 
 
     @ApiOperation(value = "Updates a inventory detail")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody Inventory inventory) throws ApiException {
-        inventoryService.updateInventory(id, inventory);
+        inventoryDto.updateInventory(id, inventory);
     }
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
     public InventoryPojo getProduct(@PathVariable int id) throws ApiException {
-        return inventoryService.getInventory(id);
+        return inventoryDto.getInventory(id);
     }
 
 }
