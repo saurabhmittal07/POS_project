@@ -42,14 +42,18 @@ function displayList(data){
 function downloadReceipt(id){
     var url = getProductUrl() + "/" + "downloadInvoice/" +  id;
     console.log(url);
-        $.ajax({
-           url: url,
-           type: 'GET',
-           success: function(data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.responseType = "arraybuffer";
 
-           },
-           error: handleAjaxError
-        });
+    xhr.onload = function () {
+        if (this.status === 200) {
+            var blob = new Blob([xhr.response], {type: "application/pdf"});
+            var objectUrl = URL.createObjectURL(blob);
+            window.open(objectUrl);
+        }
+    };
+    xhr.send();
 }
 
 

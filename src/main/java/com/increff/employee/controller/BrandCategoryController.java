@@ -18,8 +18,6 @@ import java.util.List;
 public class BrandCategoryController {
 
 
-    @Autowired
-    private BrandCategoryService brandCategoryService;
 
     @Autowired
     private BrandCategoryDto brandCategoryDto;
@@ -27,7 +25,7 @@ public class BrandCategoryController {
     @ApiOperation(value = "Adds Brand-Category Pair")
     @RequestMapping(path = "/api/brandCategory", method = RequestMethod.POST)
     public void add(@RequestBody BrandCategory brandCategory) throws ApiException {
-        brandCategoryDto.add(brandCategory);
+        brandCategoryDto.addBrand(brandCategory);
     }
 
     @ApiOperation(value = "Shows Brands")

@@ -23,72 +23,56 @@ public class ProductServiceTest extends AbstractUnitTest{
 
 
     private ProductPojo createProduct() throws ApiException{
-        return createProduct("milton", "kissan", "food", "qqq", 43);
+        return createProduct("milton", 1, "qqq", 43);
     }
 
-    private ProductPojo createProduct  (String name, String brand, String category, String barcode, int mrp) throws ApiException{
+   private ProductPojo createProduct  (String name, int brandId, String barcode, int mrp) throws ApiException{
         createBrand();
         ProductPojo product = new ProductPojo();
         product.setName(name);
         product.setBarcode(barcode);
         product.setMrp(mrp);
+        product.setBrandCategory(brandId);
 
-        return productService.add(product);
+        return productService.addProduct(product);
     }
 
     private void createBrand() throws ApiException{
         BrandCategoryPojo brandCategory = new BrandCategoryPojo();
         brandCategory.setBrand("kissan");
         brandCategory.setCategory("food");
-        brandCategoryService.add(brandCategory);
+        brandCategoryService.addBrand(brandCategory);
     }
 
-    private ProductForm productForm(){
-        ProductForm productForm = new ProductForm();
-        productForm.setMrp(12);
-        productForm.setBarcode("Barcode ");
-        productForm.setName("abc");
-        productForm.setBrand("kissan");
-        productForm.setCategory("food");
-        return productForm;
+
+    @Test
+    public void testAddProduct() throws ApiException {
+
+        createBrand();
+        ProductPojo productPojo = createProduct();
     }
 
-//    @Test
-//    public void testAddProduct() throws ApiException {
-//
-//        createBrand();
-//
-//        ProductForm productForm = new ProductForm();
-//        productForm.setMrp(12);
-//        productForm.setBarcode("barcode");
-//        productForm.setName("abc");
-//        productForm.setBrand("kissan");
-//        productForm.setCategory("food");
-//        productService.add(productForm);
-//    }
+    @Test
+    public void testGetAllProducts() throws ApiException{
+        createProduct();
+        List<ProductPojo> productPojos = productService.getAllProducts();
+        assertEquals(1,productPojos.size());
+        assertEquals("milton",productPojos.get(0).getName());
+        assertEquals("qqq",productPojos.get(0).getBarcode());
+    }
 
-//    @Test
-//    public void testGetAllProducts() throws ApiException{
-//        createProduct();
-//        List<ProductForm> productForms = productService.getAllProducts();
-//        assertEquals(1,productForms.size());
-//        assertEquals("kissan",productForms.get(0).getBrand());
-//        assertEquals("food",productForms.get(0).getCategory());
-//    }
+    @Test
+    public void testUpdateProduct() throws ApiException{
+        ProductPojo productPojo = createProduct();
 
-//    @Test
-//    public void testUpdateProduct() throws ApiException{
-//        ProductPojo productPojo = createProduct();
-//        ProductForm productForm = productForm();
-//
-//        productForm.setBarcode("ppp");
-//
-//        productService.updateProduct(productPojo.getId(), productForm);
-//
-//        productForm = productService.getProduct(1);
-//
-//        assertEquals("qqq" , productForm.getBarcode());
-//    }
+        productPojo.setBarcode("ppp");
+
+        productService.updateProduct(productPojo.getId(), productPojo);
+
+        productPojo = productService.getProduct(1);
+
+        assertEquals("qqq" , productPojo.getBarcode());
+    }
 
 
 

@@ -21,15 +21,12 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
         BrandCategoryPojo brandCategory = new BrandCategoryPojo(brand,category);
         brandCategory.setBrand(brand);
         brandCategory.setCategory(category);
-        return brandCategoryService.add(brandCategory);
+        return brandCategoryService.addBrand(brandCategory);
     }
 
     @Test
     public void testAdd() throws ApiException {
-        BrandCategory brandCategory = new BrandCategory();
-        brandCategory.setBrand("WWW");
-        brandCategory.setCategory("RRR");
-      //  brandCategoryService.add(brandCategory);
+        BrandCategoryPojo brandCategory = createBrand();
     }
 
     @Test
@@ -46,8 +43,8 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
         brandCategory.setBrand("aaa");
         brandCategory.setCategory("bbb");
         brandCategoryService.updateBrand(brandCategory.getId(), brandCategory);
-        assertEquals("nike",brandCategory.getBrand());
-        assertEquals("footwear",brandCategory.getCategory());
+        assertEquals("aaa",brandCategory.getBrand());
+        assertEquals("bbb",brandCategory.getCategory());
     }
 
     @Test

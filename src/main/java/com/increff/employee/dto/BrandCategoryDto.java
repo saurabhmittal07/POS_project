@@ -18,9 +18,9 @@ public class BrandCategoryDto {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
-    public void add(BrandCategory brandCategory) throws ApiException {
+    public void addBrand(BrandCategory brandCategory) throws ApiException {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo(brandCategory.getBrand(), brandCategory.getCategory());
-        brandCategoryService.add(brandCategoryPojo);
+        brandCategoryService.addBrand(brandCategoryPojo);
     }
 
 

@@ -57,5 +57,9 @@ public class OrderService {
         return orderDao.getOrder(id);
     }
 
+    public List<OrderPojo> getOrdersByDate(String startDate, String endDate){
+        return orderDao.ordersByDate(startDate,endDate);
+    }
+
 
 }

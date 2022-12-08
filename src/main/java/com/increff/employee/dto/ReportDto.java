@@ -1,48 +1,47 @@
-package com.increff.employee.service;
+package com.increff.employee.dto;
 
-
-import com.increff.employee.dao.*;
 import com.increff.employee.model.BrandCategory;
 import com.increff.employee.model.FilterForm;
 import com.increff.employee.model.InventoryReport;
 import com.increff.employee.model.ReportItem;
 import com.increff.employee.pojo.*;
+import com.increff.employee.service.*;
 
-import io.swagger.models.auth.In;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.Year;
-import java.time.ZonedDateTime;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class ReportService {
+public class ReportDto {
+
 
     @Autowired
-    private InventoryDao inventoryDao ;
-    @Autowired
-    private ProductDao productDao ;
-    @Autowired
-    private OrderDao orderDao;
-    @Autowired
-    private OrderItemDao orderItemDao;
-    @Autowired
-    private BrandCategoryDao brandCategoryDao ;
+    private InventoryService inventoryService;
 
-    public List<InventoryReport> showInventoryReport(){
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private BrandCategoryService brandCategoryService;
+    @Autowired
+    private ProductService productService;
 
+    public List<InventoryReport> showInventoryReport() {
         List<InventoryReport> inventoryReports = new ArrayList<>();
 
-        List<InventoryPojo> inventoryPojos = inventoryDao.showInventory();
+        List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
         int i=0;
 
         HashMap<Integer, Integer> map = new HashMap<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
-            ProductPojo productPojo = productDao.getProduct(inventoryPojo.getProductId());
-            BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(productPojo.getBrandCategory());
+            ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
+            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
 
             //Check if brand-category page already exists in map
             if(map.containsKey(brandCategoryPojo.getId())){
@@ -64,8 +63,9 @@ public class ReportService {
         return inventoryReports;
     }
 
-    public List<BrandCategory> showBrandReport(){
-        List<BrandCategoryPojo> brands=  brandCategoryDao.getAllBrands();
+
+    public List<BrandCategory> showBrandReport() {
+        List<BrandCategoryPojo> brands=  brandCategoryService.getAllBrands();
         List<BrandCategory> brandDatas = new ArrayList<>();
 
         for(BrandCategoryPojo brand : brands){
@@ -74,35 +74,34 @@ public class ReportService {
             brandData.setCategory(brand.getCategory());
             brandDatas.add(brandData);
         }
-
         return brandDatas;
     }
 
-    public List<ReportItem> showReport(FilterForm filterForm){
 
+    public List<ReportItem> showReport(@RequestBody FilterForm filterForm) throws ApiException {
         HashMap<Integer, Pair<Integer,Double>> map = new HashMap<>();
         // Get Order in date range
 
-        List<OrderPojo> orders = orderDao.ordersByDate(filterForm.getStartDate(), filterForm.getEndDate());
+        List<OrderPojo> orders = orderService.getOrdersByDate(filterForm.getStartDate(), filterForm.getEndDate());
 
         // Go through all orders
         for(OrderPojo orderPojo : orders){
 
             // Get orderItems of orders
-            List<OrderItemPojo> orderItems = orderDao.orderReciept(orderPojo.getId());
+            List<OrderItemPojo> orderItems = orderService.getReceipt(orderPojo.getId());
 
             // Go through all orderItems
             for(OrderItemPojo orderItemPojo : orderItems){
 
                 // Get Product with product Id
-                ProductPojo productPojo = productDao.getProduct(orderItemPojo.getProductId());
+                ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
                 int brandId = productPojo.getBrandCategory();
 
                 Pair<Integer, Double> pair = new Pair<>(orderItemPojo.getQuantity(),
                         orderItemPojo.getQuantity()*orderItemPojo.getPrice());
 
                 // Get Brand & Category by brandId
-                BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(brandId);
+                BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);
                 if((brandCategoryPojo.getBrand().equals(filterForm.getBrand())  || filterForm.getBrand().equals("")) &&
                         (brandCategoryPojo.getCategory().equals(filterForm.getCategory())   || filterForm.getCategory().equals("") )){
                     if(map.containsKey(brandId)){
@@ -124,7 +123,7 @@ public class ReportService {
         for (Map.Entry<Integer,Pair<Integer,Double>> mapElement : map.entrySet()) {
             int brandId = mapElement.getKey();
             Pair<Integer, Double> pair= mapElement.getValue();
-            BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(brandId);
+            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);
             ReportItem reportItem = new ReportItem();
             reportItem.setBrand(brandCategoryPojo.getBrand());
             reportItem.setCategory(brandCategoryPojo.getCategory());
@@ -134,5 +133,4 @@ public class ReportService {
         }
         return items;
     }
-
 }

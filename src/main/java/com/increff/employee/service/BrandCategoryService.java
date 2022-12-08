@@ -17,12 +17,12 @@ public class BrandCategoryService {
     @Autowired
     private BrandCategoryDao brandCategoryDao;
 
-    public BrandCategoryPojo add(BrandCategoryPojo brandCategory) throws ApiException{
+    public BrandCategoryPojo addBrand(BrandCategoryPojo brandCategory) throws ApiException{
 
         // Trim & lowerCase
         TrimLower.trimLower(brandCategory);
         validate(brandCategory);
-        return brandCategoryDao.add(brandCategory);
+        return brandCategoryDao.addBrand(brandCategory);
     }
 
     @Transactional
