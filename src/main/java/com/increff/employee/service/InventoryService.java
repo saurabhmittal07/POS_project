@@ -69,4 +69,8 @@ public class InventoryService {
        return p;
    }
 
+   public InventoryPojo getInventoryByProductId(int id){
+        return inventoryDao.getInventoryByProductId(id);
+   }
+
 }

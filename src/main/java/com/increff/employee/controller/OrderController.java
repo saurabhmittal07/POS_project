@@ -1,5 +1,6 @@
 package com.increff.employee.controller;
 
+import com.increff.employee.dto.OrderDto;
 import com.increff.employee.model.Order;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.UpdateOrderForm;
@@ -19,40 +20,36 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderDto orderDto;
 
     @ApiOperation(value = "Creates an order")
     @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public void createOrder(@RequestBody List<OrderItem> items) throws ApiException {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        orderService.createOrder(zonedDateTime, items);
+        orderDto.createOrder(zonedDateTime, items);
     }
 
     @ApiOperation(value = "Shows all orders")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<Order> showOrders(){
-        return orderService.showOrders();
+        return orderDto.showOrders();
     }
 
 
 
-    @ApiOperation(value = "Receipt of order of given  id")
-    @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
-    public List<OrderItemPojo> orderReciept(@PathVariable int id) throws ApiException{
-        return orderService.orderReciept(id);
-    }
+
 
     @ApiOperation(value = "updates quantity of a product")
     @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
     public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{
-            orderService.updateInventory(updateOrderForm);
+            orderDto.updateInventory(updateOrderForm);
     }
 
 
     @ApiOperation(value = "Check if required inventory available or not")
     @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{cur}", method = RequestMethod.GET)
     public double getMrp(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
-        return orderService.getMrp(barcode , cur);
+        return orderDto.getMrp(barcode , cur);
     }
 
 

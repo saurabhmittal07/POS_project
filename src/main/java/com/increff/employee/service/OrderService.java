@@ -29,116 +29,33 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    @Autowired
-    private ProductDao productDao;
 
-    @Autowired
-    private InventoryDao inventoryDao;
+    @Transactional
+    public void createOrder(OrderPojo orderPojo){
+        orderDao.createOrder(orderPojo);
+    }
 
-    @Autowired
-    private OrderItemDao orderItemDao;
+
+    public List<OrderPojo> showOrders(){
+        List<OrderPojo> orderPojos =  orderDao.showOrders();
+        return orderPojos;
+    }
 
 
     @Transactional
-    public void createOrder(ZonedDateTime zonedDateTime, List<OrderItem> orderItems){
-
-        //Create Order
-        OrderPojo orderPojo = new OrderPojo();
-        orderPojo.setDateTime(zonedDateTime);
-        orderDao.createOrder(orderPojo);
-
-         // Get Order Id;
-        int orderId = orderPojo.getId();
-        System.out.println(orderId);
-        for(OrderItem orderItem : orderItems){
-            // Get Product
-
-            trimLower(orderItem);
-            ProductPojo product = productDao.getProductByBarcode(orderItem.getBarcode());
-
-            OrderItemPojo orderItemPojo = new OrderItemPojo();
-            orderItemPojo.setOrderId(orderId);
-            orderItemPojo.setQuantity(orderItem.getQuantity());
-            orderItemPojo.setProductId(product.getId());
-            orderItemPojo.setPrice(product.getMrp());
-
-            InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(product.getId());
-            inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
-            orderItemDao.addOrderItem(orderItemPojo);
+    public void updateInventory(InventoryPojo inventoryPojo, int quantity) throws ApiException {
+        if (inventoryPojo.getCount() < quantity) {
+            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
         }
-
     }
 
-    public List<Order> showOrders(){
-        List<OrderPojo> orderPojos =  orderDao.showOrders();
-
-        List<Order> orders =  new ArrayList();
-
-        for(OrderPojo orderPojo : orderPojos){
-            Order order = new Order();
-            order.setId(orderPojo.getId());
-
-            ZonedDateTime zonedDateTime = orderPojo.getDateTime();
-            String formattedZdt = zonedDateTime.format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
-            order.setDate(formattedZdt.substring(0,10) + " " + formattedZdt.substring(11,19));
-
-            orders.add(order);
-        }
-        return orders;
-    }
-
-    public List<OrderItemPojo> orderReciept(int id){
+    public List<OrderItemPojo> getReceipt(int id){
         return orderDao.orderReciept(id);
     }
 
-
-
-    public double getMrp(String barcode , String req) throws ApiException{
-
-        int cur = Integer.parseInt(req);
-        validate(barcode, cur);
-        // Check if barcode exist
-        ProductPojo productPojo = productDao.getProductByBarcode(barcode);
-
-        if(productPojo == null){
-            throw new ApiException("Product with barcode:" + barcode +" does not exist");
-        }
-        // Check if required quantity available
-        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
-
-        if(inventoryPojo == null){
-            throw new ApiException(0 + " Unit/units available in inventory");
-        } else if(inventoryPojo.getCount() < cur){
-            throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
-        }
-
-        return  productPojo.getMrp();
+    public OrderPojo getOrder(int id){
+        return orderDao.getOrder(id);
     }
-
-
-    @Transactional
-    public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException {
-
-        ProductPojo productPojo = productDao.getProductByBarcode(updateOrderForm.getBarcode());
-        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productPojo.getId());
-        if (inventoryPojo.getCount() < updateOrderForm.getQuantity()) {
-            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
-        }
-
-    }
-
-    private void validate(String barcode , int quantity) throws ApiException{
-        if( barcode.equals("")){
-            throw new ApiException("Please enter barcode");
-        }
-        if(quantity <= 0){
-            throw new ApiException("Quantity should be more than 0");
-        }
-    }
-    public void trimLower(OrderItem orderItem){
-        orderItem.setBarcode(orderItem.getBarcode().trim().toLowerCase());
-    }
-
 
 
 }

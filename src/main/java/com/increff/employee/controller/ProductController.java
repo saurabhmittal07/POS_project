@@ -34,7 +34,7 @@ public class ProductController {
         return productDto.getAllProducts();
     }
 
-    
+
     @ApiOperation(value = "Updates a product detail")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody ProductForm product) throws ApiException {

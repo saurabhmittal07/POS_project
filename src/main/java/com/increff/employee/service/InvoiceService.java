@@ -4,6 +4,7 @@ package com.increff.employee.service;
 import com.increff.employee.dao.OrderDao;
 import com.increff.employee.model.OrderItemDataList;
 import com.increff.employee.pojo.OrderItemPojo;
+import com.increff.employee.pojo.OrderPojo;
 import org.apache.fop.apps.FopFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,29 +32,26 @@ import java.nio.file.Files;
 
 @Service
 public class InvoiceService {
-    @Autowired
-    private OrderService oService;
 
-    @Autowired
-    private OrderDao orderDao;
+
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
     @Transactional(rollbackOn = ApiException.class)
-    public HttpServletResponse getOrderInvoice(int orderId) throws ApiException, IOException, TransformerException {
-        List<OrderItemPojo> orderItemPojoList = oService.orderReciept(orderId);
-        ZonedDateTime time = orderDao.getOrder(orderId).getDateTime();
+    public HttpServletResponse getOrderInvoice(List<OrderItemPojo> orderItemPojoList, OrderPojo orderPojo) throws ApiException, IOException, TransformerException {
+
+        ZonedDateTime time = orderPojo.getDateTime();
         double total = 0.;
 
         for (OrderItemPojo itemPojo : orderItemPojoList) {
             total += itemPojo.getQuantity() * itemPojo.getPrice();
         }
-        OrderItemDataList oItem = new OrderItemDataList(orderItemPojoList, time, total, orderId);
-        String invoice="main/resources/Invoices/invoice"+orderId+".pdf";
+        OrderItemDataList oItem = new OrderItemDataList(orderItemPojoList, time, total, orderPojo.getId());
+        String invoice="main/resources/Invoices/invoice"+orderPojo.getId()+".pdf";
         String xml = jaxbObjectToXML(oItem);
         File xsltFile = new File("src", "main/webapp/invoice.xml");
         File pdfFile = new File("src", invoice);
         convertToPDF(oItem, xsltFile, pdfFile, xml);
         HttpServletResponse response = null;
-        File file=new File("src/main/resources/Invoices/invoice/"+orderId+".pdf");
+        File file=new File("src/main/resources/Invoices/invoice/"+orderPojo.getId()+".pdf");
         if (file.exists()) {
             //response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));

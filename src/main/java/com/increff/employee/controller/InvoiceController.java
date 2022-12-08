@@ -1,5 +1,6 @@
 package com.increff.employee.controller;
 
+import com.increff.employee.dto.InvoiceDto;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.InvoiceService;
 import io.swagger.annotations.Api;
@@ -16,12 +17,13 @@ import java.io.IOException;
 public class InvoiceController {
 
     @Autowired
-    private InvoiceService invoiceService;
+    private InvoiceDto invoiceDto  ;
+
 
 
     @ApiOperation(value = "Downloads Invoice")
     @RequestMapping(path = "/api/order/downloadInvoice/{id}", method = RequestMethod.GET)
-    public HttpServletResponse createOrder(@PathVariable int id) throws ApiException, IOException, TransformerException {
-        return invoiceService.getOrderInvoice(id);
+    public HttpServletResponse getOrderInvoice(@PathVariable int id) throws ApiException, IOException, TransformerException {
+        return invoiceDto.getOrderInvoice(id);
     }
 }

@@ -10,7 +10,6 @@ public class Order {
     private int id;
     private String date;
 
-
     public int getId() {
         return id;
     }

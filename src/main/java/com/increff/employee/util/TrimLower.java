@@ -24,6 +24,8 @@ public class TrimLower {
         orderItem.setBarcode(orderItem.getBarcode().trim().toLowerCase());
     }
 
+
+
     public  static void trimLower(ProductForm product){
         product.setName(product.getName().trim().toLowerCase());
         product.setBarcode(product.getBarcode().trim().toLowerCase());
