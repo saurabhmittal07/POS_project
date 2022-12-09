@@ -1,5 +1,6 @@
 package com.increff.employee.service;
 
+import Util.CreateInstance;
 import com.increff.employee.model.BrandCategory;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import org.junit.Test;
@@ -13,25 +14,28 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
-    private BrandCategoryPojo createBrand() throws ApiException{
+    public  BrandCategoryPojo createBrand() throws ApiException {
         return createBrand("nike","shoes");
     }
 
-    private BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
+    public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
         BrandCategoryPojo brandCategory = new BrandCategoryPojo(brand,category);
         brandCategory.setBrand(brand);
         brandCategory.setCategory(category);
         return brandCategoryService.addBrand(brandCategory);
     }
 
+
     @Test
     public void testAdd() throws ApiException {
-        BrandCategoryPojo brandCategory = createBrand();
+        createBrand();
     }
 
     @Test
     public void testGetBrand() throws ApiException {
-        BrandCategoryPojo brandCategory=createBrand();
+        BrandCategoryPojo brandCategory =createBrand();
+
+
         brandCategory = brandCategoryService.getBrand(brandCategory.getId());
         assertEquals("nike",brandCategory.getBrand());
         assertEquals("shoes",brandCategory.getCategory());
@@ -40,6 +44,7 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
     @Test
     public void testUpdate() throws ApiException {
         BrandCategoryPojo brandCategory=createBrand();
+
         brandCategory.setBrand("aaa");
         brandCategory.setCategory("bbb");
         brandCategoryService.updateBrand(brandCategory.getId(), brandCategory);
@@ -49,7 +54,8 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
 
     @Test
     public void testGetAllBrands() throws ApiException{
-        BrandCategoryPojo brandCategoryPojo = createBrand();
+        BrandCategoryPojo brandCategory=createBrand();
+
         List<BrandCategoryPojo> brandPojoList =  brandCategoryService.getAllBrands();
 
         assertEquals(1,brandPojoList.size());
@@ -57,6 +63,5 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
         assertEquals("shoes",brandPojoList.get(0).getCategory());
 
     }
-
 
 }

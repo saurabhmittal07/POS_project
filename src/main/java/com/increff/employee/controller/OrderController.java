@@ -37,8 +37,6 @@ public class OrderController {
 
 
 
-
-
     @ApiOperation(value = "updates quantity of a product")
     @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
     public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{

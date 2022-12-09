@@ -22,15 +22,14 @@ public class OrderDao extends  AbstractDao{
     private static String delete_id = "delete from OrderPojo p where id=:id";
     private static String select_all = "select p from OrderPojo p";
     private static String select_id = "select p from OrderPojo p where id=:id";
-    private static String select_order_id = "select p from OrderItemPojo p where orderId=:orderId";
+
     private static String select_by_date = "select p from OrderPojo p where dateTime >=:startDate AND dateTime <=:endDate";
 
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Transactional
     public void createOrder(OrderPojo orderPojo){
-         em.persist(orderPojo);
+         em().persist(orderPojo);
     }
 
     @Transactional
@@ -46,12 +45,7 @@ public class OrderDao extends  AbstractDao{
         return query.getResultList();
     }
 
-    @Transactional
-    public List<OrderItemPojo> orderReciept(int id){
-        TypedQuery<OrderItemPojo> query = getQuery(select_order_id, OrderItemPojo.class);
-        query.setParameter("orderId", id);
-        return query.getResultList();
-    }
+
 
     @Transactional
     public List<OrderPojo> ordersByDate(String startDate, String endDate){

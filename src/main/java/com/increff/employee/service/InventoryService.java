@@ -19,7 +19,7 @@ public class InventoryService {
 
 
     @Transactional
-    public void addInventory(InventoryPojo inventory) throws ApiException{
+    public InventoryPojo addInventory(InventoryPojo inventory) throws ApiException{
         if(inventory.getCount() <=0 ){
             throw new ApiException("Quantity should be a positive number");
         }
@@ -27,13 +27,13 @@ public class InventoryService {
         // Check count of that product in inventory
         Pair<Integer, Integer> previousCount = inventoryExist(inventory.getProductId());
         if(previousCount.getKey() == 0 ){
-            inventoryDao.add(inventory.getProductId(), inventory.getCount());
-            return ;
+            return inventoryDao.add(inventory.getProductId(), inventory.getCount());
+
         }
 
         InventoryPojo inventoryPojo = inventoryDao.getInventory(previousCount.getKey());
         inventoryPojo.setCount(inventory.getCount() + previousCount.getValue());
-
+        return inventoryPojo;
     }
 
     public List<InventoryPojo> showInventory(){
@@ -56,7 +56,7 @@ public class InventoryService {
         InventoryPojo inventoryPojo = inventoryDao.getInventory(id);
         return inventoryPojo;
     }
-   private Pair  inventoryExist(int id){
+   public Pair  inventoryExist(int id){
         List<InventoryPojo> inventories = inventoryDao.showInventory();
         for(InventoryPojo inventoryPojo : inventories){
             if(inventoryPojo.getProductId() == id){

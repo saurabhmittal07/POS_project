@@ -1,6 +1,6 @@
 package com.increff.employee.dto;
 
-
+import com.increff.employee.model.Inventory;
 import com.increff.employee.model.Order;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.UpdateOrderForm;
@@ -34,6 +34,8 @@ public class OrderDto {
 
     @Autowired
     private InventoryService inventoryService;
+
+
 
     @Transactional
     public void createOrder(ZonedDateTime zonedDateTime,List<OrderItem> items) throws ApiException {
@@ -88,7 +90,9 @@ public class OrderDto {
         ProductPojo productPojo = productService.getProductByBarcode(updateOrderForm.getBarcode());
         InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
 
-        orderService.updateInventory(inventoryPojo, updateOrderForm.getQuantity());
+        if (inventoryPojo.getCount() < updateOrderForm.getQuantity()) {
+            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
+        }
     }
 
 

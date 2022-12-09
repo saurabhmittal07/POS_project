@@ -3,6 +3,7 @@ import com.increff.employee.model.Inventory;
 import com.increff.employee.model.Product;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.service.ApiException;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,16 +22,16 @@ public class InventoryDao extends AbstractDao {
     private static String select_product_id = "select p from InventoryPojo p where productId=:productId";
 
 
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Transactional
-    public void add(int productId, int count) throws ApiException {
+    public InventoryPojo add(int productId, int count) throws ApiException {
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setCount(count);
         inventoryPojo.setProductId(productId);
         System.out.println(count);
-        em.persist(inventoryPojo);
+        em().persist(inventoryPojo);
+        return inventoryPojo;
     }
 
     @Transactional
@@ -48,7 +49,7 @@ public class InventoryDao extends AbstractDao {
 
     @Transactional
     public void deleteInventory(int id){
-        Query query = em.createQuery(delete_id);
+        Query query = em().createQuery(delete_id);
         query.setParameter("id", id);
         query.executeUpdate();
     }

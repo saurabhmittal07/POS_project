@@ -1,10 +1,8 @@
 package com.increff.employee.dao;
-import com.increff.employee.model.Product;
+
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 import org.springframework.stereotype.Repository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -28,12 +26,11 @@ public class ProductDao extends AbstractDao{
             "where id=:id";
 
 
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Transactional
     public ProductPojo addProduct(ProductPojo productPojo) throws ApiException {
-        em.persist(productPojo);
+        em().persist(productPojo);
         return productPojo;
     }
 
@@ -45,7 +42,7 @@ public class ProductDao extends AbstractDao{
 
     @Transactional
     public void deleteProduct(int id){
-        Query query = em.createQuery(delete_id);
+        Query query = em().createQuery(delete_id);
         query.setParameter("id", id);
         query.executeUpdate();
     }
@@ -69,7 +66,7 @@ public class ProductDao extends AbstractDao{
 
     @Transactional
     public void updateProduct(int id, ProductPojo product){
-        Query query = em.createQuery(update_id);
+        Query query = em().createQuery(update_id);
         query.setParameter("id", id);
         query.setParameter("brandCategory", product.getBrandCategory());
         query.setParameter("barcode", product.getBarcode());

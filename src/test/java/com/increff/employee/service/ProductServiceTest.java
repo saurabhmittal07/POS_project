@@ -20,7 +20,16 @@ public class ProductServiceTest extends AbstractUnitTest{
 
     @Autowired BrandCategoryService brandCategoryService;
 
+    public BrandCategoryPojo createBrand() throws ApiException {
+        return createBrand("nike","shoes");
+    }
 
+    public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
+        BrandCategoryPojo brandCategory = new BrandCategoryPojo(brand,category);
+        brandCategory.setBrand(brand);
+        brandCategory.setCategory(category);
+        return brandCategoryService.addBrand(brandCategory);
+    }
 
     private ProductPojo createProduct() throws ApiException{
         return createProduct("milton", 1, "qqq", 43);
@@ -37,19 +46,11 @@ public class ProductServiceTest extends AbstractUnitTest{
         return productService.addProduct(product);
     }
 
-    private void createBrand() throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
-        brandCategory.setBrand("kissan");
-        brandCategory.setCategory("food");
-        brandCategoryService.addBrand(brandCategory);
-    }
 
 
     @Test
     public void testAddProduct() throws ApiException {
-
-        createBrand();
-        ProductPojo productPojo = createProduct();
+        createProduct();
     }
 
     @Test
@@ -69,11 +70,26 @@ public class ProductServiceTest extends AbstractUnitTest{
 
         productService.updateProduct(productPojo.getId(), productPojo);
 
-        productPojo = productService.getProduct(1);
+        productPojo = productService.getProduct(productPojo.getId());
 
-        assertEquals("qqq" , productPojo.getBarcode());
+        assertEquals("ppp" , productPojo.getBarcode());
     }
 
+    @Test
+    public void testGetProduct() throws ApiException{
+        ProductPojo productPojo =  createProduct();
+        ProductPojo newProduct = productService.getProduct(productPojo.getId());
+        assertEquals(productPojo.getBarcode(), newProduct.getBarcode());
+    }
+
+    @Test
+    public void testBarcodeExist() throws ApiException{
+        createProduct();
+        ProductPojo productPojo = productService.getProductByBarcode("qqq");
+        assertEquals(productPojo.getBarcode(), "qqq");
+        assertEquals(productPojo.getName(), "milton");
+
+    }
 
 
 }

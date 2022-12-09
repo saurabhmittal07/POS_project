@@ -24,8 +24,7 @@ public class BrandCategoryDao extends AbstractDao{
     private static String select_by_name = "select p from BrandCategoryPojo p where brand=:brand AND category=:category";
 
 
-    @PersistenceContext
-    private EntityManager em;
+
 
     @Transactional
     public BrandCategoryPojo addBrand(BrandCategoryPojo brandCategoryPojo)  {

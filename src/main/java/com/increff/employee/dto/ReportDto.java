@@ -32,6 +32,9 @@ public class ReportDto {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
     public List<InventoryReport> showInventoryReport() {
         List<InventoryReport> inventoryReports = new ArrayList<>();
 
@@ -88,7 +91,7 @@ public class ReportDto {
         for(OrderPojo orderPojo : orders){
 
             // Get orderItems of orders
-            List<OrderItemPojo> orderItems = orderService.getReceipt(orderPojo.getId());
+            List<OrderItemPojo> orderItems = orderItemService.getReceipt(orderPojo.getId());
 
             // Go through all orderItems
             for(OrderItemPojo orderItemPojo : orderItems){

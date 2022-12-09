@@ -42,17 +42,6 @@ public class OrderService {
     }
 
 
-    @Transactional
-    public void updateInventory(InventoryPojo inventoryPojo, int quantity) throws ApiException {
-        if (inventoryPojo.getCount() < quantity) {
-            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
-        }
-    }
-
-    public List<OrderItemPojo> getReceipt(int id){
-        return orderDao.orderReciept(id);
-    }
-
     public OrderPojo getOrder(int id){
         return orderDao.getOrder(id);
     }
@@ -60,6 +49,5 @@ public class OrderService {
     public List<OrderPojo> getOrdersByDate(String startDate, String endDate){
         return orderDao.ordersByDate(startDate,endDate);
     }
-
 
 }

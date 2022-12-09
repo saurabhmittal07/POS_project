@@ -20,4 +20,8 @@ public class OrderItemService {
         }
     }
 
+    public List<OrderItemPojo> getReceipt(int id){
+        return orderItemDao.orderReciept(id);
+    }
+
 }
