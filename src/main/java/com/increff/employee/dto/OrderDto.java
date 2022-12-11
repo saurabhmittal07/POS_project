@@ -1,7 +1,6 @@
 package com.increff.employee.dto;
 
-import com.increff.employee.model.Inventory;
-import com.increff.employee.model.Order;
+import com.increff.employee.model.OrderForm;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.InventoryPojo;
@@ -68,12 +67,12 @@ public class OrderDto {
     }
 
 
-    public List<Order> showOrders(){
+    public List<OrderForm> showOrders(){
         List<OrderPojo> orderPojos = orderService.showOrders();
-        List<Order> orders =  new ArrayList();
+        List<OrderForm> orders =  new ArrayList();
 
         for(OrderPojo orderPojo : orderPojos){
-            Order order = new Order();
+            OrderForm order = new OrderForm();
             order.setId(orderPojo.getId());
 
             ZonedDateTime zonedDateTime = orderPojo.getDateTime();

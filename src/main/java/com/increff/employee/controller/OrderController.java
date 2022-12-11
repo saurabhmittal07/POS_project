@@ -1,12 +1,10 @@
 package com.increff.employee.controller;
 
 import com.increff.employee.dto.OrderDto;
-import com.increff.employee.model.Order;
+import com.increff.employee.model.OrderForm;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.UpdateOrderForm;
-import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.service.ApiException;
-import com.increff.employee.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class OrderController {
 
     @ApiOperation(value = "Shows all orders")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
-    public List<Order> showOrders(){
+    public List<OrderForm> showOrders(){
         return orderDto.showOrders();
     }
 

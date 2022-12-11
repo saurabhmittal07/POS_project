@@ -1,7 +1,6 @@
 package com.increff.employee.dto;
 
-import com.increff.employee.dao.ProductDao;
-import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryForm;
 import com.increff.employee.model.InventoryData;
 import com.increff.employee.model.InventoryUI;
 import com.increff.employee.pojo.InventoryPojo;
@@ -25,7 +24,7 @@ public class InventoryDto {
     private ProductService productService;
 
 
-    public void addInventory(Inventory inventory) throws ApiException {
+    public void addInventory(InventoryForm inventory) throws ApiException {
         TrimLower.trimLower(inventory);
         ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
 
@@ -57,7 +56,7 @@ public class InventoryDto {
     }
 
 
-    public void updateInventory(int id,  Inventory inventory) throws ApiException {
+    public void updateInventory(int id,  InventoryForm inventory) throws ApiException {
         TrimLower.trimLower(inventory);
         ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
 

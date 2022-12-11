@@ -1,6 +1,6 @@
 package com.increff.employee.model;
 
-public class Inventory {
+public class InventoryForm {
 
     private String barcode;
     private int count;

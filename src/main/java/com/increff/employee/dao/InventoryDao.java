@@ -1,12 +1,9 @@
 package com.increff.employee.dao;
-import com.increff.employee.model.Inventory;
-import com.increff.employee.model.Product;
+import com.increff.employee.model.InventoryForm;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.service.ApiException;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Repository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -63,7 +60,7 @@ public class InventoryDao extends AbstractDao {
 
 
     @Transactional
-    public void updateInventory(int id, Inventory inventory){
+    public void updateInventory(int id, InventoryForm inventory){
     }
 
 

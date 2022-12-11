@@ -1,21 +1,18 @@
 package com.increff.employee.util;
 
-import com.increff.employee.model.BrandCategory;
-import com.increff.employee.model.Inventory;
+import com.increff.employee.model.InventoryForm;
 import com.increff.employee.model.OrderItem;
 import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
-import com.increff.employee.pojo.ProductPojo;
 
 
 public class TrimLower {
-
 
     public static void trimLower(BrandCategoryPojo brandCategory){
         brandCategory.setBrand(brandCategory.getBrand().trim().toLowerCase());
         brandCategory.setCategory(brandCategory.getCategory().trim().toLowerCase());
     }
-    public static void trimLower(Inventory inventory){
+    public static void trimLower(InventoryForm inventory){
         inventory.setBarcode(inventory.getBarcode().trim().toLowerCase());
     }
 

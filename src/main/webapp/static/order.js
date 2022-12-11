@@ -30,7 +30,7 @@ function displayList(data){
         var buttonHtml = '<button onclick="downloadReceipt(' + e.id + ')">Download Receipt</button>';
 
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + (+i + 1) + '</td>'
 		+ '<td>' + e.date + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';

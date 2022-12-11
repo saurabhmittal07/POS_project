@@ -1,14 +1,11 @@
 package com.increff.employee.model;
 
 
-import java.sql.Time;
-import java.util.Date;
-
-
-public class Order {
+public class OrderForm {
 
     private int id;
     private String date;
+
 
     public int getId() {
         return id;
