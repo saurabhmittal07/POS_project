@@ -1,9 +1,6 @@
 package com.increff.employee.dto;
 
-import com.increff.employee.model.BrandCategory;
-import com.increff.employee.model.FilterForm;
-import com.increff.employee.model.InventoryReport;
-import com.increff.employee.model.ReportItem;
+import com.increff.employee.model.*;
 import com.increff.employee.pojo.*;
 import com.increff.employee.service.*;
 
@@ -67,15 +64,18 @@ public class ReportDto {
     }
 
 
-    public List<BrandCategory> showBrandReport() {
+    public List<BrandCategoryReport> showBrandReport() {
         List<BrandCategoryPojo> brands=  brandCategoryService.getAllBrands();
-        List<BrandCategory> brandDatas = new ArrayList<>();
+        List<BrandCategoryReport> brandDatas = new ArrayList<>();
 
+        int i=1;
         for(BrandCategoryPojo brand : brands){
-            BrandCategory brandData = new BrandCategory();
+            BrandCategoryReport brandData = new BrandCategoryReport();
             brandData.setBrand(brand.getBrand());
             brandData.setCategory(brand.getCategory());
+            brandData.setSNo(i++);
             brandDatas.add(brandData);
+
         }
         return brandDatas;
     }

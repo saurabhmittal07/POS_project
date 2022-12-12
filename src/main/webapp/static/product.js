@@ -11,7 +11,7 @@ function addProduct(event){
 	var json = toJson($form);
 	var url = getProductUrl();
 
-    console.log(json);
+
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -38,7 +38,7 @@ function updateProduct(event){
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
 
-    console.log(json);
+
 	$.ajax({
 	   url: url,
 	   type: 'PUT',
@@ -66,7 +66,7 @@ function getList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		displayList(data);
-	   		console.log(data);
+
 	   },
 	   error: handleAjaxError
 	});
@@ -108,7 +108,7 @@ function uploadRows(){
 
 
 
-    console.log(json);
+
 	//Make ajax call
 	$.ajax({
 	   url: url,

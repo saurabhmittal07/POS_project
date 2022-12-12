@@ -41,7 +41,7 @@ public class ProductController {
 
     @ApiOperation(value = "Gets an Product by ID")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
-    public ProductForm getProduct(@PathVariable int id) throws ApiException {
+    public ProductData getProduct(@PathVariable int id) throws ApiException {
         return productDto.getProduct(id);
     }
 

@@ -41,7 +41,7 @@ function displayList(data){
 
 function downloadReceipt(id){
     var url = getProductUrl() + "/" + "downloadInvoice/" +  id;
-    console.log(url);
+
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url);
     xhr.responseType = "arraybuffer";

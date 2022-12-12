@@ -28,7 +28,7 @@ public class ReportController {
 
     @ApiOperation(value = "Shows Brand Report")
     @RequestMapping(path = "/api/report/brand", method = RequestMethod.GET)
-    public List<BrandCategory> showBrandReport() {
+    public List<BrandCategoryReport> showBrandReport() {
         return reportDto.showBrandReport();
     }
 

@@ -1,7 +1,5 @@
 package com.increff.employee.service;
 
-import com.increff.employee.model.BrandCategory;
-import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import org.junit.Test;

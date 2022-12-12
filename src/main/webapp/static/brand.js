@@ -33,7 +33,7 @@ function updateBrand(event){
 	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
-	console.log("id  :" +  id);
+
 	var url = getBrandUrl() + "/" + id;
 
 	//Set the values to update
@@ -207,7 +207,7 @@ function displayBrand(data){
 	$("#brand-edit-form input[name=brand]").val(data.brand);
 	$("#brand-edit-form input[name=category]").val(data.category);
 	$("#brand-edit-form input[name=id]").val(data.id);
-	console.log(data.id);
+
 	$('#edit-brand-modal').modal('toggle');
 }
 

@@ -79,19 +79,19 @@ public class ProductDto {
     }
 
     
-    public ProductForm getProduct( int id) throws ApiException {
+    public ProductData getProduct( int id) throws ApiException {
         ProductPojo productPojo = productService.getProduct(id);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
 
-        ProductForm productForm = new ProductForm();
-        productForm.setBarcode(productPojo.getBarcode());
-        productForm.setBrand(brandCategoryPojo.getBrand());
-        productForm.setCategory(brandCategoryPojo.getCategory());
-        productForm.setMrp(productPojo.getMrp());
-        productForm.setName(productPojo.getName());
-        productForm.setId(productPojo.getId());
+        ProductData productData = new ProductData();
+        productData.setBarcode(productPojo.getBarcode());
+        productData.setBrand(brandCategoryPojo.getBrand());
+        productData.setCategory(brandCategoryPojo.getCategory());
+        productData.setMrp(productPojo.getMrp());
+        productData.setName(productPojo.getName());
+        productData.setId(productPojo.getId());
 
-        return productForm;
+        return productData;
 
     }
 

@@ -1,7 +1,6 @@
 package com.increff.employee.service;
 
 import com.increff.employee.dao.BrandCategoryDao;
-import com.increff.employee.model.BrandCategory;
 import com.increff.employee.pojo.BrandCategoryPojo;
 
 import com.increff.employee.util.TrimLower;

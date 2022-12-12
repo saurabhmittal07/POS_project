@@ -1,6 +1,6 @@
 package com.increff.employee.dto;
 
-import com.increff.employee.model.BrandCategory;
+import com.increff.employee.model.BrandCategoryForm;
 import com.increff.employee.model.BrandCategoryData;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.service.ApiException;
@@ -18,7 +18,7 @@ public class BrandCategoryDto {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
-    public void addBrand(BrandCategory brandCategory) throws ApiException {
+    public void addBrand(BrandCategoryForm brandCategory) throws ApiException {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo(brandCategory.getBrand(), brandCategory.getCategory());
         brandCategoryService.addBrand(brandCategoryPojo);
     }
@@ -37,7 +37,7 @@ public class BrandCategoryDto {
         return brands;
     }
 
-    public void update( int id, BrandCategory brandCategory) throws ApiException {
+    public void update( int id, BrandCategoryForm brandCategory) throws ApiException {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo(brandCategory.getBrand(), brandCategory.getCategory());
         brandCategoryService.updateBrand(id, brandCategoryPojo);
     }

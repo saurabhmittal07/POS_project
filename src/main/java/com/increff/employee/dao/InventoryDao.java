@@ -26,7 +26,6 @@ public class InventoryDao extends AbstractDao {
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setCount(count);
         inventoryPojo.setProductId(productId);
-        System.out.println(count);
         em().persist(inventoryPojo);
         return inventoryPojo;
     }

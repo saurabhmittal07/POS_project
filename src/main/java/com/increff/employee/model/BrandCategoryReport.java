@@ -1,8 +1,17 @@
 package com.increff.employee.model;
 
-public class BrandCategory {
+public class BrandCategoryReport {
+    private int SNo;
     private String Brand;
     private String Category;
+
+    public int getSNo() {
+        return SNo;
+    }
+
+    public void setSNo(int SNo) {
+        this.SNo = SNo;
+    }
 
     public String getBrand() {
         return Brand;
@@ -17,15 +26,6 @@ public class BrandCategory {
     }
 
     public void setCategory(String category) {
-        Category = category;
-    }
-
-    public BrandCategory() {
-
-    }
-
-    public BrandCategory(String brand, String category) {
-        Brand = brand;
         Category = category;
     }
 }
