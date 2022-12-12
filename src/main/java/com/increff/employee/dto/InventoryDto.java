@@ -3,6 +3,7 @@ package com.increff.employee.dto;
 import com.increff.employee.model.InventoryForm;
 import com.increff.employee.model.InventoryData;
 import com.increff.employee.model.InventoryUI;
+import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
@@ -75,6 +76,17 @@ public class InventoryDto {
         ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
         inventoryData.setBarcode(productPojo.getBarcode());
         return inventoryData;
+    }
+
+    public double checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
+        ProductPojo productPojo = productService.getProductByBarcode(inventoryForm.getBarcode());
+        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
+
+        if (inventoryPojo.getCount() < inventoryForm.getCount()) {
+            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
+        }
+
+        return productPojo.getMrp();
     }
 
 }

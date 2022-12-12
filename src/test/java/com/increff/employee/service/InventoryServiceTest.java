@@ -97,12 +97,4 @@ public class InventoryServiceTest extends AbstractUnitTest{
         assertEquals(5,newInventoryPojo.getCount());
     }
 
-    @Test
-    public void testBarcodeExist(){
-        Pair p = inventoryService.inventoryExist(2);
-        assertEquals(0,p.getKey());
-        assertEquals(0,p.getValue());
-
-    }
-
 }

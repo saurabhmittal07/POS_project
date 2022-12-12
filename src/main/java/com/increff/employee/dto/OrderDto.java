@@ -45,7 +45,7 @@ public class OrderDto {
         orderService.createOrder(orderPojo);
 
         //Change OrderItems to OrderItemPojos
-        List<OrderItemPojo> orderItemPojos = new ArrayList<>();
+
         for(OrderItem orderItem: items){
             TrimLower.trimLower(orderItem);
             ProductPojo productPojo = productService.getProductByBarcode(orderItem.getBarcode());
@@ -60,10 +60,11 @@ public class OrderDto {
             InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
             inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
 
-            orderItemPojos.add(orderItemPojo);
+
+            orderItemService.addOrderItem(orderItemPojo);
         }
         // Add order items
-        orderItemService.addOrderItem(orderItemPojos);
+
     }
 
 
@@ -83,49 +84,4 @@ public class OrderDto {
         }
         return orders;
     }
-
-
-    public void updateInventory(UpdateOrderForm updateOrderForm) throws ApiException{
-        ProductPojo productPojo = productService.getProductByBarcode(updateOrderForm.getBarcode());
-        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
-
-        if (inventoryPojo.getCount() < updateOrderForm.getQuantity()) {
-            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
-        }
-    }
-
-
-
-    public double getMrp(String barcode , String quantity) throws ApiException{
-        int cur = Integer.parseInt(quantity);
-        validate(barcode, cur);
-
-        ProductPojo productPojo = productService.getProductByBarcode(barcode);
-        // Check if required quantity available
-        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
-
-
-        if(inventoryPojo == null){
-            throw new ApiException(0 + " Unit/units available in inventory");
-        } else if(inventoryPojo.getCount() < cur){
-            throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
-        }
-
-        return  productPojo.getMrp();
-    }
-
-    private void validate(String barcode , int quantity) throws ApiException{
-        if( barcode.equals("")){
-            throw new ApiException("Please enter barcode");
-        }
-        if(quantity <= 0){
-            throw new ApiException("Quantity should be more than 0");
-        }
-        ProductPojo productPojo = productService.getProductByBarcode(barcode);
-
-        if(productPojo == null){
-            throw new ApiException("Product with barcode:" + barcode +" does not exist");
-        }
-    }
-
 }

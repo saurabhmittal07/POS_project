@@ -78,16 +78,6 @@ public class CreateInstance extends AbstractUnitTest {
         return orderPojo;
     }
 
-    private int createOrderItem() throws ApiException {
-        OrderPojo orderPojo = createOrder();
-        OrderItemPojo orderItemPojo = new OrderItemPojo();
-        orderItemPojo.setPrice(100);
-        orderItemPojo.setOrderId(orderPojo.getId());
-        orderItemPojo.setQuantity(12);
-        List<OrderItemPojo> list = new ArrayList<>();
-        list.add(orderItemPojo);
-        orderItemService.addOrderItem(list);
-        return orderItemPojo.getOrderId();
-    }
+
 
 }

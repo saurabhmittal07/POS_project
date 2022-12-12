@@ -38,6 +38,7 @@ public class ReportDto {
         List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
         int i=0;
 
+        // Key Brand Id, Value index of brand Id in reportList
         HashMap<Integer, Integer> map = new HashMap<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
             ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
@@ -91,7 +92,7 @@ public class ReportDto {
         for(OrderPojo orderPojo : orders){
 
             // Get orderItems of orders
-            List<OrderItemPojo> orderItems = orderItemService.getReceipt(orderPojo.getId());
+            List<OrderItemPojo> orderItems = orderItemService.getOrderItems(orderPojo.getId());
 
             // Go through all orderItems
             for(OrderItemPojo orderItemPojo : orderItems){

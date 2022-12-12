@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class InventoryDao extends AbstractDao {
 
-    private static String delete_id = "delete from InventoryPojo p where id=:id";
+
     private static String select_all = "select p from InventoryPojo p";
     private static String select_id = "select p from InventoryPojo p where id=:id";
 
@@ -43,24 +43,15 @@ public class InventoryDao extends AbstractDao {
         return query.getResultList().stream().findFirst().orElse(null);
     }
 
-    @Transactional
-    public void deleteInventory(int id){
-        Query query = em().createQuery(delete_id);
-        query.setParameter("id", id);
-        query.executeUpdate();
-    }
 
     @Transactional
     public InventoryPojo getInventory(int id){
         TypedQuery<InventoryPojo > query = getQuery(select_id, InventoryPojo .class);
         query.setParameter("id", id);
-        return getSingle(query);
+        return query.getResultList().stream().findFirst().orElse(null);
     }
 
 
-    @Transactional
-    public void updateInventory(int id, InventoryForm inventory){
-    }
 
 
 }

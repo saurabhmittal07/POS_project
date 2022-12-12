@@ -1,13 +1,11 @@
 package com.increff.employee.service;
 
 import com.increff.employee.pojo.*;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -79,9 +77,7 @@ public class OrderItemServiceTest extends AbstractUnitTest{
         orderItemPojo.setPrice(100);
         orderItemPojo.setOrderId(orderPojo.getId());
         orderItemPojo.setQuantity(12);
-        List<OrderItemPojo> list = new ArrayList<>();
-        list.add(orderItemPojo);
-        orderItemService.addOrderItem(list);
+        orderItemService.addOrderItem(orderItemPojo);
         return orderItemPojo.getOrderId();
     }
 
@@ -93,7 +89,7 @@ public class OrderItemServiceTest extends AbstractUnitTest{
     @Test
     public void testGetReceipt() throws ApiException{
        int orderId = createOrderItem();
-        List<OrderItemPojo> list = orderItemService.getReceipt(orderId);
+        List<OrderItemPojo> list = orderItemService.getOrderItems(orderId);
         assertEquals(1,list.size());
         assertEquals(12,list.get(0).getQuantity());
     }

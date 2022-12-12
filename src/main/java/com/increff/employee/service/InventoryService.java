@@ -25,14 +25,13 @@ public class InventoryService {
         }
 
         // Check count of that product in inventory
-        Pair<Integer, Integer> previousCount = inventoryExist(inventory.getProductId());
-        if(previousCount.getKey() == 0 ){
+        InventoryPojo inventoryPojo = getInventory(inventory.getProductId());
+        if(inventoryPojo == null){
             return inventoryDao.add(inventory.getProductId(), inventory.getCount());
 
         }
 
-        InventoryPojo inventoryPojo = inventoryDao.getInventory(previousCount.getKey());
-        inventoryPojo.setCount(inventory.getCount() + previousCount.getValue());
+        inventoryPojo.setCount(inventory.getCount() + inventoryPojo.getCount());
         return inventoryPojo;
     }
 
@@ -56,18 +55,7 @@ public class InventoryService {
         InventoryPojo inventoryPojo = inventoryDao.getInventory(id);
         return inventoryPojo;
     }
-   public Pair  inventoryExist(int id){
-        List<InventoryPojo> inventories = inventoryDao.showInventory();
-        for(InventoryPojo inventoryPojo : inventories){
-            if(inventoryPojo.getProductId() == id){
-                Pair<Integer, Integer> p = new Pair(inventoryPojo.getId(),inventoryPojo.getCount());
 
-              return p;
-            }
-        }
-       Pair<Integer, Integer> p = new Pair(0,0);
-       return p;
-   }
 
    public InventoryPojo getInventoryByProductId(int id){
         return inventoryDao.getInventoryByProductId(id);

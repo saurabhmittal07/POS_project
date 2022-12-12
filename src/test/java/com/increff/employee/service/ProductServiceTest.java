@@ -2,6 +2,7 @@ package com.increff.employee.service;
 
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.ProductPojo;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,6 +33,7 @@ public class ProductServiceTest extends AbstractUnitTest{
     private ProductPojo createProduct() throws ApiException{
         return createProduct("milton", 1, "qqq", 43);
     }
+
 
    private ProductPojo createProduct  (String name, int brandId, String barcode, int mrp) throws ApiException{
         createBrand();

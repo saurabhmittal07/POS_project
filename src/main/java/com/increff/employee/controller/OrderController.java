@@ -35,18 +35,9 @@ public class OrderController {
 
 
 
-    @ApiOperation(value = "updates quantity of a product")
-    @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
-    public void updateInventory(@RequestBody UpdateOrderForm updateOrderForm) throws ApiException{
-            orderDto.updateInventory(updateOrderForm);
-    }
 
 
-    @ApiOperation(value = "Check if required inventory available or not")
-    @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{cur}", method = RequestMethod.GET)
-    public double getMrp(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
-        return orderDto.getMrp(barcode , cur);
-    }
+
 
 
 }

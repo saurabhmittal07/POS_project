@@ -30,13 +30,12 @@ function checkInventory(event){
         }
     }
 
-
     var totalReq = +curCount+ +json["quantity"];
 
     var url = getOrderUrl() + "/inventoryExist" + "/"+ json["barcode"] + "/" + totalReq;
     json = JSON.stringify(json);
 
-
+    console.log(url);
     $.ajax({
     	   url: url,
     	   type: 'GET',
@@ -109,6 +108,7 @@ function updateOrder(event){
     var json = toJson($form);
 	var url = getOrderUrl() + "/updateInventory";
 
+    console.log("update : " + json)
 
 	$.ajax({
 	   url: url,

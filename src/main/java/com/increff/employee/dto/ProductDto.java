@@ -3,11 +3,14 @@ package com.increff.employee.dto;
 import com.increff.employee.model.ProductData;
 import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.BrandCategoryPojo;
+import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
+import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.ProductService;
 import com.increff.employee.util.TrimLower;
+import com.increff.employee.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class ProductDto {
 
     @Autowired
     private BrandCategoryService brandCategoryService;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
@@ -95,6 +101,24 @@ public class ProductDto {
 
     }
 
+    public double getMrp(String barcode , String quantity) throws ApiException{
+        int cur = Integer.parseInt(quantity);
+        validate(barcode, cur);
+
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
+        // Check if required quantity available
+        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
+
+
+        if(inventoryPojo == null){
+            throw new ApiException(0 + " Unit/units available in inventory");
+        } else if(inventoryPojo.getCount() < cur){
+            throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
+        }
+
+        return  productPojo.getMrp();
+    }
+
     protected void valid(ProductForm product) throws ApiException{
         if(product.getName().equals("")){
             throw new ApiException("Product name can not be empty");
@@ -113,4 +137,20 @@ public class ProductDto {
         }
 
     }
+
+    public void validate(String barcode, int quantity) throws ApiException {
+        if( barcode.equals("")){
+            throw new ApiException("Please enter barcode");
+        }
+        if(quantity <= 0){
+            throw new ApiException("Quantity should be more than 0");
+        }
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
+
+        if(productPojo == null){
+            throw new ApiException("Product with barcode:" + barcode +" does not exist");
+        }
+    }
+
+
 }
