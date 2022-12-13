@@ -36,10 +36,4 @@ public class BrandCategoryPojo {
         this.category = category;
     }
 
-    public BrandCategoryPojo() {
-    }
-    public  BrandCategoryPojo(String brand, String category) {
-        this.brand = brand;
-        this.category = category;
-    }
 }

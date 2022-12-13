@@ -25,10 +25,9 @@ public class InventoryService {
         }
 
         // Check count of that product in inventory
-        InventoryPojo inventoryPojo = getInventory(inventory.getProductId());
+        InventoryPojo inventoryPojo = getInventoryByProductId(inventory.getProductId());
         if(inventoryPojo == null){
             return inventoryDao.add(inventory.getProductId(), inventory.getCount());
-
         }
 
         inventoryPojo.setCount(inventory.getCount() + inventoryPojo.getCount());

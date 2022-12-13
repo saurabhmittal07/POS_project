@@ -5,6 +5,7 @@ import com.increff.employee.model.BrandCategoryData;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
+import com.increff.employee.util.Convertor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,11 @@ public class BrandCategoryDto {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
+    @Autowired
+    private Convertor convertor;
+
     public void addBrand(BrandCategoryForm brandCategory) throws ApiException {
-        BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo(brandCategory.getBrand(), brandCategory.getCategory());
-        brandCategoryService.addBrand(brandCategoryPojo);
+        brandCategoryService.addBrand(convertor.convertBrandFormToPojo(brandCategory));
     }
 
 
@@ -28,26 +31,18 @@ public class BrandCategoryDto {
         List<BrandCategoryPojo> brandCategoryPojos = brandCategoryService.getAllBrands();
         List<BrandCategoryData> brands = new ArrayList<>();
         for(BrandCategoryPojo brandCategoryPojo : brandCategoryPojos){
-            BrandCategoryData brandCategory = new BrandCategoryData();
-            brandCategory.setCategory(brandCategoryPojo.getCategory());
-            brandCategory.setBrand(brandCategoryPojo.getBrand());
-            brandCategory.setId(brandCategoryPojo.getId());
-            brands.add(brandCategory);
+            brands.add(convertor.convertBrandPojoToData(brandCategoryPojo));
         }
         return brands;
     }
 
     public void update( int id, BrandCategoryForm brandCategory) throws ApiException {
-        BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo(brandCategory.getBrand(), brandCategory.getCategory());
-        brandCategoryService.updateBrand(id, brandCategoryPojo);
+        brandCategoryService.updateBrand(id, convertor.convertBrandFormToPojo(brandCategory));
     }
 
     public BrandCategoryData getBrand( int id) throws ApiException {
         BrandCategoryPojo brandCategoryPojo =  brandCategoryService.getBrand(id);
-        BrandCategoryData brandCategory = new BrandCategoryData();
-        brandCategory.setBrand(brandCategoryPojo.getBrand());
-        brandCategory.setCategory(brandCategoryPojo.getCategory());
-        brandCategory.setId(brandCategoryPojo.getId());
-        return brandCategory;
+        return convertor.convertBrandPojoToData(brandCategoryPojo);
     }
+
 }

@@ -54,7 +54,7 @@ public class InvoiceHelper {
         return response;
     }
 
-    public static byte[] readFully(InputStream stream) throws IOException
+    private static byte[] readFully(InputStream stream) throws IOException
     {
         byte[] buffer = new byte[8192];
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -67,7 +67,7 @@ public class InvoiceHelper {
         return baos.toByteArray();
     }
 
-    public static byte[] loadFile(String sourcePath) throws IOException
+    private static byte[] loadFile(String sourcePath) throws IOException
     {
         InputStream inputStream = null;
         try

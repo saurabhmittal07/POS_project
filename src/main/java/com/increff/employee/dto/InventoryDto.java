@@ -9,6 +9,7 @@ import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.ProductService;
+import com.increff.employee.util.Convertor;
 import com.increff.employee.util.TrimLower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class InventoryDto {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private Convertor convertor;
+
 
     public void addInventory(InventoryForm inventory) throws ApiException {
         TrimLower.trimLower(inventory);
@@ -33,10 +37,7 @@ public class InventoryDto {
             throw new ApiException("Product with barcode: " + inventory.getBarcode() + " does not exist");
         }
 
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setProductId(productPojo.getId());
-        inventoryPojo.setCount(inventory.getCount());
-
+        InventoryPojo inventoryPojo = convertor.convertInventoryFormToPojo(inventory,productPojo);
         inventoryService.addInventory(inventoryPojo);
     }
 
@@ -61,21 +62,14 @@ public class InventoryDto {
         TrimLower.trimLower(inventory);
         ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
 
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setCount(inventory.getCount());
-        inventoryPojo.setProductId(productPojo.getId());
 
-        inventoryService.updateInventory(id, inventoryPojo);
+
+        inventoryService.updateInventory(id, convertor.convertInventoryFormToPojo(inventory,productPojo));
     }
 
     public InventoryData getInventory(int id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.getInventory(id);
-        InventoryData inventoryData = new InventoryData();
-        inventoryData.setId(inventoryPojo.getId());
-        inventoryData.setCount(inventoryPojo.getCount());
-        ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
-        inventoryData.setBarcode(productPojo.getBarcode());
-        return inventoryData;
+        return convertor.convertInventoryPojoToData(inventoryPojo);
     }
 
     public double checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
@@ -88,5 +82,4 @@ public class InventoryDto {
 
         return productPojo.getMrp();
     }
-
 }

@@ -9,6 +9,7 @@ import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandCategoryService;
 import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.ProductService;
+import com.increff.employee.util.Convertor;
 import com.increff.employee.util.TrimLower;
 import com.increff.employee.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,13 @@ public class ProductDto {
     @Autowired
     private InventoryService inventoryService;
 
+    @Autowired
+    private Convertor convertor;
+
     public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
         valid(product);
-        ProductPojo productPojo = new ProductPojo();
-
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
-        if(brandCategoryPojo == null){
-            throw new ApiException("Brand-Category pair does not exist");
-        }
-        productPojo.setBarcode(product.getBarcode());
-        productPojo.setBrandCategory(brandCategoryPojo.getId());
-        productPojo.setName(product.getName());
-        productPojo.setMrp(product.getMrp());
+        ProductPojo productPojo = convertor.convertProductFormToProductPojo(product);
         productService.addProduct(productPojo);
     }
 
@@ -50,15 +45,7 @@ public class ProductDto {
         List<ProductData> productDatas = new ArrayList<>();
         for(ProductPojo productPojo : productPojos){
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
-            ProductData productData = new ProductData();
-            productData.setName(productPojo.getName());
-            productData.setBrand(brandCategoryPojo.getBrand());
-            productData.setBarcode(productPojo.getBarcode());
-            productData.setCategory(brandCategoryPojo.getCategory());
-            productData.setMrp(productPojo.getMrp());
-            productData.setId(productPojo.getId());
-
-            productDatas.add(productData);
+            productDatas.add(convertor.convertProductPojoToData(productPojo, brandCategoryPojo));
         }
 
         return productDatas;
@@ -69,18 +56,7 @@ public class ProductDto {
         TrimLower.trimLower(product);
         valid(product);
 
-        ProductPojo productPojo = new ProductPojo();
-
-        productPojo.setMrp(product.getMrp());
-        productPojo.setBarcode(product.getBarcode());
-        productPojo.setName(product.getName());
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
-
-        if(brandCategoryPojo == null){
-            throw new ApiException("Brand - Category pair does not exist");
-        }
-        productPojo.setBrandCategory(brandCategoryPojo.getId());
-
+        ProductPojo productPojo = convertor.convertProductFormToProductPojo(product);
         productService.updateProduct(id, productPojo);
     }
 
@@ -89,15 +65,7 @@ public class ProductDto {
         ProductPojo productPojo = productService.getProduct(id);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
 
-        ProductData productData = new ProductData();
-        productData.setBarcode(productPojo.getBarcode());
-        productData.setBrand(brandCategoryPojo.getBrand());
-        productData.setCategory(brandCategoryPojo.getCategory());
-        productData.setMrp(productPojo.getMrp());
-        productData.setName(productPojo.getName());
-        productData.setId(productPojo.getId());
-
-        return productData;
+        return convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
 
     }
 
@@ -137,7 +105,6 @@ public class ProductDto {
         }
 
     }
-
     public void validate(String barcode, int quantity) throws ApiException {
         if( barcode.equals("")){
             throw new ApiException("Please enter barcode");

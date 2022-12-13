@@ -1,7 +1,9 @@
 package com.increff.employee.service;
 
 import com.increff.employee.pojo.BrandCategoryPojo;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -9,6 +11,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class BrandCategoryServiceTest extends AbstractUnitTest {
+
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
     @Autowired
     private BrandCategoryService brandCategoryService;
 
@@ -17,7 +24,7 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
     }
 
     public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo(brand,category);
+        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
         brandCategory.setBrand(brand);
         brandCategory.setCategory(category);
         return brandCategoryService.addBrand(brandCategory);
@@ -26,6 +33,8 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
 
     @Test
     public void testAdd() throws ApiException {
+        createBrand();
+        exceptionRule.expect(ApiException.class);
         createBrand();
     }
 

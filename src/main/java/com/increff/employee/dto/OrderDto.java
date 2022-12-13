@@ -35,8 +35,7 @@ public class OrderDto {
     private InventoryService inventoryService;
 
 
-
-    @Transactional
+    @Transactional(rollbackOn = ApiException.class)
     public void createOrder(ZonedDateTime zonedDateTime,List<OrderItem> items) throws ApiException {
 
         //Create Order
@@ -48,6 +47,8 @@ public class OrderDto {
 
         for(OrderItem orderItem: items){
             TrimLower.trimLower(orderItem);
+            validate(orderItem.getBarcode(), orderItem.getQuantity());
+
             ProductPojo productPojo = productService.getProductByBarcode(orderItem.getBarcode());
 
             OrderItemPojo orderItemPojo = new OrderItemPojo();
@@ -60,6 +61,8 @@ public class OrderDto {
             InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
             inventoryPojo.setCount(inventoryPojo.getCount() - orderItem.getQuantity());
 
+
+            // Validate
 
             orderItemService.addOrderItem(orderItemPojo);
         }
@@ -84,4 +87,26 @@ public class OrderDto {
         }
         return orders;
     }
+
+    public void validate(String barcode, int quantity) throws ApiException {
+        if( barcode.equals("")){
+            throw new ApiException("Please enter barcode");
+        }
+        if(quantity <= 0){
+            throw new ApiException("Quantity should be more than 0");
+        }
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
+
+        if(productPojo == null){
+            throw new ApiException("Product with barcode:" + barcode +" does not exist");
+        }
+        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
+
+        if(inventoryPojo == null){
+            throw new ApiException(0 + " Unit/units available in inventory");
+        } else if(inventoryPojo.getCount() < quantity){
+            throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
+        }
+    }
 }
+

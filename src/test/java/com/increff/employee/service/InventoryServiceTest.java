@@ -28,7 +28,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
     }
 
     public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo(brand,category);
+        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
         brandCategory.setBrand(brand);
         brandCategory.setCategory(category);
         return brandCategoryService.addBrand(brandCategory);
