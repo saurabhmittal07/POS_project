@@ -43,7 +43,7 @@ public class ProductDao extends AbstractDao{
     public ProductPojo getProduct(int id){
         TypedQuery<ProductPojo > query = getQuery(select_id, ProductPojo .class);
         query.setParameter("id", id);
-        return getSingle(query);
+        return query.getResultList().stream().findFirst().orElse(null);
     }
 
 

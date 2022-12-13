@@ -44,8 +44,11 @@ public class ProductService {
 
     }
 
-    public ProductPojo getProduct(int id){
+    public ProductPojo getProduct(int id) throws ApiException{
         ProductPojo productPojo = productDao.getProduct(id);
+        if(productPojo == null){
+            throw new ApiException("Product with given id does not exists");
+        }
         return productPojo;
     }
 

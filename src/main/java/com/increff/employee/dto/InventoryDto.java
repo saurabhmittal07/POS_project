@@ -3,7 +3,6 @@ package com.increff.employee.dto;
 import com.increff.employee.model.InventoryForm;
 import com.increff.employee.model.InventoryData;
 import com.increff.employee.model.InventoryUI;
-import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
@@ -25,9 +24,6 @@ public class InventoryDto {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private Convertor convertor;
-
 
     public void addInventory(InventoryForm inventory) throws ApiException {
         TrimLower.trimLower(inventory);
@@ -37,11 +33,11 @@ public class InventoryDto {
             throw new ApiException("Product with barcode: " + inventory.getBarcode() + " does not exist");
         }
 
-        InventoryPojo inventoryPojo = convertor.convertInventoryFormToPojo(inventory,productPojo);
+        InventoryPojo inventoryPojo = Convertor.convertInventoryFormToPojo(inventory,productPojo);
         inventoryService.addInventory(inventoryPojo);
     }
 
-    public List<InventoryUI> showInventory(){
+    public List<InventoryUI> showInventory() throws ApiException {
         List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
         List<InventoryUI> inventories = new ArrayList<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
@@ -61,15 +57,13 @@ public class InventoryDto {
     public void updateInventory(int id,  InventoryForm inventory) throws ApiException {
         TrimLower.trimLower(inventory);
         ProductPojo productPojo = productService.getProductByBarcode(inventory.getBarcode());
-
-
-
-        inventoryService.updateInventory(id, convertor.convertInventoryFormToPojo(inventory,productPojo));
+        inventoryService.updateInventory(id, Convertor.convertInventoryFormToPojo(inventory,productPojo));
     }
 
     public InventoryData getInventory(int id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.getInventory(id);
-        return convertor.convertInventoryPojoToData(inventoryPojo);
+        ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
+        return Convertor.convertInventoryPojoToData(inventoryPojo, productPojo);
     }
 
     public double checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{

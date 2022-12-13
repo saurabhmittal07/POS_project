@@ -13,40 +13,43 @@ import static org.junit.Assert.assertEquals;
 public class BrandCategoryServiceTest extends AbstractUnitTest {
 
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
     @Autowired
     private BrandCategoryService brandCategoryService;
-
-    public  BrandCategoryPojo createBrand() throws ApiException {
-        return createBrand("nike","shoes");
-    }
-
-    public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
-        brandCategory.setBrand(brand);
-        brandCategory.setCategory(category);
-        return brandCategoryService.addBrand(brandCategory);
-    }
-
-
     @Test
     public void testAdd() throws ApiException {
         createBrand();
-        exceptionRule.expect(ApiException.class);
-        createBrand();
     }
+
+    @Test
+    public void testAddDuplicates(){
+        try{
+            createBrand();
+            createBrand();
+        } catch (ApiException exception) {
+            assertEquals("Brand - Category pair already exists",exception.getMessage().trim());
+        }
+    }
+
 
     @Test
     public void testGetBrand() throws ApiException {
         BrandCategoryPojo brandCategory =createBrand();
 
-
         brandCategory = brandCategoryService.getBrand(brandCategory.getId());
         assertEquals("nike",brandCategory.getBrand());
         assertEquals("shoes",brandCategory.getCategory());
     }
+
+    @Test
+    public void testWithWrongId() throws ApiException {
+        try{
+            brandCategoryService.getBrand(0);
+        } catch (ApiException exception) {
+            assertEquals("Brand with the given id does not exists",exception.getMessage().trim());
+        }
+    }
+
+
 
     @Test
     public void testUpdate() throws ApiException {
@@ -57,6 +60,19 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
         brandCategoryService.updateBrand(brandCategory.getId(), brandCategory);
         assertEquals("aaa",brandCategory.getBrand());
         assertEquals("bbb",brandCategory.getCategory());
+    }
+
+    @Test
+    public void testUpdateWrongInput() throws ApiException {
+        BrandCategoryPojo brandCategory=createBrand();
+
+        brandCategory.setBrand("");
+        brandCategory.setCategory("bbb");
+        try{
+            brandCategoryService.updateBrand(brandCategory.getId(), brandCategory);
+        }catch (ApiException exception){
+            assertEquals("Brand or Category can not be empty",exception.getMessage().trim());
+        }
     }
 
     @Test

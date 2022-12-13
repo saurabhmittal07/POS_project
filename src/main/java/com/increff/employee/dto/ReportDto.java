@@ -32,7 +32,7 @@ public class ReportDto {
     @Autowired
     private OrderItemService orderItemService;
 
-    public List<InventoryReport> showInventoryReport() {
+    public List<InventoryReport> showInventoryReport() throws ApiException {
         List<InventoryReport> inventoryReports = new ArrayList<>();
 
         List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
@@ -82,7 +82,7 @@ public class ReportDto {
     }
 
 
-    public List<ReportItem> showReport(@RequestBody FilterForm filterForm) throws ApiException {
+    public List<ReportItem> showRevenueReport(@RequestBody FilterForm filterForm) throws ApiException {
         HashMap<Integer, Pair<Integer,Double>> map = new HashMap<>();
         // Get Order in date range
 
@@ -122,7 +122,7 @@ public class ReportDto {
         return populateList(map);
     }
 
-    private List<ReportItem> populateList(HashMap<Integer, Pair<Integer,Double>> map){
+    private List<ReportItem> populateList(HashMap<Integer, Pair<Integer,Double>> map) throws ApiException {
         List<ReportItem> items = new ArrayList<>();
         for (Map.Entry<Integer,Pair<Integer,Double>> mapElement : map.entrySet()) {
             int brandId = mapElement.getKey();

@@ -23,44 +23,6 @@ public class InventoryServiceTest extends AbstractUnitTest{
     private InventoryService inventoryService;
 
 
-    public BrandCategoryPojo createBrand() throws ApiException {
-        return createBrand("nike","shoes");
-    }
-
-    public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
-        brandCategory.setBrand(brand);
-        brandCategory.setCategory(category);
-        return brandCategoryService.addBrand(brandCategory);
-    }
-
-    private ProductPojo createProduct() throws ApiException{
-        return createProduct("milton", 1, "qqq", 43);
-    }
-
-    private ProductPojo createProduct  (String name, int brandId, String barcode, int mrp) throws ApiException{
-        createBrand();
-        ProductPojo product = new ProductPojo();
-        product.setName(name);
-        product.setBarcode(barcode);
-        product.setMrp(mrp);
-        product.setBrandCategory(brandId);
-
-        return productService.addProduct(product);
-    }
-
-    @Transactional
-    private InventoryPojo addInventory() throws ApiException {
-        ProductPojo productPojo = createProduct();
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setProductId(productPojo.getId());
-        inventoryPojo.setCount(5);
-
-        return inventoryService.addInventory(inventoryPojo);
-    }
-
-
-
     @Test
     public  void testAddInventory() throws  ApiException{
         addInventory();

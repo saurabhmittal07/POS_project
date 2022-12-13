@@ -28,7 +28,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Show Inventory" )
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
-    public List<InventoryUI> getAllProducts(){
+    public List<InventoryUI> getAllProducts() throws ApiException {
         return inventoryDto.showInventory();
     }
 

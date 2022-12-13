@@ -57,9 +57,6 @@ function getReport(event){
 	return false;
 }
 
-
-
-
 function downloadReport(){
     writeFileData(reportList);
 }

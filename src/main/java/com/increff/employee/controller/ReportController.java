@@ -22,7 +22,7 @@ public class ReportController {
 
     @ApiOperation(value = "Shows Inventory Report")
     @RequestMapping(path = "/api/report/inventory", method = RequestMethod.GET)
-    public List<InventoryReport> showInventoryReport() {
+    public List<InventoryReport> showInventoryReport() throws ApiException {
         return reportDto.showInventoryReport();
     }
 
@@ -34,7 +34,7 @@ public class ReportController {
 
     @ApiOperation(value = "Shows Filtered Report of Revenue")
     @RequestMapping(path = "/api/report", method = RequestMethod.POST)
-    public List<ReportItem> showReport(@RequestBody FilterForm filterForm) throws ApiException{
-        return reportDto.showReport(filterForm);
+    public List<ReportItem> showRevenueReport(@RequestBody FilterForm filterForm) throws ApiException{
+        return reportDto.showRevenueReport(filterForm);
     }
 }

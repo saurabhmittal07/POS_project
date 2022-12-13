@@ -45,7 +45,7 @@ public class CreateInstance extends AbstractUnitTest {
         return brandCategoryService.addBrand(brandCategory);
     }
 
-    private ProductPojo createProduct() throws ApiException{
+    public ProductPojo createProduct() throws ApiException{
         return createProduct("milton", 1, "qqq", 43);
     }
 

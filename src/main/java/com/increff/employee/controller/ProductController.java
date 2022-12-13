@@ -28,7 +28,7 @@ public class ProductController {
 
     @ApiOperation(value = "Show All Product")
     @RequestMapping(path = "/api/product", method = RequestMethod.GET)
-    public List<ProductData> getAllProducts(){
+    public List<ProductData> getAllProducts() throws ApiException {
         return productDto.getAllProducts();
     }
 

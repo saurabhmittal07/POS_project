@@ -19,11 +19,9 @@ public class BrandCategoryDto {
     @Autowired
     private BrandCategoryService brandCategoryService;
 
-    @Autowired
-    private Convertor convertor;
 
     public void addBrand(BrandCategoryForm brandCategory) throws ApiException {
-        brandCategoryService.addBrand(convertor.convertBrandFormToPojo(brandCategory));
+        brandCategoryService.addBrand(Convertor.convertBrandFormToPojo(brandCategory));
     }
 
 
@@ -31,18 +29,18 @@ public class BrandCategoryDto {
         List<BrandCategoryPojo> brandCategoryPojos = brandCategoryService.getAllBrands();
         List<BrandCategoryData> brands = new ArrayList<>();
         for(BrandCategoryPojo brandCategoryPojo : brandCategoryPojos){
-            brands.add(convertor.convertBrandPojoToData(brandCategoryPojo));
+            brands.add(Convertor.convertBrandPojoToData(brandCategoryPojo));
         }
         return brands;
     }
 
     public void update( int id, BrandCategoryForm brandCategory) throws ApiException {
-        brandCategoryService.updateBrand(id, convertor.convertBrandFormToPojo(brandCategory));
+        brandCategoryService.updateBrand(id, Convertor.convertBrandFormToPojo(brandCategory));
     }
 
     public BrandCategoryData getBrand( int id) throws ApiException {
         BrandCategoryPojo brandCategoryPojo =  brandCategoryService.getBrand(id);
-        return convertor.convertBrandPojoToData(brandCategoryPojo);
+        return Convertor.convertBrandPojoToData(brandCategoryPojo);
     }
 
 }

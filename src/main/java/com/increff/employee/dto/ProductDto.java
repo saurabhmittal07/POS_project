@@ -30,22 +30,21 @@ public class ProductDto {
     @Autowired
     private InventoryService inventoryService;
 
-    @Autowired
-    private Convertor convertor;
 
     public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
         valid(product);
-        ProductPojo productPojo = convertor.convertProductFormToProductPojo(product);
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
+        ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.addProduct(productPojo);
     }
 
-    public List<ProductData> getAllProducts(){
+    public List<ProductData> getAllProducts() throws ApiException {
         List<ProductPojo>  productPojos = productService.getAllProducts();
         List<ProductData> productDatas = new ArrayList<>();
         for(ProductPojo productPojo : productPojos){
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
-            productDatas.add(convertor.convertProductPojoToData(productPojo, brandCategoryPojo));
+            productDatas.add(Convertor.convertProductPojoToData(productPojo, brandCategoryPojo));
         }
 
         return productDatas;
@@ -55,8 +54,8 @@ public class ProductDto {
     public void updateProduct( int id,  ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
         valid(product);
-
-        ProductPojo productPojo = convertor.convertProductFormToProductPojo(product);
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
+        ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.updateProduct(id, productPojo);
     }
 
@@ -65,7 +64,7 @@ public class ProductDto {
         ProductPojo productPojo = productService.getProduct(id);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
 
-        return convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
+        return Convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
 
     }
 

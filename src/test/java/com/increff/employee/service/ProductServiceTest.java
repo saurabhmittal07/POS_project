@@ -1,8 +1,7 @@
 package com.increff.employee.service;
 
-import com.increff.employee.pojo.BrandCategoryPojo;
+
 import com.increff.employee.pojo.ProductPojo;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,40 +18,21 @@ public class ProductServiceTest extends AbstractUnitTest{
 
     @Autowired BrandCategoryService brandCategoryService;
 
-    public BrandCategoryPojo createBrand() throws ApiException {
-        return createBrand("nike","shoes");
-    }
-
-    public BrandCategoryPojo createBrand(String brand, String category) throws ApiException{
-        BrandCategoryPojo brandCategory = new BrandCategoryPojo();
-        brandCategory.setBrand(brand);
-        brandCategory.setCategory(category);
-        return brandCategoryService.addBrand(brandCategory);
-    }
-
-    private ProductPojo createProduct() throws ApiException{
-        return createProduct("milton", 1, "qqq", 43);
-    }
-
-
-   private ProductPojo createProduct  (String name, int brandId, String barcode, int mrp) throws ApiException{
-        createBrand();
-        ProductPojo product = new ProductPojo();
-        product.setName(name);
-        product.setBarcode(barcode);
-        product.setMrp(mrp);
-        product.setBrandCategory(brandId);
-
-        return productService.addProduct(product);
-    }
-
-
 
     @Test
     public void testAddProduct() throws ApiException {
         createProduct();
     }
 
+    @Test
+    public void testAddEmptyBarcode() throws ApiException{
+        createProduct();
+        try{
+            createProduct("qdqwd", 1, "", 12);
+        }catch (ApiException exception){
+            assertEquals("Barcode already exist", exception.getMessage().trim());
+        }
+    }
     @Test
     public void testGetAllProducts() throws ApiException{
         createProduct();
@@ -76,10 +56,30 @@ public class ProductServiceTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testUpdateWrongBrand() throws ApiException{
+        ProductPojo productPojo = createProduct();
+        productPojo.setBrandCategory(2);
+        try{
+            productService.updateProduct(productPojo.getId(), productPojo);
+        }catch(ApiException exception){
+            assertEquals("Brand - Category Pair does not exist", exception.getMessage().trim());
+        }
+    }
+
+    @Test
     public void testGetProduct() throws ApiException{
         ProductPojo productPojo =  createProduct();
         ProductPojo newProduct = productService.getProduct(productPojo.getId());
         assertEquals(productPojo.getBarcode(), newProduct.getBarcode());
+    }
+
+    @Test
+    public void testWithWrongId() throws ApiException {
+        try{
+            productService.getProduct(0);
+        } catch (ApiException exception) {
+            assertEquals("Product with given id does not exists",exception.getMessage().trim());
+        }
     }
 
     @Test
@@ -88,7 +88,6 @@ public class ProductServiceTest extends AbstractUnitTest{
         ProductPojo productPojo = productService.getProductByBarcode("qqq");
         assertEquals(productPojo.getBarcode(), "qqq");
         assertEquals(productPojo.getName(), "milton");
-
     }
 
 

@@ -38,8 +38,11 @@ public class BrandCategoryService {
         brandCategoryPojo.setBrand(brandCategory.getBrand());
     }
 
-    public BrandCategoryPojo getBrand(int id){
+    public BrandCategoryPojo getBrand(int id) throws ApiException{
         BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrand(id);
+        if(brandCategoryPojo == null){
+            throw new ApiException("Brand with the given id does not exists");
+        }
         return brandCategoryPojo;
     }
 
