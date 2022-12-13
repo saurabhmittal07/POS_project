@@ -1,8 +1,8 @@
 package com.increff.employee.dto;
 
 import com.increff.employee.model.InventoryForm;
+import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryData;
-import com.increff.employee.model.InventoryUI;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
@@ -37,18 +37,18 @@ public class InventoryDto {
         inventoryService.addInventory(inventoryPojo);
     }
 
-    public List<InventoryUI> showInventory() throws ApiException {
+    public List<InventoryData> showInventory() throws ApiException {
         List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
-        List<InventoryUI> inventories = new ArrayList<>();
+        List<InventoryData> inventories = new ArrayList<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
-            InventoryUI inventoryUI = new InventoryUI();
-            inventoryUI.setQuantity(inventoryPojo.getCount());
+            InventoryData inventoryData = new InventoryData();
+            inventoryData.setQuantity(inventoryPojo.getCount());
             ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
-            inventoryUI.setName(productPojo.getName());
-            inventoryUI.setBarcode(productPojo.getBarcode());
-            inventoryUI.setId(inventoryPojo.getId());
+            inventoryData.setName(productPojo.getName());
+            inventoryData.setBarcode(productPojo.getBarcode());
+            inventoryData.setId(inventoryPojo.getId());
 
-            inventories.add(inventoryUI);
+            inventories.add(inventoryData);
         }
         return inventories;
     }
@@ -60,7 +60,7 @@ public class InventoryDto {
         inventoryService.updateInventory(id, Convertor.convertInventoryFormToPojo(inventory,productPojo));
     }
 
-    public InventoryData getInventory(int id) throws ApiException {
+    public Inventory getInventory(int id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.getInventory(id);
         ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
         return Convertor.convertInventoryPojoToData(inventoryPojo, productPojo);

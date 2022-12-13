@@ -90,5 +90,14 @@ public class ProductServiceTest extends AbstractUnitTest{
         assertEquals(productPojo.getName(), "milton");
     }
 
+    @Test
+    public void testNonExistingBarcode() throws ApiException {
+        try{
+            ProductPojo productPojo = productService.getProductByBarcode("qqq");
+        }catch (ApiException exception){
+            assertEquals("Barcode :qqq does not exist", exception.getMessage().trim());
+        }
+
+    }
 
 }

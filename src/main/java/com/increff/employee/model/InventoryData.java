@@ -1,10 +1,11 @@
 package com.increff.employee.model;
 
 public class InventoryData {
-    private int id;
 
+    private int id;
+    private String name;
     private String barcode;
-    private int count;
+    private int quantity;
 
     public int getId() {
         return id;
@@ -14,6 +15,13 @@ public class InventoryData {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getBarcode() {
         return barcode;
@@ -23,11 +31,11 @@ public class InventoryData {
         this.barcode = barcode;
     }
 
-    public int getCount() {
-        return count;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

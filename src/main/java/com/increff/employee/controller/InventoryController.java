@@ -1,9 +1,8 @@
 package com.increff.employee.controller;
 import com.increff.employee.dto.InventoryDto;
 import com.increff.employee.model.InventoryForm;
+import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryData;
-import com.increff.employee.model.InventoryUI;
-import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +27,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Show Inventory" )
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
-    public List<InventoryUI> getAllProducts() throws ApiException {
+    public List<InventoryData> getAllProducts() throws ApiException {
         return inventoryDto.showInventory();
     }
 
@@ -41,7 +40,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
-    public InventoryData getProduct(@PathVariable int id) throws ApiException {
+    public Inventory getProduct(@PathVariable int id) throws ApiException {
         return inventoryDto.getInventory(id);
     }
 

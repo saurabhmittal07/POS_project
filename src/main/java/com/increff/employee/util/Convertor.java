@@ -29,8 +29,8 @@ public class Convertor {
         return productData;
     }
 
-    public static InventoryData convertInventoryPojoToData(InventoryPojo inventoryPojo,ProductPojo productPojo ){
-        InventoryData inventoryData = new InventoryData();
+    public static Inventory convertInventoryPojoToData(InventoryPojo inventoryPojo, ProductPojo productPojo ){
+        Inventory inventoryData = new Inventory();
         inventoryData.setId(inventoryPojo.getId());
         inventoryData.setCount(inventoryPojo.getCount());
         inventoryData.setBarcode(productPojo.getBarcode());

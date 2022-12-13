@@ -45,8 +45,8 @@ public abstract class AbstractUnitTest {
     }
 
     public ProductPojo createProduct() throws ApiException{
-        createBrand();
-        return createProduct("milton", 1, "qqq", 43);
+        BrandCategoryPojo brandCategoryPojo =  createBrand();
+        return createProduct("milton", brandCategoryPojo.getId(), "qqq", 43);
     }
 
     ProductPojo createProduct(String name, int brandId, String barcode, int mrp) throws ApiException{

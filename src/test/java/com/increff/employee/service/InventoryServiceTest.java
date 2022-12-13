@@ -1,13 +1,10 @@
 package com.increff.employee.service;
 
-import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
-import javafx.util.Pair;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +26,19 @@ public class InventoryServiceTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testAddInventoryOfNegativeQuantity() throws  ApiException{
+        ProductPojo productPojo = createProduct();
+        InventoryPojo inventoryPojo = new InventoryPojo();
+        inventoryPojo.setProductId(productPojo.getId());
+        inventoryPojo.setCount(-5);
+        try{
+            inventoryService.addInventory(inventoryPojo);
+        }catch(ApiException exception){
+            assertEquals("Quantity should be a positive number",exception.getMessage().trim());
+        }
+    }
+
+    @Test
     public void testShowInventory() throws ApiException{
         InventoryPojo inventoryPojo =  addInventory();
         List<InventoryPojo> inventoryPojos =  inventoryService.showInventory();
@@ -42,6 +52,17 @@ public class InventoryServiceTest extends AbstractUnitTest{
         inventoryPojo.setCount(12);
         inventoryService.updateInventory(inventoryPojo.getProductId(),inventoryPojo);
         assertEquals(12,inventoryPojo.getCount());
+    }
+
+    @Test
+    public void testUpdateNegativeQuantity() throws ApiException{
+        InventoryPojo inventoryPojo =  addInventory();
+        inventoryPojo.setCount(0);
+        try{
+            inventoryService.updateInventory(inventoryPojo.getProductId(),inventoryPojo);
+        }catch(ApiException exception){
+            assertEquals("Quantity should be a positive number", exception.getMessage().trim());
+        }
     }
 
     @Test

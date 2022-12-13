@@ -53,8 +53,9 @@ public class ProductService {
     }
 
 
-    public ProductPojo getProductByBarcode(String barcode){
-        return productDao.getProductByBarcode(barcode);
+    public ProductPojo getProductByBarcode(String barcode) throws ApiException{
+        ProductPojo productPojo= productDao.getProductByBarcode(barcode);
+        return productPojo;
     }
 
 }
