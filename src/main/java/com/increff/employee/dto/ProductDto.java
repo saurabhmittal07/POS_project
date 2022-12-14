@@ -33,7 +33,7 @@ public class ProductDto {
 
     public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
-        valid(product);
+        validProduct(product);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
         ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.addProduct(productPojo);
@@ -53,7 +53,7 @@ public class ProductDto {
     
     public void updateProduct( int id,  ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
-        valid(product);
+        validProduct(product);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
         ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.updateProduct(id, productPojo);
@@ -86,7 +86,8 @@ public class ProductDto {
         return  productPojo.getMrp();
     }
 
-    protected void valid(ProductForm product) throws ApiException{
+
+    protected void validProduct(ProductForm product) throws ApiException{
         if(product.getName().equals("")){
             throw new ApiException("Product name can not be empty");
         }

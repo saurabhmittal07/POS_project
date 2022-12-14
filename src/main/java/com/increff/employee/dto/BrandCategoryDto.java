@@ -34,7 +34,7 @@ public class BrandCategoryDto {
         return brands;
     }
 
-    public void update( int id, BrandCategoryForm brandCategory) throws ApiException {
+    public void updateBrand( int id, BrandCategoryForm brandCategory) throws ApiException {
         brandCategoryService.updateBrand(id, Convertor.convertBrandFormToPojo(brandCategory));
     }
 

@@ -22,7 +22,7 @@ public class BrandCategoryController {
 
     @ApiOperation(value = "Adds Brand-Category Pair")
     @RequestMapping(path = "/api/brandCategory", method = RequestMethod.POST)
-    public void add(@RequestBody BrandCategoryForm brandCategory) throws ApiException {
+    public void addBrand(@RequestBody BrandCategoryForm brandCategory) throws ApiException {
         brandCategoryDto.addBrand(brandCategory);
     }
 
@@ -34,8 +34,8 @@ public class BrandCategoryController {
 
     @ApiOperation(value = "Updates a brand detail")
     @RequestMapping(path = "/api/brandCategory/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody BrandCategoryForm brandCategory) throws ApiException {
-        brandCategoryDto.update(id, brandCategory);
+    public void updateBrand(@PathVariable int id, @RequestBody BrandCategoryForm brandCategory) throws ApiException {
+        brandCategoryDto.updateBrand(id, brandCategory);
     }
 
 

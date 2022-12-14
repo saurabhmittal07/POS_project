@@ -19,24 +19,15 @@ import java.util.List;
 
 @Service
 public class InvoiceDto {
-
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private OrderItemService orderItemService;
-
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
     public ResponseEntity<byte[]> getOrderInvoice( @PathVariable int id) throws ApiException, IOException, TransformerException {
-
         List<OrderItemPojo> orderItemPojoList = orderItemService.getOrderItems(id);
         OrderPojo orderPojo = orderService.getOrder(id);
-
         ZonedDateTime time = orderPojo.getDateTime();
-
-
-        return InvoiceHelper.invoiceHelper(orderItemPojoList,orderPojo);
+        return InvoiceHelper.invoiceHelper(orderItemPojoList, orderPojo);
     }
-
 }
