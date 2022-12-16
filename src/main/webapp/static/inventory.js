@@ -207,7 +207,7 @@ function displayUploadData(){
 
 function displayInventory(data){
 	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
-	$("#inventory-edit-form input[name=count]").val(data.count);
+	$("#inventory-edit-form input[name=count]").val(data.quantity);
 	$("#inventory-edit-form input[name=id]").val(data.id);
 	$('#edit-inventory-modal').modal('toggle');
 }

@@ -30,10 +30,10 @@ public class Convertor {
         return productData;
     }
 
-    public static Inventory convertInventoryPojoToData(InventoryPojo inventoryPojo, ProductPojo productPojo ){
-        Inventory inventoryData = new Inventory();
+    public static InventoryData convertInventoryPojoToData(InventoryPojo inventoryPojo, ProductPojo productPojo ){
+        InventoryData inventoryData = new InventoryData();
         inventoryData.setId(inventoryPojo.getId());
-        inventoryData.setCount(inventoryPojo.getCount());
+        inventoryData.setQuantity(inventoryPojo.getCount());
         inventoryData.setBarcode(productPojo.getBarcode());
         return inventoryData;
     }

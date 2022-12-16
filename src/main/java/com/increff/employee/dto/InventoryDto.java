@@ -1,7 +1,6 @@
 package com.increff.employee.dto;
 
 import com.increff.employee.model.InventoryForm;
-import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryData;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
@@ -32,7 +31,6 @@ public class InventoryDto {
         if(productPojo == null){
             throw new ApiException("Product with barcode: " + inventory.getBarcode() + " does not exist");
         }
-
         InventoryPojo inventoryPojo = Convertor.convertInventoryFormToPojo(inventory,productPojo);
         inventoryService.addInventory(inventoryPojo);
     }
@@ -60,20 +58,18 @@ public class InventoryDto {
         inventoryService.updateInventory(id, Convertor.convertInventoryFormToPojo(inventory,productPojo));
     }
 
-    public Inventory getInventory(int id) throws ApiException {
+    public InventoryData getInventory(int id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.getInventory(id);
         ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
         return Convertor.convertInventoryPojoToData(inventoryPojo, productPojo);
     }
 
-    public double checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
+    public void checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
         ProductPojo productPojo = productService.getProductByBarcode(inventoryForm.getBarcode());
         InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
 
         if (inventoryPojo.getCount() < inventoryForm.getCount()) {
             throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
         }
-
-        return productPojo.getMrp();
     }
 }

@@ -8,12 +8,19 @@ import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.*;
 import com.increff.employee.util.Convertor;
+import com.increff.employee.util.InvoiceHelper;
 import com.increff.employee.util.TrimLower;
 
+import org.apache.fop.apps.FopFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -59,7 +66,6 @@ public class OrderDto {
 
 
             // Validate
-
             orderItemService.addOrderItem(orderItemPojo);
         }
         // Add order items
@@ -82,25 +88,28 @@ public class OrderDto {
         return orders;
     }
 
-    public void validate(String barcode, int quantity) throws ApiException {
-        if( barcode.equals("")){
-            throw new ApiException("Please enter barcode");
-        }
-        if(quantity <= 0){
-            throw new ApiException("Quantity should be more than 0");
-        }
-        ProductPojo productPojo = productService.getProductByBarcode(barcode);
 
+    public void validate(String barcode, int quantity) throws ApiException {
+
+
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
         if(productPojo == null){
             throw new ApiException("Product with barcode:" + barcode +" does not exist");
         }
         InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
-
         if(inventoryPojo == null){
             throw new ApiException(0 + " Unit/units available in inventory");
         } else if(inventoryPojo.getCount() < quantity){
             throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
         }
     }
-}
 
+
+    private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+    public ResponseEntity<byte[]> getOrderInvoice(@PathVariable int id) throws ApiException, IOException, TransformerException {
+        List<OrderItemPojo> orderItemPojoList = orderItemService.getOrderItems(id);
+        OrderPojo orderPojo = orderService.getOrder(id);
+        ZonedDateTime time = orderPojo.getDateTime();
+        return InvoiceHelper.invoiceHelper(orderItemPojoList, orderPojo);
+    }
+}

@@ -1,7 +1,6 @@
 package com.increff.employee.controller;
 import com.increff.employee.dto.InventoryDto;
 import com.increff.employee.model.InventoryForm;
-import com.increff.employee.model.Inventory;
 import com.increff.employee.model.InventoryData;
 import com.increff.employee.service.ApiException;
 import io.swagger.annotations.Api;
@@ -40,13 +39,13 @@ public class InventoryController {
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
-    public Inventory getProduct(@PathVariable int id) throws ApiException {
+    public InventoryData getProduct(@PathVariable int id) throws ApiException {
         return inventoryDto.getInventory(id);
     }
 
     @ApiOperation(value = "updates quantity of a product")
     @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
-    public double checkIfInventoryAvailable(@RequestBody InventoryForm inventoryForm) throws ApiException{
-        return inventoryDto.checkIfInventoryAvailable(inventoryForm);
+    public void checkIfInventoryAvailable(@RequestBody InventoryForm inventoryForm) throws ApiException{
+         inventoryDto.checkIfInventoryAvailable(inventoryForm);
     }
 }

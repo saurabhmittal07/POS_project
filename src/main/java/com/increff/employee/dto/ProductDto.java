@@ -33,8 +33,10 @@ public class ProductDto {
 
     public void addProduct( ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
-        validProduct(product);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
+        if(brandCategoryPojo == null){
+            throw new ApiException("Brand Category pair does not exist");
+        }
         ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.addProduct(productPojo);
     }
@@ -53,8 +55,10 @@ public class ProductDto {
     
     public void updateProduct( int id,  ProductForm product) throws ApiException {
         TrimLower.trimLower(product);
-        validProduct(product);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName(product.getBrand(),product.getCategory());
+        if(brandCategoryPojo == null){
+            throw new ApiException("Brand Category pair does not exist");
+        }
         ProductPojo productPojo = Convertor.convertProductFormToProductPojo(product, brandCategoryPojo);
         productService.updateProduct(id, productPojo);
     }
@@ -63,7 +67,9 @@ public class ProductDto {
     public ProductData getProduct( int id) throws ApiException {
         ProductPojo productPojo = productService.getProduct(id);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
-
+        if(brandCategoryPojo == null){
+            throw new ApiException("Brand Category pair does not exist");
+        }
         return Convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
 
     }
@@ -84,26 +90,6 @@ public class ProductDto {
         }
 
         return  productPojo.getMrp();
-    }
-
-
-    protected void validProduct(ProductForm product) throws ApiException{
-        if(product.getName().equals("")){
-            throw new ApiException("Product name can not be empty");
-        }
-        if(product.getBrand().equals("")){
-            throw new ApiException("Brand can not be empty");
-        }
-        if(product.getCategory().equals("")){
-            throw new ApiException("Cateogry can not be empty");
-        }
-        if(product.getBarcode().equals("")){
-            throw new ApiException("Barcode can not be empty");
-        }
-        if(product.getMrp() <=0 ){
-            throw new ApiException("MRP should be greater than 0");
-        }
-
     }
     public void validate(String barcode, int quantity) throws ApiException {
         if( barcode.equals("")){

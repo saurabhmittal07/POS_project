@@ -36,4 +36,5 @@ public class BrandCategoryPojo {
         this.category = category;
     }
 
+
 }

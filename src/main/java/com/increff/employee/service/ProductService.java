@@ -1,6 +1,7 @@
 package com.increff.employee.service;
 
 import com.increff.employee.dao.ProductDao;
+import com.increff.employee.model.ProductForm;
 import com.increff.employee.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class ProductService {
 
 
     public ProductPojo addProduct(ProductPojo product) throws ApiException{
+
+        validProduct(product);
+
         if(getProductByBarcode(product.getBarcode()) != null){
             throw new ApiException("Barcode already exist");
         }
@@ -30,6 +34,7 @@ public class ProductService {
     @Transactional
     public void updateProduct(int id, ProductPojo product) throws ApiException{
 
+        validProduct(product);
         ProductPojo productPojo = productDao.getProduct(id);
 
         // check if barcode already exist
@@ -56,6 +61,19 @@ public class ProductService {
     public ProductPojo getProductByBarcode(String barcode) throws ApiException{
         ProductPojo productPojo= productDao.getProductByBarcode(barcode);
         return productPojo;
+    }
+
+    protected void validProduct(ProductPojo product) throws ApiException{
+        if(product.getName().equals("")){
+            throw new ApiException("Product name can not be empty");
+        }
+        if(product.getBarcode().equals("")){
+            throw new ApiException("Barcode can not be empty");
+        }
+        if(product.getMrp() <=0 ){
+            throw new ApiException("MRP should be greater than 0");
+        }
+
     }
 
 }

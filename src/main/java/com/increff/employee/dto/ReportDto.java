@@ -17,11 +17,8 @@ import java.util.Map;
 
 @Service
 public class ReportDto {
-
-
     @Autowired
     private InventoryService inventoryService;
-
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -65,16 +62,16 @@ public class ReportDto {
     }
 
 
-    public List<BrandCategoryReport> showBrandReport() {
+    public List<BrandCategoryData> showBrandReport() {
         List<BrandCategoryPojo> brands=  brandCategoryService.getAllBrands();
-        List<BrandCategoryReport> brandDatas = new ArrayList<>();
+        List<BrandCategoryData> brandDatas = new ArrayList<>();
 
         int i=1;
         for(BrandCategoryPojo brand : brands){
-            BrandCategoryReport brandData = new BrandCategoryReport();
+            BrandCategoryData brandData = new BrandCategoryData();
             brandData.setBrand(brand.getBrand());
             brandData.setCategory(brand.getCategory());
-            brandData.setSNo(i++);
+            brandData.setId(i++);
             brandDatas.add(brandData);
 
         }
@@ -82,7 +79,7 @@ public class ReportDto {
     }
 
 
-    public List<ReportItem> showRevenueReport(@RequestBody FilterForm filterForm) throws ApiException {
+    public List<ReportItem> showRevenueReport( FilterForm filterForm) throws ApiException {
 
         HashMap<Integer, Pair<Integer,Double>> brandIdToRevenueMap = new HashMap<>();
 
@@ -97,32 +94,35 @@ public class ReportDto {
 
             // Go through all orderItems
             for(OrderItemPojo orderItemPojo : orderItems){
-
-                // Get Product with product Id
-                ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
-                int brandId = productPojo.getBrandCategory();
-
-                Pair<Integer, Double> pair = new Pair<>(orderItemPojo.getQuantity(),
-                        orderItemPojo.getQuantity()*orderItemPojo.getPrice());
-
-                // Get Brand & Category by brandId
-                BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);
-
-                //Check if brand category match with value in filter form
-                if((brandCategoryPojo.getBrand().equals(filterForm.getBrand())  || filterForm.getBrand().equals("")) &&
-                        (brandCategoryPojo.getCategory().equals(filterForm.getCategory())   || filterForm.getCategory().equals("") )){
-                    if(brandIdToRevenueMap.containsKey(brandId)){
-                        int newQuantity = brandIdToRevenueMap.get(brandId).getKey() + pair.getKey();
-                        Double newRevenue = brandIdToRevenueMap.get(brandId).getValue() + pair.getValue();
-
-                        brandIdToRevenueMap.put(brandId , new Pair<>(newQuantity,newRevenue));
-                    }else{
-                        brandIdToRevenueMap.put(brandId, pair);
-                    }
-                }
+                addOrderItemIntoRevenueReport(orderItemPojo,brandIdToRevenueMap,filterForm.getBrand(),filterForm.getCategory());
             }
         }
         return populateList(brandIdToRevenueMap);
+    }
+
+    void addOrderItemIntoRevenueReport(OrderItemPojo orderItemPojo, HashMap<Integer, Pair<Integer,Double>> brandIdToRevenueMap, String brand, String category ) throws ApiException {
+        // Get Product with product Id
+        ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
+        int brandId = productPojo.getBrandCategory();
+
+        Pair<Integer, Double> pair = new Pair<>(orderItemPojo.getQuantity(),
+                orderItemPojo.getQuantity()*orderItemPojo.getPrice());
+
+        // Get Brand & Category by brandId
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);
+
+        //Check if brand category match with value in filter form
+        if((brandCategoryPojo.getBrand().equals(brand)  || brand.equals("")) &&
+                (brandCategoryPojo.getCategory().equals(category)   || category.equals("") )){
+            if(brandIdToRevenueMap.containsKey(brandId)){
+                int newQuantity = brandIdToRevenueMap.get(brandId).getKey() + pair.getKey();
+                Double newRevenue = brandIdToRevenueMap.get(brandId).getValue() + pair.getValue();
+
+                brandIdToRevenueMap.put(brandId , new Pair<>(newQuantity,newRevenue));
+            }else{
+                brandIdToRevenueMap.put(brandId, pair);
+            }
+        }
     }
 
 
