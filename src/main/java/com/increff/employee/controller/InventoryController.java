@@ -43,9 +43,9 @@ public class InventoryController {
         return inventoryDto.getInventory(id);
     }
 
-    @ApiOperation(value = "updates quantity of a product")
-    @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
-    public void checkIfInventoryAvailable(@RequestBody InventoryForm inventoryForm) throws ApiException{
-         inventoryDto.isInventoryAvailable(inventoryForm);
+    @ApiOperation(value = "Check if required inventory available or not")
+    @RequestMapping(path = "/api/inventory/inventoryExist/{barcode}/{quantity}", method = RequestMethod.GET)
+    public double inventoryExist(@PathVariable String barcode ,@PathVariable String quantity) throws ApiException{
+        return inventoryDto.getMrpIfInventoryExist(barcode , quantity);
     }
 }

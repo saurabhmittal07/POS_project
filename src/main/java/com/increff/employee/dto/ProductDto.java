@@ -73,28 +73,11 @@ public class ProductDto {
         return Convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
     }
 
-    public double getMrpIfInventoryExist(String barcode , String quantity) throws ApiException{
-        int count = Integer.parseInt(quantity);
-        validate(barcode, count);
-
+    public double getMrp(String barcode) throws ApiException{
         ProductPojo productPojo = productService.getProductByBarcode(barcode);
-
-        //Check if inventory available
-        inventoryService.isInventoryAvailable(productPojo.getId(),count);
-
-        return  productPojo.getMrp();
-    }
-    public void validate(String barcode, int quantity) throws ApiException {
-        if( barcode.equals("")){
-            throw new ApiException("Please enter barcode");
-        }
-        if(quantity <= 0){
-            throw new ApiException("Quantity should be more than 0");
-        }
-        ProductPojo productPojo = productService.getProductByBarcode(barcode);
-
         if(productPojo == null){
-            throw new ApiException("Product with barcode:" + barcode +" does not exist");
+            throw new ApiException("Product does not exist");
         }
+        return productPojo.getMrp();
     }
 }

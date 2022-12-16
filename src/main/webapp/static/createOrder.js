@@ -32,15 +32,27 @@ function checkInventory(event){
 
     var totalReq = +curCount+ +json["quantity"];
 
-    var url = getOrderUrl() + "/inventoryExist" + "/"+ json["barcode"] + "/" + totalReq;
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/inventory/inventoryExist" + "/"+ json["barcode"] + "/" + totalReq;
+    var url1 = $("meta[name=baseUrl]").attr("content")+ "/api/product/" +json["barcode"] + "/mrp";
     json = JSON.stringify(json);
+
+    var baseUrl = $("meta[name=baseUrl]").attr("content");
 
     console.log(url);
     $.ajax({
     	   url: url,
     	   type: 'GET',
-    	   success: function(data) {
-    	   		appendList(json,data);
+    	   success: function() {
+    	       console.log("URL1 : " + url1);
+
+    	       $.ajax({
+                   	   url: url1,
+                   	   type: 'GET',
+                   	   success: function(data) {
+                   	   		appendList(json,data);
+                   	   },
+                   	   error: handleAjaxError
+                   	});
     	   },
     	   error: handleAjaxError
     	});
@@ -106,17 +118,14 @@ function updateOrder(event){
 
 	var $form = $("#order-edit-form");
     var json = toJson($form);
-	var url = getOrderUrl() + "/updateInventory";
+	//var url = getOrderUrl() + "/updateInventory";
 
-    console.log("update : " + json)
+    json1 = JSON.parse(json);
 
+     var url = $("meta[name=baseUrl]").attr("content") + "/api/inventory/inventoryExist" + "/"+ json1["barcode"] + "/" +  json1["quantity"];
 	$.ajax({
 	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
+	   type: 'GET',
 	   success: function(response) {
 	        updateList(json);
 	   },
@@ -200,7 +209,6 @@ function init(){
     $('#check-inventory').click(checkInventory);
     $('#create-order').click(createOrder);
     $('#update-order-item').click(updateOrder);
-
 }
 
 $(document).ready(init);
