@@ -39,20 +39,20 @@ public class ReportDto {
         int i=0;
 
         // Key Brand Id, Value index of brand Id in reportList
-        HashMap<Integer, Integer> map = new HashMap<>();
+        HashMap<Integer, Integer> brandIdToTableIndexMap = new HashMap<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
             ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(productPojo.getBrandCategory());
 
             //Check if brand-category page already exists in map
-            if(map.containsKey(brandCategoryPojo.getId())){
-                int index = map.get(brandCategoryPojo.getId());
+            if(brandIdToTableIndexMap.containsKey(brandCategoryPojo.getId())){
+                int index = brandIdToTableIndexMap.get(brandCategoryPojo.getId());
                 InventoryReport temp =  inventoryReports.get(index);
                 temp.setQuantity(temp.getQuantity() + inventoryPojo.getCount());
                 inventoryReports.set(index, temp);
                 continue;
             }
-            map.put(brandCategoryPojo.getId(), i);
+            brandIdToTableIndexMap.put(brandCategoryPojo.getId(), i);
             InventoryReport inventoryReport = new InventoryReport();
             inventoryReport.setBrand(brandCategoryPojo.getBrand());
             inventoryReport.setCategory(brandCategoryPojo.getCategory());
@@ -83,9 +83,10 @@ public class ReportDto {
 
 
     public List<ReportItem> showRevenueReport(@RequestBody FilterForm filterForm) throws ApiException {
-        HashMap<Integer, Pair<Integer,Double>> map = new HashMap<>();
-        // Get Order in date range
 
+        HashMap<Integer, Pair<Integer,Double>> brandIdToRevenueMap = new HashMap<>();
+
+        // Get Order in date range
         List<OrderPojo> orders = orderService.getOrdersByDate(filterForm.getStartDate(), filterForm.getEndDate());
 
         // Go through all orders
@@ -106,25 +107,28 @@ public class ReportDto {
 
                 // Get Brand & Category by brandId
                 BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);
+
+                //Check if brand category match with value in filter form
                 if((brandCategoryPojo.getBrand().equals(filterForm.getBrand())  || filterForm.getBrand().equals("")) &&
                         (brandCategoryPojo.getCategory().equals(filterForm.getCategory())   || filterForm.getCategory().equals("") )){
-                    if(map.containsKey(brandId)){
-                        int newQuantity = map.get(brandId).getKey() + pair.getKey();
-                        Double newRevenue = map.get(brandId).getValue() + pair.getValue();
+                    if(brandIdToRevenueMap.containsKey(brandId)){
+                        int newQuantity = brandIdToRevenueMap.get(brandId).getKey() + pair.getKey();
+                        Double newRevenue = brandIdToRevenueMap.get(brandId).getValue() + pair.getValue();
 
-                        map.put(brandId , new Pair<>(newQuantity,newRevenue));
+                        brandIdToRevenueMap.put(brandId , new Pair<>(newQuantity,newRevenue));
                     }else{
-                        map.put(brandId, pair);
+                        brandIdToRevenueMap.put(brandId, pair);
                     }
                 }
             }
         }
-        return populateList(map);
+        return populateList(brandIdToRevenueMap);
     }
 
-    private List<ReportItem> populateList(HashMap<Integer, Pair<Integer,Double>> map) throws ApiException {
+
+    private List<ReportItem> populateList(HashMap<Integer, Pair<Integer,Double>> brandIdToRevenueMap) throws ApiException {
         List<ReportItem> items = new ArrayList<>();
-        for (Map.Entry<Integer,Pair<Integer,Double>> mapElement : map.entrySet()) {
+        for (Map.Entry<Integer,Pair<Integer,Double>> mapElement : brandIdToRevenueMap.entrySet()) {
             int brandId = mapElement.getKey();
             Pair<Integer, Double> pair= mapElement.getValue();
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrand(brandId);

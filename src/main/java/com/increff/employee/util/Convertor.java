@@ -4,6 +4,7 @@ package com.increff.employee.util;
 import com.increff.employee.model.*;
 import com.increff.employee.pojo.BrandCategoryPojo;
 import com.increff.employee.pojo.InventoryPojo;
+import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.ApiException;
 
@@ -63,5 +64,14 @@ public class Convertor {
         inventoryPojo.setCount(inventory.getCount());
         inventoryPojo.setProductId(productPojo.getId());
         return inventoryPojo;
+    }
+
+    public static OrderItemPojo convertOrderItemToOrderItemPojo(OrderItem orderItem, ProductPojo productPojo, int orderId){
+        OrderItemPojo orderItemPojo = new OrderItemPojo();
+        orderItemPojo.setQuantity(orderItem.getQuantity());
+        orderItemPojo.setOrderId(orderId);
+        orderItemPojo.setProductId(productPojo.getId());
+        orderItemPojo.setPrice(productPojo.getMrp());
+        return orderItemPojo;
     }
 }

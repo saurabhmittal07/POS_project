@@ -2,12 +2,12 @@ package com.increff.employee.dto;
 
 import com.increff.employee.model.OrderForm;
 import com.increff.employee.model.OrderItem;
-import com.increff.employee.model.UpdateOrderForm;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductPojo;
 import com.increff.employee.service.*;
+import com.increff.employee.util.Convertor;
 import com.increff.employee.util.TrimLower;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +51,7 @@ public class OrderDto {
 
             ProductPojo productPojo = productService.getProductByBarcode(orderItem.getBarcode());
 
-            OrderItemPojo orderItemPojo = new OrderItemPojo();
-            orderItemPojo.setQuantity(orderItem.getQuantity());
-            orderItemPojo.setOrderId(orderPojo.getId());
-            orderItemPojo.setProductId(productPojo.getId());
-            orderItemPojo.setPrice(productPojo.getMrp());
+            OrderItemPojo orderItemPojo = Convertor.convertOrderItemToOrderItemPojo(orderItem,productPojo,orderPojo.getId());
 
             // Reduce Inventory
             InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
@@ -70,7 +66,6 @@ public class OrderDto {
 
     }
 
-
     public List<OrderForm> showOrders(){
         List<OrderPojo> orderPojos = orderService.showOrders();
         List<OrderForm> orders =  new ArrayList();
@@ -82,7 +77,6 @@ public class OrderDto {
             ZonedDateTime zonedDateTime = orderPojo.getDateTime();
             String formattedZdt = zonedDateTime.format(DateTimeFormatter.ISO_ZONED_DATE_TIME);
             order.setDate(formattedZdt.substring(0,10) + " " + formattedZdt.substring(11,19));
-
             orders.add(order);
         }
         return orders;
