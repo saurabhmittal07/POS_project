@@ -71,23 +71,16 @@ public class ProductDto {
             throw new ApiException("Brand Category pair does not exist");
         }
         return Convertor.convertProductPojoToData(productPojo,brandCategoryPojo);
-
     }
 
-    public double getMrp(String barcode , String quantity) throws ApiException{
-        int cur = Integer.parseInt(quantity);
-        validate(barcode, cur);
+    public double getMrpIfInventoryExist(String barcode , String quantity) throws ApiException{
+        int count = Integer.parseInt(quantity);
+        validate(barcode, count);
 
         ProductPojo productPojo = productService.getProductByBarcode(barcode);
-        // Check if required quantity available
-        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
 
-
-        if(inventoryPojo == null){
-            throw new ApiException(0 + " Unit/units available in inventory");
-        } else if(inventoryPojo.getCount() < cur){
-            throw new ApiException(inventoryPojo.getCount() + " Unit/units available in inventory");
-        }
+        //Check if inventory available
+        inventoryService.isInventoryAvailable(productPojo.getId(),count);
 
         return  productPojo.getMrp();
     }
@@ -104,6 +97,4 @@ public class ProductDto {
             throw new ApiException("Product with barcode:" + barcode +" does not exist");
         }
     }
-
-
 }

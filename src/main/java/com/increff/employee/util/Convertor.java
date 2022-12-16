@@ -35,6 +35,7 @@ public class Convertor {
         inventoryData.setId(inventoryPojo.getId());
         inventoryData.setQuantity(inventoryPojo.getCount());
         inventoryData.setBarcode(productPojo.getBarcode());
+        inventoryData.setName(productPojo.getName());
         return inventoryData;
     }
 

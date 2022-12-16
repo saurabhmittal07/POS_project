@@ -3,7 +3,6 @@ package com.increff.employee.service;
 import com.increff.employee.dao.InventoryDao;
 import com.increff.employee.pojo.InventoryPojo;
 
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -60,4 +59,13 @@ public class InventoryService {
         return inventoryDao.getInventoryByProductId(id);
    }
 
+   public void isInventoryAvailable(int productId, int quantity) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryDao.getInventoryByProductId(productId);
+
+       if(inventoryPojo == null){
+           throw new ApiException(0 + " Unit(s) available in inventory");
+       }else if(inventoryPojo.getCount() < quantity){
+            throw  new ApiException(inventoryPojo.getCount()+ " Unit(s) available in the inventory");
+        }
+   }
 }

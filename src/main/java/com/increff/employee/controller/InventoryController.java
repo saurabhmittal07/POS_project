@@ -46,6 +46,6 @@ public class InventoryController {
     @ApiOperation(value = "updates quantity of a product")
     @RequestMapping(path = "/api/order/updateInventory", method = RequestMethod.PUT)
     public void checkIfInventoryAvailable(@RequestBody InventoryForm inventoryForm) throws ApiException{
-         inventoryDto.checkIfInventoryAvailable(inventoryForm);
+         inventoryDto.isInventoryAvailable(inventoryForm);
     }
 }

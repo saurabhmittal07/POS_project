@@ -45,9 +45,9 @@ public class ProductController {
     }
 
     @ApiOperation(value = "Check if required inventory available or not & Return Mrp")
-    @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{cur}", method = RequestMethod.GET)
-    public double getMrp(@PathVariable String barcode ,@PathVariable String cur) throws ApiException{
-        return productDto.getMrp(barcode , cur);
+    @RequestMapping(path = "/api/order/inventoryExist/{barcode}/{quantity}", method = RequestMethod.GET)
+    public double getMrpIfInventoryExist(@PathVariable String barcode ,@PathVariable String quantity) throws ApiException{
+        return productDto.getMrpIfInventoryExist(barcode , quantity);
     }
 
 }

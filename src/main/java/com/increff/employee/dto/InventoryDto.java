@@ -39,12 +39,8 @@ public class InventoryDto {
         List<InventoryPojo> inventoryPojos = inventoryService.showInventory();
         List<InventoryData> inventories = new ArrayList<>();
         for(InventoryPojo inventoryPojo : inventoryPojos){
-            InventoryData inventoryData = new InventoryData();
-            inventoryData.setQuantity(inventoryPojo.getCount());
             ProductPojo productPojo = productService.getProduct(inventoryPojo.getProductId());
-            inventoryData.setName(productPojo.getName());
-            inventoryData.setBarcode(productPojo.getBarcode());
-            inventoryData.setId(inventoryPojo.getId());
+            InventoryData inventoryData = Convertor.convertInventoryPojoToData(inventoryPojo, productPojo);
 
             inventories.add(inventoryData);
         }
@@ -64,12 +60,8 @@ public class InventoryDto {
         return Convertor.convertInventoryPojoToData(inventoryPojo, productPojo);
     }
 
-    public void checkIfInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
+    public void isInventoryAvailable(InventoryForm inventoryForm) throws ApiException{
         ProductPojo productPojo = productService.getProductByBarcode(inventoryForm.getBarcode());
-        InventoryPojo inventoryPojo = inventoryService.getInventoryByProductId(productPojo.getId());
-
-        if (inventoryPojo.getCount() < inventoryForm.getCount()) {
-            throw new ApiException(inventoryPojo.getCount()+" Unit/units available in inventory");
-        }
+        inventoryService.isInventoryAvailable(productPojo.getId(), inventoryForm.getCount());
     }
 }
