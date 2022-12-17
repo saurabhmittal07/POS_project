@@ -62,8 +62,11 @@ public class BrandCategoryService {
         }
     }
 
-
-    public BrandCategoryPojo getBrandByName(String brand, String category){
+    public BrandCategoryPojo getBrandByName(String brand, String category) throws ApiException{
+        BrandCategoryPojo brandCategoryPojo = brandCategoryDao.getBrandByName(brand, category);
+        if(brandCategoryPojo == null){
+            throw new ApiException("Brand Category Pair does not exist");
+        }
         return brandCategoryDao.getBrandByName(brand, category);
     }
 }

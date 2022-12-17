@@ -30,7 +30,6 @@ public class InventoryController {
         return inventoryDto.showInventory();
     }
 
-
     @ApiOperation(value = "Updates a inventory detail")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody InventoryForm inventory) throws ApiException {
@@ -45,7 +44,7 @@ public class InventoryController {
 
     @ApiOperation(value = "Check if required inventory available or not")
     @RequestMapping(path = "/api/inventory/inventoryExist/{barcode}/{quantity}", method = RequestMethod.GET)
-    public double inventoryExist(@PathVariable String barcode ,@PathVariable String quantity) throws ApiException{
-        return inventoryDto.getMrpIfInventoryExist(barcode , quantity);
+    public void checkIfInventoryExist(@PathVariable String barcode ,@PathVariable String quantity) throws ApiException{
+         inventoryDto.checkIfInventoryExist(barcode , quantity);
     }
 }

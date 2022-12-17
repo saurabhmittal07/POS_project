@@ -87,4 +87,19 @@ public class BrandCategoryServiceTest extends AbstractUnitTest {
 
     }
 
+    @Test
+    public void testGetBrandByName() throws ApiException{
+        createBrand();
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName("nike", "shoes");
+    }
+
+    @Test
+    public void testGetByWrongBrand() throws ApiException{
+        try{
+            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandByName("nike", "shoes");
+        }catch (ApiException exception){
+            assertEquals("Brand Category Pair does not exist", exception.getMessage().trim());
+        }
+    }
+
 }

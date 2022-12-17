@@ -37,8 +37,8 @@ function brandReport(){
 function getReport(event){
     var $form = $("#filter-form");
 	var json = toJson($form);
-	var url = getReportUrl();
-
+	var url = getReportUrl() + "/revenue";
+    console.log(url);
 
 	$.ajax({
 	   url: url,

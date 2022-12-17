@@ -30,7 +30,7 @@ public class ProductServiceTest extends AbstractUnitTest{
         try{
             createProduct("qdqwd", 1, "", 12);
         }catch (ApiException exception){
-            assertEquals("Barcode already exist", exception.getMessage().trim());
+            assertEquals("Barcode can not be empty", exception.getMessage().trim());
         }
     }
     @Test
@@ -97,7 +97,6 @@ public class ProductServiceTest extends AbstractUnitTest{
         }catch (ApiException exception){
             assertEquals("Barcode :qqq does not exist", exception.getMessage().trim());
         }
-
     }
 
 }

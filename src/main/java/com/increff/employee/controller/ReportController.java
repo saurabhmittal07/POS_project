@@ -33,7 +33,7 @@ public class ReportController {
     }
 
     @ApiOperation(value = "Shows Filtered Report of Revenue")
-    @RequestMapping(path = "/api/report", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/report/revenue", method = RequestMethod.POST)
     public List<ReportItem> showRevenueReport(@RequestBody FilterForm filterForm) throws ApiException{
         return reportDto.showRevenueReport(filterForm);
     }

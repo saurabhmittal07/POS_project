@@ -65,7 +65,7 @@ public class InventoryDto {
         inventoryService.isInventoryAvailable(productPojo.getId(), inventoryForm.getCount());
     }
 
-    public double getMrpIfInventoryExist(String barcode , String quantity) throws ApiException{
+    public void checkIfInventoryExist(String barcode , String quantity) throws ApiException{
         int count = Integer.parseInt(quantity);
         validate(barcode, count);
 
@@ -73,8 +73,6 @@ public class InventoryDto {
 
         //Check if inventory available
         inventoryService.isInventoryAvailable(productPojo.getId(),count);
-
-        return  productPojo.getMrp();
     }
     public void validate(String barcode, int quantity) throws ApiException {
         if( barcode.equals("")){

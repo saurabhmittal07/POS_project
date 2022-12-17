@@ -2,6 +2,7 @@ package com.increff.employee.service;
 
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.ProductPojo;
+import io.swagger.annotations.Api;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -78,6 +79,22 @@ public class InventoryServiceTest extends AbstractUnitTest{
 
         InventoryPojo  newInventoryPojo = inventoryService.getInventoryByProductId(inventoryPojo.getProductId());
         assertEquals(5,newInventoryPojo.getCount());
+    }
+
+    @Test
+    public void testIsInventoryAvailable() throws ApiException{
+        addInventory();
+        inventoryService.isInventoryAvailable(1,5);
+    }
+
+    @Test
+    public void testMoreIsInventoryAvailable() throws ApiException{
+        InventoryPojo inventoryPojo = addInventory();
+        try{
+            inventoryService.isInventoryAvailable(inventoryPojo.getProductId(),10);
+        }catch (ApiException exception){
+            assertEquals(inventoryPojo.getCount()+" Unit(s) available in the inventory", exception.getMessage().trim());
+        }
     }
 
 }
